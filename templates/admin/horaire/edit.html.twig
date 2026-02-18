@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+{% block title %}Modifier l'horaire — {{ horaire.jour|capitalize }}{% endblock %}
+{% block body %}
+<div style="max-width:500px;margin:2rem auto;padding:0 1rem;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <h1 style="font-size:1.8rem;font-weight:700;">🕐 {{ horaire.jour|capitalize }}</h1>
+        <a href="{{ path('admin_horaire_index') }}" style="color:#6b7280;text-decoration:none;">← Retour</a>
+    </div>
+    <div style="background:white;border-radius:1rem;box-shadow:0 2px 12px rgba(0,0,0,0.08);padding:2rem;">
+        {{ form_start(form) }}
+        <div style="display:grid;gap:1.25rem;">
+            <div>{{ form_label(form.heureOuverture) }}{{ form_widget(form.heureOuverture, {attr: {class: 'form-control'}}) }}{{ form_errors(form.heureOuverture) }}</div>
+            <div>{{ form_label(form.heureFermeture) }}{{ form_widget(form.heureFermeture, {attr: {class: 'form-control'}}) }}{{ form_errors(form.heureFermeture) }}</div>
+            <div style="display:flex;align-items:center;gap:0.75rem;">{{ form_widget(form.ferme) }}{{ form_label(form.ferme) }}</div>
+        </div>
+        <div style="margin-top:1.5rem;display:flex;gap:1rem;">
+            <button type="submit" class="btn btn-primary">💾 Enregistrer</button>
+            <a href="{{ path('admin_horaire_index') }}" style="padding:0.6rem 1.2rem;border-radius:0.5rem;border:1px solid #e5e7eb;text-decoration:none;color:#6b7280;">Annuler</a>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

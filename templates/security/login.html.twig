@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+<div class="form-container glass">
+    <form method="post">
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{ error.messageKey|trans(error.messageData, 'security') }}
+            </div>
+        {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            Vous êtes connecté en tant que {{ app.user.userIdentifier }}, <a href="{{ logout_path() }}">Déconnexion</a>
+        </div>
+    {% endif %}
+
+    <h1 class="h3 mb-3 font-weight-normal" style="text-align:center;color:var(--primary-color);">Connexion</h1>
+    <label for="inputEmail">Email</label>
+    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus placeholder="Votre email">
+    <label for="inputPassword">Mot de passe</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required placeholder="Votre mot de passe">
+    <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+
+    <div class="checkbox mb-3" style="margin-top:1rem;">
+        <label>
+            <input type="checkbox" name="_remember_me"> Se souvenir de moi
+        </label>
+    </div>
+
+    <button class="btn btn-lg btn-primary" type="submit" style="width:100%;">
+        Se connecter
+    </button>
+    
+    <p style="text-align: center; margin-top: 1rem;">
+        Pas encore de compte ? <a href="{{ path('app_register') }}" style="color: var(--primary-color);">S'inscrire</a>
+    </p>
+</form>
+{% endblock %}

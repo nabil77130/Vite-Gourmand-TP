@@ -1,0 +1,81 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Vite & Gourmand — Traiteur à Bordeaux{% endblock %}
+
+{% block body %}
+    {# Hero Section #}
+    <section class="hero">
+        <div class="hero-content glass">
+            <h1>Un traiteur d'exception pour vos événements</h1>
+            <p>Des menus raffinés préparés avec des produits frais et locaux. Faites de chaque événement un moment inoubliable.</p>
+            <a href="{{ path('app_menu') }}" class="btn btn-secondary">Découvrir nos menus</a>
+        </div>
+    </section>
+
+    {# Menus en vedette #}
+    <section class="products-grid" style="max-width:1200px;margin:4rem auto;padding:0 2rem;">
+        <h2 style="grid-column:1/-1;font-size:1.8rem;font-weight:700;margin-bottom:1.5rem;">🎉 Nos menus du moment</h2>
+        {% for menu in featuredProducts %}
+            <div class="product-card glass" style="border:2px solid var(--primary-color);">
+                <div class="product-details">
+                    <h3>{{ menu.name }}</h3>
+                    <p>{{ menu.description }}</p>
+                    <ul style="list-style:none;padding:0;margin:0.75rem 0;">
+                        {% for product in menu.products|slice(0,3) %}
+                            <li style="color:#6b7280;font-size:0.9rem;padding:0.15rem 0;">• {{ product.name }}</li>
+                        {% endfor %}
+                        {% if menu.products|length > 3 %}<li style="color:#9ca3af;font-size:0.85rem;">+ {{ menu.products|length - 3 }} autres plats…</li>{% endif %}
+                    </ul>
+                    {% if menu.minPeople %}
+                        <span style="background:rgba(16,185,129,0.15);color:var(--primary-color);font-size:0.8rem;padding:0.2rem 0.6rem;border-radius:999px;font-weight:600;">👥 Min. {{ menu.minPeople }} pers.</span>
+                    {% endif %}
+                    <div class="product-price" style="margin-top:0.75rem;">{{ menu.price }} €<span style="font-size:0.8rem;font-weight:400;color:#9ca3af;"> / pers.</span></div>
+                    <a href="{{ path('app_menu_show', {'id': menu.id}) }}" class="btn btn-primary" style="width:100%;margin-top:1rem;display:block;text-align:center;">Commander ce menu →</a>
+                </div>
+            </div>
+        {% else %}
+            <p style="grid-column:1/-1;color:#9ca3af;">Aucun menu disponible pour le moment.</p>
+        {% endfor %}
+    </section>
+
+
+    {# Avis Clients #}
+    {% if reviews is not empty %}
+    <section style="max-width: 1200px; margin: 4rem auto; padding: 2rem;">
+        <h2 style="text-align:center;margin-bottom:2rem;">💬 Ce que disent nos clients</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:2rem;">
+            {% for review in reviews %}
+                <div class="glass" style="padding:1.5rem;border-radius:1rem;">
+                    <div style="font-size:1.2rem;margin-bottom:0.5rem;color:#f59e0b;">
+                        {% for i in 1..5 %}{{ i <= review.rating ? '⭐' : '☆' }}{% endfor %}
+                    </div>
+                    <p style="font-style:italic;color:#4b5563;margin-bottom:1rem;">"{{ review.comment }}"</p>
+                    <div style="font-size:0.9rem;color:#6b7280;text-align:right;">
+                        — Client Vite & Gourmand
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+    {# Pourquoi nous choisir #}
+    <section class="glass-dark" style="max-width: 1200px; margin: 4rem auto; padding: 4rem; text-align: center;">
+        <h2>Pourquoi choisir Vite & Gourmand ?</h2>
+        <div style="display: flex; justify-content: space-around; margin-top: 2rem; flex-wrap: wrap; gap: 2rem;">
+            <div style="flex: 1; min-width: 250px;">
+                <h3>🥗 Produits frais</h3>
+                <p>Nous nous approvisionnons localement pour garantir la meilleure qualité.</p>
+            </div>
+            <div style="flex: 1; min-width: 250px;">
+                <h3>🚚 Livraison soignée</h3>
+                <p>Vos plats livrés chauds et prêts à servir pour votre événement.</p>
+            </div>
+            <div style="flex: 1; min-width: 250px;">
+                <h3>👨‍🍳 Chefs expérimentés</h3>
+                <p>Préparés par des professionnels de la restauration événementielle.</p>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+

@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Compte - Vite & Gourmand{% endblock %}
+
+{% block body %}
+<div class="container" style="max-width: 1000px; margin: 2rem auto; padding: 2rem;">
+    <h1>Mon Compte</h1>
+
+    <div class="glass" style="padding: 2rem; margin-bottom: 2rem;">
+        <h2>Informations Profil</h2>
+        <p><strong>Nom :</strong> {{ app.user.firstName }} {{ app.user.lastName }}</p>
+        <p><strong>Email :</strong> {{ app.user.email }}</p>
+        <p><strong>Adresse :</strong> {{ app.user.address }}, {{ app.user.zipCode }} {{ app.user.city }}</p>
+        <p><strong>Téléphone :</strong> {{ app.user.phone }}</p>
+    </div>
+
+    <div class="glass" style="padding: 2rem;">
+        <h2>Historique de Commandes</h2>
+        {% if app.user.orders is not empty %}
+            <table style="width: 100%; border-collapse: collapse; margin-top: 1rem;">
+                <thead>
+                    <tr style="border-bottom: 2px solid #e5e7eb;">
+                        <th style="padding: 1rem; text-align: left;">N° Commande</th>
+                        <th style="padding: 1rem; text-align: left;">Date</th>
+                        <th style="padding: 1rem; text-align: left;">Statut</th>
+                        <th style="padding: 1rem; text-align: right;">Total</th>
+                        <th style="padding: 1rem; text-align: center;">Articles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in app.user.orders %}
+                        <tr style="border-bottom: 1px solid #f3f4f6;">
+                            <td style="padding: 1rem;">#{{ order.id }}</td>
+                            <td style="padding: 1rem;">{{ order.createdAt|date('d/m/Y H:i') }}</td>
+                            <td style="padding: 1rem;">
+                                <span style="padding: 0.25rem 0.75rem; border-radius: 9999px; font-size: 0.875rem; 
+                                    background-color: {% if order.status == 'delivered' %}var(--primary-color){% elseif order.status == 'cancelled' %}#EF4444{% else %}#F59E0B{% endif %}; 
+                                    color: white;">
+                                    {% if order.status == 'pending' %}En attente{% elseif order.status == 'delivered' %}Livrée{% elseif order.status == 'cancelled' %}Annulée{% else %}{{ order.status }}{% endif %}
+                                </span>
+                            </td>
+                            <td style="padding: 1rem; text-align: right;">{{ order.totalPrice }} €</td>
+                            <td style="padding: 1rem; text-align: center;">{{ order.orderItems|length }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+        {% else %}
+            <p>Vous n'avez pas encore passé de commande.</p>
+            <a href="{{ path('app_home') }}" class="btn btn-primary" style="margin-top: 1rem; display: inline-block;">Commencer à commander</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
