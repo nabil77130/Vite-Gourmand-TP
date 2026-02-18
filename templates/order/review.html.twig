@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Laisser un avis - Vite & Gourmand{% endblock %}
+
+{% block body %}
+<div class="container" style="max-width: 600px; margin: 4rem auto; padding: 2rem;">
+    <div style="background:white;border-radius:1rem;box-shadow:0 4px 12px rgba(0,0,0,0.1);padding:2rem;">
+        <h1 style="text-align:center;margin-bottom:1.5rem;">⭐ Laisser un avis</h1>
+        <p style="text-align:center;color:#6b7280;margin-bottom:2rem;">
+            Commande #{{ order.id }} du {{ order.createdAt|date('d/m/Y') }}
+        </p>
+
+        {{ form_start(form) }}
+            <div style="margin-bottom:1.5rem;">
+                {{ form_label(form.rating) }}
+                <div style="display:flex;flex-direction:column;gap:0.5rem;margin-top:0.5rem;">
+                    {% for child in form.rating %}
+                        <label style="cursor:pointer;display:flex;align-items:center;gap:0.5rem;font-size:1.1rem;">
+                            {{ form_widget(child) }}
+                            {{ form_label(child) }}
+                        </label>
+                    {% endfor %}
+                </div>
+                {{ form_errors(form.rating) }}
+            </div>
+
+            <div style="margin-bottom:1.5rem;">
+                {{ form_label(form.comment) }}
+                {{ form_widget(form.comment, {attr: {class: 'form-control', style: 'width:100%;padding:0.75rem;border:1px solid #d1d5db;border-radius:0.5rem;'}}) }}
+                {{ form_errors(form.comment) }}
+            </div>
+
+            <div style="text-align:center;">
+                <button type="submit" class="btn btn-primary" style="width:100%;padding:1rem;">Envoyer mon avis</button>
+                <a href="{{ path('user_orders') }}" style="display:block;margin-top:1rem;color:#6b7280;text-decoration:none;">Annuler</a>
+            </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

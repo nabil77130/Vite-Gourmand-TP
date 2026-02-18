@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+{% block title %}Mes commandes{% endblock %}
+{% block body %}
+<div style="max-width:1000px;margin:2rem auto;padding:0 1rem;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <h1 style="font-size:1.8rem;font-weight:700;">📦 Mes commandes</h1>
+        <div style="display:flex;gap:0.75rem;">
+            <a href="{{ path('user_profile') }}" style="background:rgba(99,102,241,0.1);color:#6366f1;padding:0.5rem 1rem;border-radius:0.5rem;text-decoration:none;">👤 Mon profil</a>
+            <a href="{{ path('app_menu') }}" class="btn btn-primary" style="padding:0.5rem 1rem;">🍽️ Commander</a>
+        </div>
+    </div>
+
+    {% for flash in app.flashes('success') %}
+        <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#065F46;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;">✅ {{ flash }}</div>
+    {% endfor %}
+    {% for flash in app.flashes('error') %}
+        <div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#b91c1c;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;">❌ {{ flash }}</div>
+    {% endfor %}
+
+    {% set status_labels = {
+        'pending': 'En attente', 'accepted': 'Acceptée', 'preparing': 'En préparation',
+        'delivering': 'En cours de livraison', 'delivered': 'Livrée',
+        'awaiting_return': 'En attente retour matériel', 'completed': 'Terminée', 'cancelled': 'Annulée'
+    } %}
+    {% set status_colors = {
+        'pending': '#f59e0b', 'accepted': '#3b82f6', 'preparing': '#8b5cf6',
+        'delivering': '#06b6d4', 'delivered': '#10b981', 'awaiting_return': '#f97316',
+        'completed': '#22c55e', 'cancelled': '#ef4444'
+    } %}
+
+    {% if orders is empty %}
+        <div style="background:white;border-radius:1rem;padding:3rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+            <p style="font-size:3rem;margin-bottom:1rem;">🍽️</p>
+            <p style="color:#9ca3af;font-size:1.1rem;">Vous n'avez pas encore de commande.</p>
+            <a href="{{ path('app_menu') }}" class="btn btn-primary" style="margin-top:1rem;display:inline-block;">Découvrir nos menus</a>
+        </div>
+    {% else %}
+        <div style="display:grid;gap:1rem;">
+            {% for order in orders %}
+            <div style="background:white;border-radius:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:1.5rem;">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;">
+                    <div>
+                        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:0.5rem;">
+                            <strong style="font-size:1.1rem;">Commande #{{ order.id }}</strong>
+                            <span style="background:{{ status_colors[order.status] ?? '#6b7280' }}22;color:{{ status_colors[order.status] ?? '#6b7280' }};padding:0.2rem 0.7rem;border-radius:999px;font-size:0.8rem;font-weight:600;">
+                                {{ status_labels[order.status] ?? order.status }}
+                            </span>
+                        </div>
+                        <p style="color:#6b7280;font-size:0.9rem;margin:0;">
+                            📅 {{ order.createdAt ? order.createdAt|date('d/m/Y à H:i') : '—' }}
+                            {% if order.nombrePersonne %} · 👥 {{ order.nombrePersonne }} personnes{% endif %}
+                            {% if order.adressePrestation %} · 📍 {{ order.adressePrestation }}{% endif %}
+                        </p>
+                        {% if order.cancellationReason %}
+                            <p style="color:#ef4444;font-size:0.85rem;margin-top:0.5rem;">Motif : {{ order.cancellationReason }}</p>
+                        {% endif %}
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="font-size:1.4rem;font-weight:800;color:var(--secondary-color);">{{ order.totalPrice }} €</div>
+                        {% if order.prixLivraison %}<div style="font-size:0.8rem;color:#9ca3af;">dont {{ order.prixLivraison }} € livraison</div>{% endif %}
+                    </div>
+                </div>
+
+                {# Actions #}
+                <div style="margin-top:1rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
+                    {% if order.status == 'pending' %}
+                        <form method="post" action="{{ path('order_cancel', {id: order.id}) }}" onsubmit="return confirm('Annuler cette commande ?')">
+                            <button type="submit" style="background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.3);padding:0.4rem 0.8rem;border-radius:0.4rem;cursor:pointer;font-size:0.85rem;">🚫 Annuler</button>
+                        </form>
+                    {% endif %}
+                    {% if order.status == 'completed' and order.review is null %}
+                        <a href="{{ path('order_review', {id: order.id}) }}" style="background:rgba(245,158,11,0.1);color:#d97706;border:1px solid rgba(245,158,11,0.3);padding:0.4rem 0.8rem;border-radius:0.4rem;text-decoration:none;font-size:0.85rem;">⭐ Laisser un avis</a>
+                    {% endif %}
+                    {% if order.review %}
+                        <span style="color:#9ca3af;font-size:0.85rem;">⭐ Avis déposé ({{ order.review.rating }}/5)</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
