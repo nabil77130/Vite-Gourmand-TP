@@ -1,9 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <title>{% block title %}Vite & Gourmand — Traiteur{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🥗</text></svg>">
+        
+        {# Google Fonts #}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+        
         {% block stylesheets %}
         {% endblock %}
 
@@ -11,7 +17,72 @@
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
-    <body>
+    <body class="page-{{ app.request.attributes.get('_route') }}">
+        <nav class="navbar glass">
+            <a href="{{ path('app_home') }}" class="navbar-brand">Vite & Gourmand</a>
+            <div class="nav-links">
+                <a href="{{ path('app_home') }}" class="nav-link">Accueil</a>
+                <a href="{{ path('app_menu') }}" class="nav-link">La Carte</a>
+                <a href="{{ path('app_contact') }}" class="nav-link">Contact</a>
+                {% if is_granted('ROLE_EMPLOYEE') %}
+                    <a href="{{ path('admin_menu_index') }}" class="nav-link">⚙️ Administration</a>
+                {% endif %}
+                {% if app.user %}
+                    <a href="{{ path('user_profile') }}" class="nav-link">👤 Mon compte</a>
+                    <a href="{{ path('user_orders') }}" class="nav-link">📦 Commandes</a>
+                    <a href="{{ path('app_logout') }}" class="nav-link btn btn-secondary">Déconnexion</a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="nav-link">Connexion</a>
+                    <a href="{{ path('app_register') }}" class="nav-link btn btn-primary">S'inscrire</a>
+                {% endif %}
+            </div>
+        </nav>
+
         {% block body %}{% endblock %}
+        
+        <footer style="background-color: var(--dark-bg); color: var(--white); padding: 3rem 2rem 1.5rem;">
+            <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
+                <div>
+                    <h3 style="color: var(--primary-color); font-family: var(--font-heading); margin-bottom: 1rem;">Vite & Gourmand</h3>
+                    <p style="color: #9CA3AF; font-size: 0.9rem; line-height: 1.6;">Traiteur événementiel haut de gamme pour tous vos événements professionnels et personnels.</p>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1rem; font-size: 1rem;">Horaires d'ouverture</h4>
+                    <ul style="list-style: none; padding: 0; color: #9CA3AF; font-size: 0.9rem; line-height: 2;">
+                        {% for horaire in horaires %}
+                            <li>
+                                {{ horaire.jour|capitalize }} :
+                                {% if horaire.ferme %}
+                                    <strong style="color: #EF4444;">Fermé</strong>
+                                {% else %}
+                                    <strong style="color: white;">{{ horaire.heureOuverture }} – {{ horaire.heureFermeture }}</strong>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1rem; font-size: 1rem;">Contact</h4>
+                    <ul style="list-style: none; padding: 0; color: #9CA3AF; font-size: 0.9rem; line-height: 2;">
+                        <li>📍 12 Rue de la Gastronomie, 75001 Paris</li>
+                        <li>📞 01 23 45 67 89</li>
+                        <li>✉️ contact@vite-gourmand.fr</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 1rem; font-size: 1rem;">Liens utiles</h4>
+                    <ul style="list-style: none; padding: 0; font-size: 0.9rem; line-height: 2;">
+                        <li><a href="{{ path('app_menu') }}" style="color: #9CA3AF; transition: color 0.2s;" onmouseover="this.style.color='#10B981'" onmouseout="this.style.color='#9CA3AF'">La Carte</a></li>
+                        <li><a href="{{ path('app_contact') }}" style="color: #9CA3AF; transition: color 0.2s;" onmouseover="this.style.color='#10B981'" onmouseout="this.style.color='#9CA3AF'">Nous Contacter</a></li>
+                        {% if not app.user %}
+                        <li><a href="{{ path('app_register') }}" style="color: #9CA3AF; transition: color 0.2s;" onmouseover="this.style.color='#10B981'" onmouseout="this.style.color='#9CA3AF'">Créer un compte</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; text-align: center; color: #6B7280; font-size: 0.85rem;">
+                &copy; {{ "now"|date("Y") }} Vite & Gourmand. Tous droits réservés.
+            </div>
+        </footer>
     </body>
 </html>

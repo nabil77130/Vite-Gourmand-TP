@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ title }}{% endblock %}
+{% block body %}
+<div style="max-width:800px;margin:2rem auto;padding:0 1rem;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <h1 style="font-size:1.8rem;font-weight:700;">{{ title }}</h1>
+        <a href="{{ path('admin_product_index') }}" style="color:#6b7280;text-decoration:none;">← Retour aux plats</a>
+    </div>
+    <div style="background:white;border-radius:1rem;box-shadow:0 2px 12px rgba(0,0,0,0.08);padding:2rem;">
+        {{ form_start(form) }}
+        <div style="display:grid;gap:1.25rem;">
+            <div>{{ form_label(form.name) }}{{ form_widget(form.name, {attr: {class: 'form-control'}}) }}{{ form_errors(form.name) }}</div>
+            <div>{{ form_label(form.description) }}{{ form_widget(form.description, {attr: {class: 'form-control', rows: 3}}) }}{{ form_errors(form.description) }}</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;">
+                <div>{{ form_label(form.price) }}{{ form_widget(form.price, {attr: {class: 'form-control'}}) }}{{ form_errors(form.price) }}</div>
+                <div>{{ form_label(form.category) }}{{ form_widget(form.category, {attr: {class: 'form-control'}}) }}{{ form_errors(form.category) }}</div>
+                <div style="display:flex;align-items:center;gap:0.5rem;padding-top:1.5rem;">{{ form_widget(form.isAvailable) }}{{ form_label(form.isAvailable) }}</div>
+            </div>
+            <div>{{ form_label(form.imageName) }}{{ form_widget(form.imageName, {attr: {class: 'form-control'}}) }}{{ form_errors(form.imageName) }}</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;">
+                <div>
+                    <label style="font-weight:600;display:block;margin-bottom:0.5rem;">Allergènes</label>
+                    <div style="border:1px solid #e5e7eb;border-radius:0.5rem;padding:0.75rem;max-height:150px;overflow-y:auto;">{{ form_widget(form.allergens) }}</div>
+                </div>
+                <div>
+                    <label style="font-weight:600;display:block;margin-bottom:0.5rem;">Régimes</label>
+                    <div style="border:1px solid #e5e7eb;border-radius:0.5rem;padding:0.75rem;max-height:150px;overflow-y:auto;">{{ form_widget(form.diets) }}</div>
+                </div>
+                <div>
+                    <label style="font-weight:600;display:block;margin-bottom:0.5rem;">Thèmes</label>
+                    <div style="border:1px solid #e5e7eb;border-radius:0.5rem;padding:0.75rem;max-height:150px;overflow-y:auto;">{{ form_widget(form.themes) }}</div>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top:1.5rem;display:flex;gap:1rem;">
+            <button type="submit" class="btn btn-primary">💾 Enregistrer</button>
+            <a href="{{ path('admin_product_index') }}" style="padding:0.6rem 1.2rem;border-radius:0.5rem;border:1px solid #e5e7eb;text-decoration:none;color:#6b7280;">Annuler</a>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+{% endblock %}

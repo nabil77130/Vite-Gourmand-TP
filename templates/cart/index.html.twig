@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Panier — Vite & Gourmand{% endblock %}
+
+{% block body %}
+<div class="container" style="max-width: 800px; margin: 2rem auto; padding: 2rem;">
+    <h1>Votre Panier</h1>
+
+    {% if items|length > 0 %}
+        <div class="glass" style="padding: 2rem; border-radius: 12px; margin-top: 2rem;">
+            <table class="table" style="width: 100%; border-collapse: collapse;">
+                <thead>
+                    <tr>
+                        <th style="padding: 1rem; text-align: left;">Produit</th>
+                        <th style="padding: 1rem; text-align: center;">Prix</th>
+                        <th style="padding: 1rem; text-align: center;">Quantité</th>
+                        <th style="padding: 1rem; text-align: right;">Total</th>
+                        <th style="padding: 1rem;"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                        <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                            <td style="padding: 1rem;">{{ item.product.name }}</td>
+                            <td style="padding: 1rem; text-align: center;">{{ item.product.price }} €</td>
+                            <td style="padding: 1rem; text-align: center;">{{ item.quantity }}</td>
+                            <td style="padding: 1rem; text-align: right;">{{ item.product.price * item.quantity }} €</td>
+                            <td style="padding: 1rem; text-align: center;">
+                                <a href="{{ path('app_cart_remove', {'id': item.product.id}) }}" class="btn btn-sm" style="background: rgba(239, 68, 68, 0.8); color: white;">Retirer</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" style="text-align: right; padding: 2rem 1rem 1rem; font-weight: bold; font-size: 1.2rem;">Total :</td>
+                        <td style="text-align: right; padding: 2rem 1rem 1rem; font-weight: bold; font-size: 1.2rem;">{{ total }} €</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div style="margin-top: 2rem; text-align: right;">
+                <a href="{{ path('app_menu') }}" class="btn btn-secondary" style="margin-right: 1rem;">Continuer vos achats</a>
+                <a href="{{ path('app_order_checkout') }}" class="btn btn-primary">Passer à la commande</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="glass" style="padding: 3rem; text-align: center; margin-top: 2rem; border-radius: 12px;">
+            <p>Votre panier est vide.</p>
+            <a href="{{ path('app_menu') }}" class="btn btn-primary" style="margin-top: 1rem;">Voir la Carte</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

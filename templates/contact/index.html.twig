@@ -1,0 +1,88 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact - Vite & Gourmand{% endblock %}
+
+{% block body %}
+<div style="min-height: 100vh; background: linear-gradient(135deg, #e0f2fe 0%, #dcfce7 100%);">
+    <div style="max-width: 700px; margin: 0 auto; padding: 2rem;">
+
+        <div class="glass" style="padding: 2.5rem; border-radius: 1.5rem;">
+            <h1 style="text-align: center; color: var(--primary-color); margin-bottom: 0.5rem;">Contactez-nous</h1>
+            <p style="text-align: center; color: #6B7280; margin-bottom: 2rem;">Une question ? Un événement à organiser ? Nous sommes là pour vous aider.</p>
+
+            {% if success %}
+                <div class="alert" style="background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4); color: #065F46; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.5rem; text-align: center;">
+                    ✅ Votre message a bien été envoyé ! Nous vous répondrons dans les plus brefs délais.
+                </div>
+            {% endif %}
+
+            <form method="post" action="{{ path('app_contact') }}">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                    <div class="form-group">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.4rem;">Prénom *</label>
+                        <input type="text" name="firstName" class="form-control" placeholder="Votre prénom" required>
+                    </div>
+                    <div class="form-group">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.4rem;">Nom *</label>
+                        <input type="text" name="lastName" class="form-control" placeholder="Votre nom" required>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.4rem;">Email *</label>
+                    <input type="email" name="email" class="form-control" placeholder="votre@email.com" required>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.4rem;">Téléphone</label>
+                    <input type="tel" name="phone" class="form-control" placeholder="06 00 00 00 00">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.4rem;">Sujet *</label>
+                    <select name="subject" class="form-control" required>
+                        <option value="">-- Choisissez un sujet --</option>
+                        <option value="devis">Demande de devis</option>
+                        <option value="reservation">Réservation</option>
+                        <option value="information">Demande d'information</option>
+                        <option value="reclamation">Réclamation</option>
+                        <option value="autre">Autre</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.4rem;">Date de l'événement</label>
+                    <input type="date" name="eventDate" class="form-control">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 1.5rem;">
+                    <label style="display: block; font-weight: 600; margin-bottom: 0.4rem;">Message *</label>
+                    <textarea name="message" class="form-control" rows="5" placeholder="Décrivez votre projet ou votre demande..." required style="resize: vertical;"></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.1rem;">
+                    Envoyer le message
+                </button>
+            </form>
+
+            <div style="margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid rgba(0,0,0,0.1); display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; text-align: center;">
+                <div>
+                    <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📍</div>
+                    <div style="font-weight: 600; margin-bottom: 0.25rem;">Adresse</div>
+                    <div style="color: #6B7280; font-size: 0.9rem;">12 Rue de la Gastronomie<br>75001 Paris</div>
+                </div>
+                <div>
+                    <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">📞</div>
+                    <div style="font-weight: 600; margin-bottom: 0.25rem;">Téléphone</div>
+                    <div style="color: #6B7280; font-size: 0.9rem;">01 23 45 67 89</div>
+                </div>
+                <div>
+                    <div style="font-size: 1.5rem; margin-bottom: 0.5rem;">✉️</div>
+                    <div style="font-weight: 600; margin-bottom: 0.25rem;">Email</div>
+                    <div style="color: #6B7280; font-size: 0.9rem;">contact@vite-gourmand.fr</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

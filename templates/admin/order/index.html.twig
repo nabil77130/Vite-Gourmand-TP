@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+{% block title %}Administration — Commandes{% endblock %}
+{% block body %}
+<div style="max-width:1200px;margin:2rem auto;padding:0 1rem;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <h1 style="font-size:1.8rem;font-weight:700;">📦 Gestion des Commandes</h1>
+        <a href="{{ path('admin_menu_index') }}" style="color:#6b7280;text-decoration:none;">← Espace admin</a>
+    </div>
+
+    {# Filters #}
+    <form method="get" style="background:white;border-radius:1rem;padding:1.25rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);display:flex;gap:1rem;align-items:flex-end;margin-bottom:1.5rem;flex-wrap:wrap;">
+        <div>
+            <label style="font-size:0.85rem;font-weight:600;display:block;margin-bottom:0.3rem;">Statut</label>
+            <select name="status" class="form-control" style="min-width:180px;">
+                <option value="">Tous les statuts</option>
+                {% for key, label in statuses %}
+                    <option value="{{ key }}" {% if current_status == key %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label style="font-size:0.85rem;font-weight:600;display:block;margin-bottom:0.3rem;">Client (nom/email)</label>
+            <input type="text" name="search" value="{{ search }}" class="form-control" placeholder="Rechercher..." style="min-width:200px;">
+        </div>
+        <button type="submit" class="btn btn-primary" style="padding:0.5rem 1.2rem;">🔍 Filtrer</button>
+        <a href="{{ path('admin_order_index') }}" style="padding:0.5rem 1rem;border-radius:0.5rem;border:1px solid #e5e7eb;text-decoration:none;color:#6b7280;">Réinitialiser</a>
+    </form>
+
+    {% for flash in app.flashes('success') %}
+        <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#065F46;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;">✅ {{ flash }}</div>
+    {% endfor %}
+
+    <div style="background:white;border-radius:1rem;box-shadow:0 2px 12px rgba(0,0,0,0.08);overflow:hidden;">
+        <table style="width:100%;border-collapse:collapse;">
+            <thead>
+                <tr style="background:#f9fafb;border-bottom:2px solid #e5e7eb;">
+                    <th style="padding:1rem;text-align:left;">#</th>
+                    <th style="padding:1rem;text-align:left;">Client</th>
+                    <th style="padding:1rem;text-align:left;">Date</th>
+                    <th style="padding:1rem;text-align:left;">Statut</th>
+                    <th style="padding:1rem;text-align:left;">Total</th>
+                    <th style="padding:1rem;text-align:center;">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% set status_colors = {
+                    'pending': '#f59e0b', 'accepted': '#3b82f6', 'preparing': '#8b5cf6',
+                    'delivering': '#06b6d4', 'delivered': '#10b981', 'awaiting_return': '#f97316',
+                    'completed': '#22c55e', 'cancelled': '#ef4444'
+                } %}
+                {% for order in orders %}
+                <tr style="border-bottom:1px solid #f3f4f6;">
+                    <td style="padding:1rem;font-weight:600;">#{{ order.id }}</td>
+                    <td style="padding:1rem;">
+                        {% if order.user %}
+                            {{ order.user.firstName }} {{ order.user.lastName }}<br>
+                            <small style="color:#9ca3af;">{{ order.user.email }}</small>
+                        {% else %}—{% endif %}
+                    </td>
+                    <td style="padding:1rem;font-size:0.9rem;">{{ order.createdAt ? order.createdAt|date('d/m/Y H:i') : '—' }}</td>
+                    <td style="padding:1rem;">
+                        <span style="background:{{ status_colors[order.status] ?? '#6b7280' }}22;color:{{ status_colors[order.status] ?? '#6b7280' }};padding:0.25rem 0.75rem;border-radius:999px;font-size:0.8rem;font-weight:600;">
+                            {{ statuses[order.status] ?? order.status }}
+                        </span>
+                    </td>
+                    <td style="padding:1rem;font-weight:700;color:var(--secondary-color);">{{ order.totalPrice ? order.totalPrice ~ ' €' : '—' }}</td>
+                    <td style="padding:1rem;text-align:center;">
+                        <a href="{{ path('admin_order_show', {id: order.id}) }}" style="background:rgba(99,102,241,0.1);color:#6366f1;padding:0.4rem 0.8rem;border-radius:0.4rem;text-decoration:none;font-size:0.85rem;">👁️ Voir</a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr><td colspan="6" style="padding:2rem;text-align:center;color:#9ca3af;">Aucune commande trouvée.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

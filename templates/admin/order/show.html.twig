@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+{% block title %}Commande #{{ order.id }}{% endblock %}
+{% block body %}
+<div style="max-width:900px;margin:2rem auto;padding:0 1rem;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+        <h1 style="font-size:1.8rem;font-weight:700;">📦 Commande #{{ order.id }}</h1>
+        <a href="{{ path('admin_order_index') }}" style="color:#6b7280;text-decoration:none;">← Retour</a>
+    </div>
+
+    {% for flash in app.flashes('success') %}
+        <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#065F46;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;">✅ {{ flash }}</div>
+    {% endfor %}
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem;">
+        {# Client info #}
+        <div style="background:white;border-radius:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:1.5rem;">
+            <h3 style="margin-bottom:1rem;font-size:1rem;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em;">Client</h3>
+            {% if order.user %}
+                <p><strong>{{ order.user.firstName }} {{ order.user.lastName }}</strong></p>
+                <p style="color:#6b7280;">{{ order.user.email }}</p>
+                <p style="color:#6b7280;">{{ order.user.phone }}</p>
+            {% else %}<p>—</p>{% endif %}
+        </div>
+        {# Order info #}
+        <div style="background:white;border-radius:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:1.5rem;">
+            <h3 style="margin-bottom:1rem;font-size:1rem;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em;">Détails</h3>
+            <p>Date : <strong>{{ order.createdAt ? order.createdAt|date('d/m/Y H:i') : '—' }}</strong></p>
+            <p>Personnes : <strong>{{ order.nombrePersonne ?? '—' }}</strong></p>
+            <p>Livraison : <strong>{{ order.prixLivraison ? order.prixLivraison ~ ' €' : 'Gratuite' }}</strong></p>
+            <p>Total : <strong style="color:var(--secondary-color);">{{ order.totalPrice ? order.totalPrice ~ ' €' : '—' }}</strong></p>
+        </div>
+    </div>
+
+    {# Status update #}
+    <div style="background:white;border-radius:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:1.5rem;margin-bottom:1.5rem;">
+        <h3 style="margin-bottom:1rem;">Mettre à jour le statut</h3>
+        <form method="post" action="{{ path('admin_order_status', {id: order.id}) }}" style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
+            <select name="status" class="form-control" style="min-width:220px;">
+                {% for key, label in statuses %}
+                    <option value="{{ key }}" {% if order.status == key %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary">✅ Mettre à jour</button>
+        </form>
+    </div>
+
+    {# Cancel with reason #}
+    {% if order.status not in ['cancelled', 'completed'] %}
+    <div style="background:white;border-radius:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:1.5rem;">
+        <h3 style="margin-bottom:1rem;color:#ef4444;">Annuler la commande</h3>
+        <form method="post" action="{{ path('admin_order_cancel', {id: order.id}) }}">
+            <div style="display:grid;gap:1rem;">
+                <div>
+                    <label style="font-weight:600;display:block;margin-bottom:0.3rem;">Mode de contact avec le client</label>
+                    <select name="contact_mode" class="form-control" required>
+                        <option value="">Choisir...</option>
+                        <option value="Appel GSM">Appel GSM</option>
+                        <option value="Email">Email</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-weight:600;display:block;margin-bottom:0.3rem;">Motif d'annulation</label>
+                    <textarea name="motif" class="form-control" rows="3" required placeholder="Expliquer le motif d'annulation..."></textarea>
+                </div>
+                <button type="submit" style="background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.3);padding:0.6rem 1.2rem;border-radius:0.5rem;cursor:pointer;" onclick="return confirm('Confirmer l\'annulation ?')">🚫 Annuler la commande</button>
+            </div>
+        </form>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
