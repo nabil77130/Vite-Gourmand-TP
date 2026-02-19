@@ -25,7 +25,6 @@
 -   **Base de Données** : SQLite (Facile à déployer)
 -   **Frontend** : Twig, CSS Custom (Glassmorphism), FontAwesome
 -   **Assets** : AssetMapper (Pas de build complexe requis)
--   **Déploiement** : Script automatique pour Azure VPS
 
 ## 🚀 Installation Rapide
 
@@ -76,11 +75,6 @@ Accédez ensuite à **http://127.0.0.1:8000**.
 **Utilisateur Test :**
 -   **Email** : `user@vite-gourmand.com`
 -   **Mot de passe** : `password`
-
-## ☁️ Déploiement Cloud (Azure)
-
-Un script de déploiement automatique est inclus pour **Azure Cloud Shell**.
-Voir le fichier [DEPLOY_INSTRUCTIONS.md](DEPLOY_INSTRUCTIONS.md) pour lancer votre propre serveur en 1 minute.
 
 ## 📄 Documentation
 
