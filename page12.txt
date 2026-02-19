@@ -1,15 +1,0 @@
-            o Une documentation traitant de votre gestion de projet
-                 § Explication de votre gestion de projet
-            o Une documentation technique de votre application
-                 § Réflexions initiale technologique sur le sujet
-                 § Configuration de votre environnement de travail
-                 § Modèle conceptuel de données (ou diagramme de classe)
-                 § Diagramme d’utilisation ainsi que le diagramme de séquence
-                 § Documentation du déploiement de votre application expliquant votre
-                    démarche ainsi que les différentes étapes.
-
-
-
-
-©Studi Reproduction interdite                                          Page 12 sur 12
-
