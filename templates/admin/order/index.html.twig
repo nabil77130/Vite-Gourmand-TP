@@ -27,7 +27,7 @@
     </form>
 
     {% for flash in app.flashes('success') %}
-        <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#065F46;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;">✅ {{ flash }}</div>
+        <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#065F46;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;"><i class="fa-solid fa-check"></i> {{ flash }}</div>
     {% endfor %}
 
     <div style="background:white;border-radius:1rem;box-shadow:0 2px 12px rgba(0,0,0,0.08);overflow:hidden;">
@@ -65,7 +65,7 @@
                     </td>
                     <td style="padding:1rem;font-weight:700;color:var(--secondary-color);">{{ order.totalPrice ? order.totalPrice ~ ' €' : '—' }}</td>
                     <td style="padding:1rem;text-align:center;">
-                        <a href="{{ path('admin_order_show', {id: order.id}) }}" style="background:rgba(99,102,241,0.1);color:#6366f1;padding:0.4rem 0.8rem;border-radius:0.4rem;text-decoration:none;font-size:0.85rem;">👁️ Voir</a>
+                        <a href="{{ path('admin_order_show', {id: order.id}) }}" style="background:rgba(99,102,241,0.1);color:#6366f1;padding:0.4rem 0.8rem;border-radius:0.4rem;text-decoration:none;font-size:0.85rem;"><i class="fa-solid fa-eye"></i> Voir</a>
                     </td>
                 </tr>
                 {% else %}

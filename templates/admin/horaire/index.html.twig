@@ -3,12 +3,12 @@
 {% block body %}
 <div style="max-width:800px;margin:2rem auto;padding:0 1rem;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
-        <h1 style="font-size:1.8rem;font-weight:700;">🕐 Gestion des Horaires</h1>
+        <h1 style="font-size:1.8rem;font-weight:700;"><i class="fa-regular fa-clock"></i> Gestion des Horaires</h1>
         <a href="{{ path('admin_menu_index') }}" style="color:#6b7280;text-decoration:none;">← Espace admin</a>
     </div>
 
     {% for flash in app.flashes('success') %}
-        <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#065F46;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;">✅ {{ flash }}</div>
+        <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#065F46;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;"><i class="fa-solid fa-check"></i> {{ flash }}</div>
     {% endfor %}
 
     <div style="display:grid;gap:1rem;">
@@ -20,7 +20,7 @@
                     {% if horaire.ferme %}Fermé{% else %}{{ horaire.heureOuverture }} – {{ horaire.heureFermeture }}{% endif %}
                 </span>
             </div>
-            <a href="{{ path('admin_horaire_edit', {id: horaire.id}) }}" style="background:rgba(99,102,241,0.1);color:#6366f1;padding:0.4rem 0.8rem;border-radius:0.4rem;text-decoration:none;font-size:0.85rem;">✏️ Modifier</a>
+            <a href="{{ path('admin_horaire_edit', {id: horaire.id}) }}" style="background:rgba(99,102,241,0.1);color:#6366f1;padding:0.4rem 0.8rem;border-radius:0.4rem;text-decoration:none;font-size:0.85rem;"><i class="fa-solid fa-pen"></i> Modifier</a>
         </div>
         {% endfor %}
     </div>

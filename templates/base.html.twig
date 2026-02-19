@@ -2,6 +2,7 @@
 <html lang="fr">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{% block title %}Vite & Gourmand — Traiteur{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>🥗</text></svg>">
         
@@ -9,6 +10,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
         
         {% block stylesheets %}
         {% endblock %}
@@ -25,11 +27,11 @@
                 <a href="{{ path('app_menu') }}" class="nav-link">La Carte</a>
                 <a href="{{ path('app_contact') }}" class="nav-link">Contact</a>
                 {% if is_granted('ROLE_EMPLOYEE') %}
-                    <a href="{{ path('admin_menu_index') }}" class="nav-link">⚙️ Administration</a>
+                    <a href="{{ path('admin_menu_index') }}" class="nav-link"><i class="fa-solid fa-gear"></i> Administration</a>
                 {% endif %}
                 {% if app.user %}
-                    <a href="{{ path('user_profile') }}" class="nav-link">👤 Mon compte</a>
-                    <a href="{{ path('user_orders') }}" class="nav-link">📦 Commandes</a>
+                    <a href="{{ path('user_profile') }}" class="nav-link"><i class="fa-solid fa-user"></i> Mon compte</a>
+                    <a href="{{ path('user_orders') }}" class="nav-link"><i class="fa-solid fa-box"></i> Commandes</a>
                     <a href="{{ path('app_logout') }}" class="nav-link btn btn-secondary">Déconnexion</a>
                 {% else %}
                     <a href="{{ path('app_login') }}" class="nav-link">Connexion</a>
@@ -64,9 +66,9 @@
                 <div>
                     <h4 style="margin-bottom: 1rem; font-size: 1rem;">Contact</h4>
                     <ul style="list-style: none; padding: 0; color: #9CA3AF; font-size: 0.9rem; line-height: 2;">
-                        <li>📍 12 Rue de la Gastronomie, 75001 Paris</li>
-                        <li>📞 01 23 45 67 89</li>
-                        <li>✉️ contact@vite-gourmand.fr</li>
+                        <li><i class="fa-solid fa-location-dot"></i> 12 Rue de la Gastronomie, 75001 Paris</li>
+                        <li><i class="fa-solid fa-phone"></i> 01 23 45 67 89</li>
+                        <li><i class="fa-solid fa-envelope"></i> contact@vite-gourmand.fr</li>
                     </ul>
                 </div>
                 <div>

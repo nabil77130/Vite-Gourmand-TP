@@ -29,13 +29,13 @@ class AppFixtures extends Fixture
     {
         // 0. Create Horaires
         $horairesData = [
-            ['lundi',    '08:00', '19:00', false],
-            ['mardi',    '08:00', '19:00', false],
+            ['lundi', '08:00', '19:00', false],
+            ['mardi', '08:00', '19:00', false],
             ['mercredi', '08:00', '19:00', false],
-            ['jeudi',    '08:00', '19:00', false],
+            ['jeudi', '08:00', '19:00', false],
             ['vendredi', '08:00', '19:00', false],
-            ['samedi',   '09:00', '17:00', false],
-            ['dimanche', null,    null,    true],
+            ['samedi', '09:00', '17:00', false],
+            ['dimanche', null, null, true],
         ];
         foreach ($horairesData as [$jour, $ouv, $ferm, $ferme]) {
             $h = new Horaire();
@@ -104,16 +104,16 @@ class AppFixtures extends Fixture
 
         // 3. Create Products
         $products = [];
-        // [Name, Description, Price, Category, [Diets], [Allergens], [Themes]]
+        // [Name, Description, Price, Category, ImageName, [Diets], [Allergens], [Themes]]
         $productData = [
-            ['Bruschetta', 'Tartines de tomates et basilic', 6.50, 'starter', ['Végétarien'], [], ['Italien']],
-            ['Rouleaux de Printemps', 'Rouleaux vietnamiens croustillants', 5.00, 'starter', [], ['Gluten'], ['Asiatique']],
-            ['Pizza Margherita', 'Tomate, mozzarella, basilic', 12.00, 'main', ['Végétarien'], ['Gluten', 'Produits Laitiers'], ['Italien']],
-            ['Pad Thai', 'Nouilles de riz au tofu', 14.50, 'main', ['Sans Gluten'], ['Arachides', 'Soja'], ['Asiatique']],
-            ['Tiramisu', 'Dessert au café', 7.00, 'dessert', ['Végétarien'], ['Produits Laitiers', 'Gluten'], ['Italien']],
-            ['Salade de Fruits', 'Fruits de saison frais', 5.00, 'dessert', ['Vegan', 'Sans Gluten'], [], ['Français']],
-            ['Coca Cola', 'Canette 33cl', 2.50, 'drink', [], [], []],
-            ['Evian', 'Bouteille 50cl', 2.00, 'drink', [], [], []],
+            ['Bruschetta', 'Tartines de tomates et basilic', 6.50, 'starter', 'bruschetta.jpg', ['Végétarien'], [], ['Italien']],
+            ['Rouleaux de Printemps', 'Rouleaux vietnamiens croustillants', 5.00, 'starter', 'spring_rolls.jpg', [], ['Gluten'], ['Asiatique']],
+            ['Pizza Margherita', 'Tomate, mozzarella, basilic', 12.00, 'main', 'pizza_margherita.jpg', ['Végétarien'], ['Gluten', 'Produits Laitiers'], ['Italien']],
+            ['Pad Thai', 'Nouilles de riz au tofu', 14.50, 'main', 'pad_thai.jpg', ['Sans Gluten'], ['Arachides', 'Soja'], ['Asiatique']],
+            ['Tiramisu', 'Dessert au café', 7.00, 'dessert', 'tiramisu.jpg', ['Végétarien'], ['Produits Laitiers', 'Gluten'], ['Italien']],
+            ['Salade de Fruits', 'Fruits de saison frais', 5.00, 'dessert', 'fruit_salad.webp', ['Vegan', 'Sans Gluten'], [], ['Français']],
+            ['Coca Cola', 'Canette 33cl', 2.50, 'drink', 'coca_cola.jpg', [], [], []],
+            ['Evian', 'Bouteille 50cl', 2.00, 'drink', 'evian.webp', [], [], []],
         ];
 
         foreach ($productData as $data) {
@@ -122,11 +122,15 @@ class AppFixtures extends Fixture
             $product->setDescription($data[1]);
             $product->setPrice($data[2]);
             $product->setCategory($data[3]);
+            $product->setImageName($data[4]);
             $product->setAvailable(true);
-            
-            foreach ($data[4] as $dietName) $product->addDiet($diets[$dietName]);
-            foreach ($data[5] as $allergenName) $product->addAllergen($allergens[$allergenName]);
-            foreach ($data[6] as $themeName) $product->addTheme($themes[$themeName]);
+
+            foreach ($data[5] as $dietName)
+                $product->addDiet($diets[$dietName]);
+            foreach ($data[6] as $allergenName)
+                $product->addAllergen($allergens[$allergenName]);
+            foreach ($data[7] as $themeName)
+                $product->addTheme($themes[$themeName]);
 
             $manager->persist($product);
             $products[] = $product;
@@ -139,6 +143,7 @@ class AppFixtures extends Fixture
         $menu1->setPrice(22.00);
         $menu1->setMinPeople(10);
         $menu1->setStock(15);
+        $menu1->setImageName('festin_italien.jpg');
         $menu1->addProduct($products[0]); // Bruschetta
         $menu1->addProduct($products[2]); // Pizza
         $menu1->addProduct($products[4]); // Tiramisu
@@ -150,6 +155,7 @@ class AppFixtures extends Fixture
         $menu2->setPrice(18.00);
         $menu2->setMinPeople(5);
         $menu2->setStock(20);
+        $menu2->setImageName('menu_vegetarien.jpg');
         $menu2->addProduct($products[0]); // Bruschetta
         $menu2->addProduct($products[1]); // Salade César
         $manager->persist($menu2);

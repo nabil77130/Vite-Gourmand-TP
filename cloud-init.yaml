@@ -1,0 +1,41 @@
+#cloud-config
+package_upgrade: true
+packages:
+  - apache2
+  - php
+  - php-cli
+  - php-sqlite3
+  - php-xml
+  - php-mbstring
+  - php-curl
+  - php-zip
+  - php-intl
+  - composer
+  - git
+  - npm
+  - unzip
+  - libapache2-mod-php
+  - curl
+
+write_files:
+  - path: /etc/apache2/sites-available/vite-gourmand.conf
+    content: |
+      <VirtualHost *:80>
+          DocumentRoot /var/www/html/public
+          <Directory /var/www/html/public>
+              AllowOverride All
+              Require all granted
+              FallbackResource /index.php
+          </Directory>
+          ErrorLog ${APACHE_LOG_DIR}/error.log
+          CustomLog ${APACHE_LOG_DIR}/access.log combined
+      </VirtualHost>
+
+runcmd:
+  - a2enmod rewrite
+  - a2dissite 000-default
+  - ln -s /etc/apache2/sites-available/vite-gourmand.conf /etc/apache2/sites-enabled/vite-gourmand.conf
+  - systemctl restart apache2
+  - cd /var/www/html
+  - rm -rf *
+  - echo "<?php phpinfo(); ?>" > /var/www/html/info.php

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manuel d'Utilisation - Vite! Gourmand</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #e67e22;
+            padding-bottom: 10px;
+            margin-top: 40px;
+        }
+
+        h2 {
+            color: #e67e22;
+            margin-top: 30px;
+        }
+
+        h3 {
+            color: #7f8c8d;
+            margin-top: 20px;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-family: Consolas, monospace;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border-left: 5px solid #e67e22;
+        }
+
+        .note {
+            background-color: #e8f6f3;
+            padding: 15px;
+            border-radius: 5px;
+            border-left: 5px solid #1abc9c;
+            margin: 20px 0;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin: 20px 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .cover {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cover h1 {
+            border: none;
+            font-size: 3em;
+            color: #e67e22;
+            margin: 0;
+        }
+
+        .cover p {
+            font-size: 1.2em;
+            color: #7f8c8d;
+        }
+
+        .toc {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 40px;
+        }
+
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .toc a {
+            text-decoration: none;
+            color: #2980b9;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="cover">
+        <h1>Vite! Gourmand</h1>
+        <p>Manuel d'Utilisation & Guide d'Installation</p>
+        <p><em>Application de Click & Collect pour Restaurant</em></p>
+        <p>Date: 19/02/2026</p>
+    </div>
+
+    <div class="toc">
+        <h2>Table des Matières</h2>
+        <ul>
+            <li><a href="#intro">1. Introduction</a></li>
+            <li><a href="#install">2. Installation et Configuration</a></li>
+            <li><a href="#user-guide">3. Guide Utilisateur</a></li>
+            <li><a href="#admin-guide">4. Guide Administrateur</a></li>
+        </ul>
+    </div>
+
+    <div class="page-break"></div>
+
+    <h1 id="intro">1. Introduction</h1>
+    <p><strong>Vite! Gourmand</strong> est une application web moderne permettant aux clients de commander leurs repas
+        en ligne (Click & Collect) et aux restaurateurs de gérer leurs menus, commandes et réservations.</p>
+    <p>L'application offre une interface fluide, responsive et esthétique, avec des fonctionnalités complètes pour les
+        utilisateurs et'administration.</p>
+
+    <h1 id="install">2. Installation et Configuration</h1>
+
+    <h3>Prérequis</h3>
+    <ul>
+        <li>PHP 8.2 ou supérieur</li>
+        <li>Composer</li>
+        <li>Node.js & NPM</li>
+        <li>Symfony CLI (recommandé) ou serveur PHP intégré</li>
+    </ul>
+
+    <h3>Étapes d'installation</h3>
+
+    <p>1. <strong>Cloner le projet</strong></p>
+    <pre><code>git clone [url_du_repository]
+cd Vite-Gourmand-TP</code></pre>
+
+    <p>2. <strong>Installer les dépendances</strong></p>
+    <pre><code>composer install
+npm install</code></pre>
+
+    <p>3. <strong>Configuration de la Base de Données (SQLite)</strong></p>
+    <p>Le projet est pré-configuré pour utiliser SQLite. Assurez-vous que le fichier <code>var/data.db</code> existe ou
+        sera créé.</p>
+    <pre><code>php bin/console doctrine:database:create
+php bin/console doctrine:migrations:migrate</code></pre>
+
+    <p>4. <strong>Chargement des Données de Test (Fixtures)</strong></p>
+    <p>Pour avoir un site fonctionnel avec des menus et utilisateurs de test :</p>
+    <pre><code>php bin/console doctrine:fixtures:load</code></pre>
+
+    <p>5. <strong>Compilation des Assets</strong></p>
+    <pre><code>php bin/console asset-map:compile</code></pre>
+
+    <p>6. <strong>Lancement du Serveur</strong></p>
+    <pre><code>php -S 127.0.0.1:8000 -t public</code></pre>
+    <p>Accédez ensuite à <a href="http://127.0.0.1:8000">http://127.0.0.1:8000</a>.</p>
+
+    <div class="page-break"></div>
+
+    <h1 id="user-guide">3. Guide Utilisateur</h1>
+
+    <h2>Page d'Accueil</h2>
+    <p>La page d'accueil présente les offres du moment et les menus phares. Elle est conçue pour donner envie avec des
+        visuels attractifs.</p>
+    <img src="desktop_images.png" alt="Page d'accueil">
+
+    <h2>La Carte & Menus</h2>
+    <p>Les clients peuvent consulter l'ensemble des menus, plats, entrées et desserts. Les allergènes et régimes
+        alimentaires (Végétarien, Sans Gluten, etc.) sont clairement indiqués.</p>
+    <img src="menu_icons.png" alt="Page des Menus">
+
+    <h2>Détail des Menus</h2>
+    <p>Chaque menu est illustré par une photo représentative de son plat principal ou de son thème.</p>
+
+    <h3>Menu Festin Italien</h3>
+    <img src="menu_festin.png" alt="Menu Festin Italien">
+
+    <h3>Menu Végétarien</h3>
+    <img src="menu_vege.png" alt="Menu Végétarien">
+
+    <h2>Passer une Commande</h2>
+    <ol>
+        <li>Connectez-vous ou créez un compte.</li>
+        <li>Ajoutez des menus ou articles à votre panier.</li>
+        <li>Choisissez votre créneau de retrait.</li>
+        <li>Validez la commande.</li>
+    </ol>
+    <p>Vous pouvez retrouver l'historique de vos commandes dans votre espace personnel "Mes Commandes".</p>
+
+    <div class="page-break"></div>
+
+    <h1 id="admin-guide">4. Guide Administrateur</h1>
+
+    <div class="note">
+        <strong>Accès Admin par défaut :</strong><br>
+        Email : <code>admin@vite-gourmand.com</code><br>
+        Mot de passe : <code>password</code>
+    </div>
+
+    <h2>Tableau de Bord</h2>
+    <p>L'interface d'administration permet de gérer :</p>
+    <ul>
+        <li><strong>Menus & Produits</strong> : Ajouter, modifier ou supprimer des plats, changer les prix et les
+            images.</li>
+        <li><strong>Commandes</strong> : Suivre l'état des commandes (En préparation, Prête, Livrée).</li>
+        <li><strong>Horaires</strong> : Modifier les heures d'ouverture du restaurant.</li>
+        <li><strong>Avis</strong> : Modérer les avis laissés par les clients.</li>
+    </ul>
+
+    <h2>Gestion des Images</h2>
+    <p>Lors de la création ou modification d'un produit/menu, vous pouvez spécifier le nom du fichier image (ex:
+        <code>pizza_margherita.jpg</code>). Les images doivent être placées dans le dossier
+        <code>public/images/products/</code> ou <code>public/images/menus/</code>.</p>
+
+</body>
+
+</html>

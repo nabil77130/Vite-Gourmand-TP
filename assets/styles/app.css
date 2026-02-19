@@ -1,9 +1,9 @@
 /* Global Styles */
 :root {
-    --primary-color: #10B981;
-    /* Emerald Green */
-    --secondary-color: #F97316;
-    /* Tangerine Orange */
+    --primary-color: #15803D;
+    /* Fern Green */
+    --secondary-color: #C2410C;
+    /* Rust Orange */
     --dark-bg: #1F2937;
     /* Charcoal Black */
     --light-bg: #F3F4F6;
@@ -23,7 +23,8 @@ body {
     margin: 0;
     padding: 0;
     line-height: 1.6;
-    padding-top: 6rem; /* Space for fixed navbar */
+    padding-top: 6rem;
+    /* Space for fixed navbar */
     min-height: 100vh;
     display: flex;
     flex-direction: column;
@@ -34,7 +35,7 @@ body.page-app_home {
 }
 
 /* Ensure footer sticks to bottom */
-body > footer {
+body>footer {
     margin-top: auto;
 }
 
@@ -127,6 +128,18 @@ a {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
+.btn-primary:hover {
+    background-color: #14532d;
+    /* Darker Fern Green */
+    color: var(--white);
+}
+
+.btn-secondary:hover {
+    background-color: #9a3412;
+    /* Darker Rust Orange */
+    color: var(--white);
+}
+
 /* Hero Section */
 .hero {
     height: 100vh;
@@ -134,7 +147,7 @@ a {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: linear-gradient(135deg, #e0f2fe 0%, #dcfce7 100%);
+    background: linear-gradient(135deg, #ecfdf5 0%, #fff7ed 100%);
     overflow: hidden;
     position: relative;
 }
@@ -196,7 +209,8 @@ a {
 /* Forms */
 .form-container {
     max-width: 500px;
-    margin: 2rem auto; /* Reduced from 6rem because of body padding */
+    margin: 2rem auto;
+    /* Reduced from 6rem because of body padding */
     padding: 2rem;
 }
 

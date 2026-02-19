@@ -3,7 +3,7 @@
 {% block body %}
 <div style="max-width:1100px;margin:2rem auto;padding:0 1rem;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
-        <h1 style="font-size:1.8rem;font-weight:700;">🥗 Gestion des Plats</h1>
+        <h1 style="font-size:1.8rem;font-weight:700;"><i class="fa-solid fa-carrot"></i> Gestion des Plats</h1>
         <div style="display:flex;gap:0.75rem;">
             <a href="{{ path('admin_menu_index') }}" style="background:rgba(99,102,241,0.1);color:#6366f1;padding:0.5rem 1rem;border-radius:0.5rem;text-decoration:none;">← Menus</a>
             <a href="{{ path('admin_product_new') }}" class="btn btn-primary" style="padding:0.5rem 1rem;">+ Nouveau plat</a>
@@ -11,7 +11,7 @@
     </div>
 
     {% for flash in app.flashes('success') %}
-        <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#065F46;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;">✅ {{ flash }}</div>
+        <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#065F46;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;"><i class="fa-solid fa-check"></i> {{ flash }}</div>
     {% endfor %}
 
     <div style="background:white;border-radius:1rem;box-shadow:0 2px 12px rgba(0,0,0,0.08);overflow:hidden;">
@@ -38,12 +38,12 @@
                         </span>
                     </td>
                     <td style="padding:1rem;color:var(--secondary-color);font-weight:700;">{{ product.price }} €</td>
-                    <td style="padding:1rem;">{{ product.isAvailable ? '✅' : '❌' }}</td>
+                    <td style="padding:1rem;">{{ product.isAvailable ? '<i class="fa-solid fa-check"></i>' : '<i class="fa-solid fa-xmark"></i>' }}</td>
                     <td style="padding:1rem;text-align:center;display:flex;gap:0.5rem;justify-content:center;">
-                        <a href="{{ path('admin_product_edit', {id: product.id}) }}" style="background:rgba(99,102,241,0.1);color:#6366f1;padding:0.4rem 0.8rem;border-radius:0.4rem;text-decoration:none;font-size:0.85rem;">✏️ Modifier</a>
+                        <a href="{{ path('admin_product_edit', {id: product.id}) }}" style="background:rgba(99,102,241,0.1);color:#6366f1;padding:0.4rem 0.8rem;border-radius:0.4rem;text-decoration:none;font-size:0.85rem;"><i class="fa-solid fa-pen"></i> Modifier</a>
                         <form method="post" action="{{ path('admin_product_delete', {id: product.id}) }}" onsubmit="return confirm('Supprimer ce plat ?')">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
-                            <button type="submit" style="background:rgba(239,68,68,0.1);color:#ef4444;padding:0.4rem 0.8rem;border-radius:0.4rem;border:none;cursor:pointer;font-size:0.85rem;">🗑️</button>
+                            <button type="submit" style="background:rgba(239,68,68,0.1);color:#ef4444;padding:0.4rem 0.8rem;border-radius:0.4rem;border:none;cursor:pointer;font-size:0.85rem;"><i class="fa-solid fa-trash"></i></button>
                         </form>
                     </td>
                 </tr>
