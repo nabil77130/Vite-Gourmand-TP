@@ -78,8 +78,9 @@ Accédez ensuite à **http://127.0.0.1:8000**.
 
 ## 📄 Documentation
 
--   **Manuel Utilisateur** : [Manuel_Utilisation.pdf](Manuel_Utilisation.pdf) (Inclus dans le repo)
--   **Charte Graphique** : [Charte_Graphique_Final_v4.pdf](Charte_Graphique_Final_v4.pdf)
+-   **Manuel Utilisateur** : [Manuel_Utilisation.pdf](docs/Manuel_Utilisation.pdf) (Inclus dans le repo)
+-   **Charte Graphique** : [Charte_Graphique_Final_v4.pdf](docs/Charte_Graphique_Final_v4.pdf)
+-   **Documentation Technique** : [Documentation_Technique.pdf](docs/Documentation_Technique.pdf)
 
 ---
 *Projet réalisé dans le cadre du TP de Développement Web.*
