@@ -60,11 +60,19 @@ class Menu
     #[ORM\ManyToMany(targetEntity: Diet::class, inversedBy: 'menus')]
     private Collection $diets;
 
+    /**
+     * Galerie de photos du menu, dans l'ordre d'affichage.
+     */
+    #[ORM\OneToMany(mappedBy: 'menu', targetEntity: MenuImage::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OrderBy(['position' => 'ASC', 'id' => 'ASC'])]
+    private Collection $images;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
         $this->themes = new ArrayCollection();
         $this->diets = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -256,5 +264,45 @@ class Menu
         $this->diets->removeElement($diet);
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, MenuImage>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(MenuImage $image): static
+    {
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setMenu($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(MenuImage $image): static
+    {
+        if ($this->images->removeElement($image) && $image->getMenu() === $this) {
+            $image->setMenu(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Position a donner a la prochaine photo ajoutee a la galerie.
+     */
+    public function getNextImagePosition(): int
+    {
+        $max = -1;
+        foreach ($this->images as $image) {
+            $max = max($max, $image->getPosition());
+        }
+
+        return $max + 1;
     }
 }

@@ -26,3 +26,5 @@ repo.zip
 *_mockup.png
 *.html
 !templates/**/*.html.twig
+# Photos envoyees depuis l'espace employe (propres a chaque installation)
+/public/uploads/

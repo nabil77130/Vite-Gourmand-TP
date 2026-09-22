@@ -10,11 +10,15 @@ use App\Entity\Theme;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\All;
+use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints\Image;
 
 class MenuType extends AbstractType
 {
@@ -60,6 +64,29 @@ class MenuType extends AbstractType
                 'label' => 'Régimes alimentaires compatibles',
                 'help' => 'Utilisé par les filtres de la carte.',
                 'required' => false,
+            ])
+            // Photos ajoutees a la galerie du menu. Le champ n'est pas lie a
+            // l'entite : les fichiers sont enregistres par le controleur.
+            // Les controles de type et de taille sont faits cote serveur, le
+            // filtre "accept" du navigateur n'etant qu'un confort.
+            ->add('newImages', FileType::class, [
+                'label' => 'Ajouter des photos à la galerie',
+                'help' => 'JPG, PNG ou WebP, 2 Mo maximum par photo, 10 photos maximum par envoi.',
+                'mapped' => false,
+                'required' => false,
+                'multiple' => true,
+                'attr' => ['accept' => 'image/jpeg,image/png,image/webp'],
+                'constraints' => [
+                    new Count(max: 10, maxMessage: 'Vous pouvez envoyer {{ limit }} photos au maximum à la fois.'),
+                    new All([
+                        new Image(
+                            maxSize: '2M',
+                            mimeTypes: ['image/jpeg', 'image/png', 'image/webp'],
+                            mimeTypesMessage: 'Seules les images JPG, PNG ou WebP sont acceptées.',
+                            maxSizeMessage: 'Chaque photo doit faire moins de {{ limit }} {{ suffix }}.',
+                        ),
+                    ]),
+                ],
             ])
         ;
     }

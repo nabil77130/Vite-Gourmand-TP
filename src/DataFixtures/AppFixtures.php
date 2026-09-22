@@ -6,6 +6,7 @@ use App\Entity\Allergen;
 use App\Entity\Diet;
 use App\Entity\Horaire;
 use App\Entity\Menu;
+use App\Entity\MenuImage;
 use App\Entity\Order;
 use App\Entity\OrderItem;
 use App\Entity\OrderStatusHistory;
@@ -151,7 +152,6 @@ class AppFixtures extends Fixture
         $menu1->addProduct($products[4]); // Tiramisu
         // Thematique et regime : utilises par les filtres de la carte
         $menu1->addTheme($themes['Italien']);
-        $menu1->addDiet($diets['Végétarien']);
         $manager->persist($menu1);
 
         $menu2 = new Menu();
@@ -192,6 +192,24 @@ class AppFixtures extends Fixture
         $menu4->addDiet($diets['Sans Gluten']);
         $manager->persist($menu4);
 
+        // Galeries de photos : plusieurs images par menu, prises parmi celles
+        // deja presentes dans public/images/.
+        $galleries = [
+            [$menu1, ['images/menus/festin_italien.jpg', 'images/products/bruschetta.jpg', 'images/products/pizza_margherita.jpg', 'images/products/tiramisu.jpg']],
+            [$menu2, ['images/menus/menu_vegetarien.jpg', 'images/products/spring_rolls.jpg']],
+            [$menu3, ['images/products/pad_thai.jpg', 'images/products/spring_rolls.jpg']],
+            [$menu4, ['images/products/fruit_salad.webp', 'images/products/fruit_salad.jpg']],
+        ];
+        foreach ($galleries as [$menu, $paths]) {
+            foreach ($paths as $position => $path) {
+                $image = new MenuImage();
+                $image->setPath($path);
+                $image->setAlt(sprintf('Photo %d du menu %s', $position + 1, $menu->getName()));
+                $image->setPosition($position);
+                $menu->addImage($image);
+            }
+        }
+
         // 5. Create Orders (History)
         //
         // Chaque commande porte un MENU, et non un plat isole : c'est le menu
@@ -200,15 +218,15 @@ class AppFixtures extends Fixture
         //
         // Les totaux suivent la regle de calcul de l'application :
         //   prix du menu - 10 % si le nombre de convives depasse le minimum de 5
-        //   + 5 EUR de livraison hors Bordeaux.
+        //   + livraison hors Bordeaux : 5 EUR + 0,59 EUR par km (voir OrderPricer).
         //
         // [menu, convives, jours dans le passe, statut, adresse, livraison, total]
         $orderData = [
             [$menu1, 16, 2,  'delivered', '24 cours de l\'Intendance, Bordeaux', 0.0,  19.80],
-            [$menu1, 12, 9,  'completed', '8 avenue de la Marne, Mérignac',      5.0,  27.00],
+            [$menu1, 12, 9,  'completed', '8 avenue de la Marne, Mérignac',      9.72, 31.72],
             [$menu3, 10, 5,  'delivered', '15 quai des Chartrons, Bordeaux',     0.0,  24.00],
             [$menu2, 10, 14, 'completed', '3 rue Sainte-Catherine, Bordeaux',    0.0,  16.20],
-            [$menu4, 6,  1,  'pending',   '52 avenue Roul, Talence',             5.0,  21.00],
+            [$menu4, 6,  1,  'pending',   '52 avenue Roul, Talence',             7.95, 23.95],
         ];
 
         $createdOrders = [];
