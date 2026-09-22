@@ -119,10 +119,12 @@ class AdminOrderController extends AbstractController
         $motif = $request->request->get('motif');
         $contact = $request->request->get('contact_mode');
 
-        if ($motif && $contact) {
+        if ($motif && $contact && $order->getStatus() !== 'cancelled') {
             /** @var \App\Entity\User|null $author */
             $author = $this->getUser();
             $order->addStatusHistory('cancelled', $author);
+            // La commande annulee libere sa place dans le stock du menu.
+            $order->getMenu()?->incrementStock();
             $order->setCancellationReason($motif . ' [Contact: ' . $contact . ']');
             $em->flush();
 

@@ -37,7 +37,7 @@
         {{ form_start(form, {attr: {id: 'order-form'}}) }}
         <div style="display:grid;gap:1.25rem;">
             <div>{{ form_label(form.adressePrestation) }}{{ form_widget(form.adressePrestation, {attr: {class: 'form-control', id: 'adresse-input'}}) }}{{ form_errors(form.adressePrestation) }}
-                <small style="color:#9ca3af;">⚠️ Livraison hors Bordeaux : 5€ + 0,59€/km</small>
+                <small style="color:#9ca3af;">Livraison gratuite à Bordeaux ; ailleurs 5 € + 0,59 €/km (le montant exact s'affiche ci-dessous)</small>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
                 <div>{{ form_label(form.eventDate) }}{{ form_widget(form.eventDate, {attr: {class: 'form-control'}}) }}{{ form_errors(form.eventDate) }}</div>
@@ -57,7 +57,7 @@
         <h3 style="margin-bottom:1rem;">💰 Récapitulatif du prix</h3>
         <div style="display:grid;gap:0.5rem;font-size:0.95rem;">
             <div style="display:flex;justify-content:space-between;"><span>Prix du menu :</span><strong id="prix-menu">{{ menu.price }} €</strong></div>
-            <div style="display:flex;justify-content:space-between;" id="remise-row" style="display:none;"><span>Réduction 10% (≥ {{ (menu.minPeople ?? 1) + 5 }} pers.) :</span><strong id="remise-val" style="color:#10b981;">- 0 €</strong></div>
+            <div id="remise-row" style="display:none;justify-content:space-between;"><span>Réduction 10% (≥ {{ (menu.minPeople ?? 1) + 5 }} pers.) :</span><strong id="remise-val" style="color:#10b981;">- 0 €</strong></div>
             <div style="display:flex;justify-content:space-between;"><span>Livraison :</span><strong id="prix-livraison">0 €</strong></div>
             <hr style="border:none;border-top:1px solid rgba(99,102,241,0.2);margin:0.5rem 0;">
             <div style="display:flex;justify-content:space-between;font-size:1.2rem;"><span><strong>Total :</strong></span><strong id="total-price" style="color:var(--secondary-color);">{{ menu.price }} €</strong></div>
@@ -82,34 +82,42 @@
 </div>
 
 <script>
-const menuPrice = {{ menu.price ?? 0 }};
-const minPeople = {{ menu.minPeople ?? 1 }};
+// Le prix affiche est calcule par le serveur (OrderPricer), avec exactement
+// les memes regles que le prix facture a la validation de la commande.
+(function () {
+    const peopleInput  = document.getElementById('{{ form.nombrePersonne.vars.id }}');
+    const addressInput = document.getElementById('{{ form.adressePrestation.vars.id }}');
+    const previewUrl   = '{{ path('order_price_preview', {menuId: menu.id}) }}';
+    const euro = (v) => Number(v).toLocaleString('fr-FR', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' €';
+    let timer = null;
 
-function updatePrice() {
-    const n = parseInt(document.getElementById('nombre-personnes').value) || minPeople;
-    const adresse = document.getElementById('adresse-input').value.toLowerCase();
-
-    let remise = 0;
-    if (n >= minPeople + 5) {
-        remise = menuPrice * 0.10;
+    function render(p) {
+        document.getElementById('prix-menu').textContent = euro(p.basePrice);
+        document.getElementById('remise-val').textContent = '- ' + euro(p.discount);
+        document.getElementById('remise-row').style.display = p.discount > 0 ? 'flex' : 'none';
+        document.getElementById('prix-livraison').textContent = euro(p.deliveryPrice)
+            + (p.distanceKm > 0 ? ' (' + p.distanceKm + ' km)' : '');
+        document.getElementById('total-price').textContent = euro(p.total);
     }
 
-    let livraison = 0;
-    if (adresse && !adresse.includes('bordeaux')) {
-        livraison = 5.0;
+    function updatePrice() {
+        const params = new URLSearchParams({
+            people: peopleInput ? peopleInput.value : '',
+            address: addressInput ? addressInput.value : ''
+        });
+        fetch(previewUrl + '?' + params.toString(), {headers: {'Accept': 'application/json'}})
+            .then((r) => { if (!r.ok) { throw new Error(r.status); } return r.json(); })
+            .then(render)
+            .catch(() => {
+                document.getElementById('prix-livraison').textContent = 'calculé à la validation';
+            });
     }
 
-    const total = (menuPrice - remise) + livraison;
+    function schedule() { clearTimeout(timer); timer = setTimeout(updatePrice, 300); }
 
-    document.getElementById('prix-menu').textContent = menuPrice.toFixed(2) + ' €';
-    document.getElementById('remise-val').textContent = '- ' + remise.toFixed(2) + ' €';
-    document.getElementById('remise-row').style.display = remise > 0 ? 'flex' : 'none';
-    document.getElementById('prix-livraison').textContent = livraison.toFixed(2) + ' €';
-    document.getElementById('total-price').textContent = total.toFixed(2) + ' €';
-}
-
-document.getElementById('nombre-personnes').addEventListener('input', updatePrice);
-document.getElementById('adresse-input').addEventListener('input', updatePrice);
-updatePrice();
+    if (peopleInput) { peopleInput.addEventListener('input', schedule); }
+    if (addressInput) { addressInput.addEventListener('input', schedule); }
+    updatePrice();
+})();
 </script>
 {% endblock %}

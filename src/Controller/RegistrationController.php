@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Security\AppAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,7 +20,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, Security $security, EntityManagerInterface $entityManager, MailerInterface $mailer, LoggerInterface $logger): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -45,7 +46,17 @@ class RegistrationController extends AbstractController
                 ->to($user->getEmail())
                 ->subject('Bienvenue chez Vite & Gourmand !')
                 ->html($html);
-            $mailer->send($email);
+            // Le compte est deja cree : un echec d'envoi ne doit pas bloquer
+            // l'inscription ni afficher une page d'erreur a l'utilisateur.
+            try {
+                $mailer->send($email);
+            } catch (\Throwable $e) {
+                $logger->error('Email de bienvenue non envoyé à {email} : {message}', [
+                    'email'   => $user->getEmail(),
+                    'message' => $e->getMessage(),
+                ]);
+                $this->addFlash('warning', "Votre compte est bien créé, mais l'email de bienvenue n'a pas pu être envoyé.");
+            }
 
             return $security->login($user, AppAuthenticator::class, 'main');
         }

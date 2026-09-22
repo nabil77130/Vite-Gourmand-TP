@@ -270,6 +270,21 @@ class Order
     }
 
     /**
+     * Menu commande. Une commande porte un seul menu, rattache via sa ligne
+     * de commande.
+     */
+    public function getMenu(): ?Menu
+    {
+        foreach ($this->orderItems as $item) {
+            if ($item->getMenu() !== null) {
+                return $item->getMenu();
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @return Collection<int, OrderStatusHistory>
      */
     public function getStatusHistories(): Collection

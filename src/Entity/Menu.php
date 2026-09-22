@@ -154,6 +154,40 @@ class Menu
         return $this;
     }
 
+    /**
+     * Le stock represente le nombre de commandes encore possibles pour ce menu
+     * ("il reste 5 commandes possibles", selon l'enonce). Un stock nul (null)
+     * signifie que le menu n'est pas limite.
+     */
+    public function isAvailable(): bool
+    {
+        return $this->stock === null || $this->stock > 0;
+    }
+
+    /**
+     * Consomme une commande possible. Sans effet sur un menu non limite.
+     */
+    public function decrementStock(): static
+    {
+        if ($this->stock !== null && $this->stock > 0) {
+            --$this->stock;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Rend une commande possible, par exemple apres une annulation.
+     */
+    public function incrementStock(): static
+    {
+        if ($this->stock !== null) {
+            ++$this->stock;
+        }
+
+        return $this;
+    }
+
     public function getImageName(): ?string
     {
         return $this->imageName;
