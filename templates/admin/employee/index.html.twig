@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+{% block title %}Administration — Employés{% endblock %}
+{% block body %}
+<div style="max-width:1100px;margin:2rem auto;padding:0 1rem;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;">
+        <h1 style="font-size:1.8rem;font-weight:700;"><i class="fa-solid fa-users-gear"></i> Comptes employés</h1>
+        <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+            <a href="{{ path('admin_menu_index') }}" class="btn" style="background:rgba(99,102,241,0.15);color:#6366f1;border:1px solid rgba(99,102,241,0.3);padding:0.5rem 1rem;border-radius:0.5rem;text-decoration:none;"><i class="fa-solid fa-utensils"></i> Menus</a>
+            <a href="{{ path('admin_dashboard') }}" class="btn" style="background:rgba(99,102,241,0.15);color:#6366f1;border:1px solid rgba(99,102,241,0.3);padding:0.5rem 1rem;border-radius:0.5rem;text-decoration:none;"><i class="fa-solid fa-chart-column"></i> Tableau de bord</a>
+            <a href="{{ path('admin_employee_new') }}" class="btn btn-primary" style="padding:0.5rem 1rem;">+ Nouveau compte employé</a>
+        </div>
+    </div>
+
+    <p style="color:#6b7280;margin-bottom:1.5rem;">
+        Un compte désactivé conserve tout son historique mais ne peut plus se connecter.
+        Les comptes administrateur ne sont pas gérables depuis l'application.
+    </p>
+
+    <div style="background:white;border-radius:1rem;box-shadow:0 2px 12px rgba(0,0,0,0.08);overflow-x:auto;">
+        <table style="width:100%;border-collapse:collapse;">
+            <thead>
+                <tr style="background:#f9fafb;border-bottom:2px solid #e5e7eb;">
+                    <th scope="col" style="padding:1rem;text-align:left;">Nom</th>
+                    <th scope="col" style="padding:1rem;text-align:left;">Email (identifiant)</th>
+                    <th scope="col" style="padding:1rem;text-align:left;">Téléphone</th>
+                    <th scope="col" style="padding:1rem;text-align:left;">État</th>
+                    <th scope="col" style="padding:1rem;text-align:center;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for employee in employees %}
+                    <tr style="border-bottom:1px solid #f3f4f6;{% if not employee.isActive %}background:#fafafa;{% endif %}">
+                        <td style="padding:1rem;font-weight:600;{% if not employee.isActive %}color:#9ca3af;{% endif %}">
+                            {{ employee.firstName }} {{ employee.lastName }}
+                        </td>
+                        <td style="padding:1rem;color:#6b7280;">{{ employee.email }}</td>
+                        <td style="padding:1rem;color:#6b7280;">{{ employee.phone ?? '—' }}</td>
+                        <td style="padding:1rem;">
+                            {% if employee.isActive %}
+                                <span style="background:rgba(16,185,129,0.15);color:#059669;padding:0.25rem 0.7rem;border-radius:999px;font-size:0.8rem;font-weight:600;">
+                                    <i class="fa-solid fa-circle-check"></i> Actif
+                                </span>
+                            {% else %}
+                                <span style="background:rgba(239,68,68,0.12);color:#dc2626;padding:0.25rem 0.7rem;border-radius:999px;font-size:0.8rem;font-weight:600;">
+                                    <i class="fa-solid fa-ban"></i> Désactivé
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td style="padding:1rem;text-align:center;">
+                            <form method="post" action="{{ path('admin_employee_toggle', {id: employee.id}) }}"
+                                  onsubmit="return confirm('{{ employee.isActive ? 'Désactiver' : 'Réactiver' }} le compte de {{ employee.firstName }} {{ employee.lastName }} ?')">
+                                <input type="hidden" name="_token" value="{{ csrf_token('toggle' ~ employee.id) }}">
+                                <button type="submit" style="cursor:pointer;padding:0.4rem 0.9rem;border-radius:0.4rem;font-size:0.85rem;font-weight:600;
+                                    {% if employee.isActive %}background:rgba(239,68,68,0.1);color:#dc2626;border:1px solid rgba(239,68,68,0.3);
+                                    {% else %}background:rgba(16,185,129,0.1);color:#059669;border:1px solid rgba(16,185,129,0.3);{% endif %}">
+                                    {{ employee.isActive ? 'Désactiver' : 'Réactiver' }}
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" style="padding:2.5rem;text-align:center;color:#6b7280;">
+                            Aucun compte employé pour le moment.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

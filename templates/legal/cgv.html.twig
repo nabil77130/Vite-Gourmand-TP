@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+{% block title %}Conditions générales de vente — Vite & Gourmand{% endblock %}
+{% block body %}
+<div style="max-width:800px;margin:2rem auto;padding:0 1rem;">
+    <h1>Conditions générales de vente (CGV)</h1>
+
+    <h2>1. Objet</h2>
+    <p>Les présentes CGV régissent les ventes de menus et prestations traiteur proposées par Vite & Gourmand via ce site.</p>
+
+    <h2>2. Commande</h2>
+    <p>Toute commande implique l'acceptation pleine et entière des présentes CGV. Le nombre de personnes minimum indiqué sur chaque menu doit être respecté.</p>
+
+    <h2>3. Prix et paiement</h2>
+    <p>Les prix sont indiqués en euros, par personne. Une réduction de 10% s'applique pour toute commande dépassant de 5 personnes ou plus le nombre minimum indiqué sur le menu.</p>
+
+    <h2>4. Livraison</h2>
+    <p>La livraison est facturée 5€, majorés de 0,59€ par kilomètre parcouru, pour toute prestation en dehors de Bordeaux.</p>
+
+    <h2>5. Matériel prêté</h2>
+    <p>
+        Si du matériel est prêté au client dans le cadre de sa commande, celui-ci doit être restitué dans un délai
+        de <strong>10 jours ouvrés</strong> après la livraison. Passé ce délai, des frais de
+        <strong>600 €</strong> seront facturés au client pour non-restitution du matériel. Pour organiser la
+        restitution, le client doit prendre contact avec Vite & Gourmand.
+    </p>
+
+    <h2>6. Annulation</h2>
+    <p>Une commande peut être annulée par le client tant qu'elle n'a pas été acceptée par l'équipe. Après acceptation, toute annulation ou modification nécessite un contact préalable avec l'entreprise (téléphone ou email).</p>
+
+    <h2>7. Réclamations</h2>
+    <p>Pour toute question ou réclamation, contactez-nous via la page <a href="{{ path('app_contact') }}">Contact</a>.</p>
+</div>
+{% endblock %}

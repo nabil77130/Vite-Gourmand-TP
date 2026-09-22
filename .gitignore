@@ -19,7 +19,8 @@
 /assets/vendor/
 ###< symfony/asset-mapper ###
 repo.zip
-*.sql
+# Les fichiers SQL de sql/ sont un livrable exige par l'enonce :
+# ils ne doivent pas etre ignores.
 *.py
 *.txt
 *_mockup.png

@@ -23,6 +23,15 @@ class MenuType extends AbstractType
         $builder
             ->add('name', TextType::class, ['label' => 'Titre'])
             ->add('description', TextareaType::class, ['label' => 'Description', 'required' => false])
+            ->add('conditions', TextareaType::class, [
+                'label' => 'Conditions de ce menu',
+                'help' => 'Délai de commande, précautions de stockage, matériel prêté… Affiché bien en évidence avant la commande.',
+                'required' => false,
+                'attr' => [
+                    'rows' => 4,
+                    'placeholder' => "Ex. : ce menu doit être commandé au moins 7 jours avant la prestation. Les plats doivent être conservés au frais jusqu'au service.",
+                ],
+            ])
             ->add('price', NumberType::class, ['label' => 'Prix (€)', 'scale' => 2])
             ->add('minPeople', NumberType::class, ['label' => 'Nombre de personnes minimum', 'required' => false])
             ->add('stock', NumberType::class, ['label' => 'Stock disponible', 'required' => false])
@@ -32,6 +41,24 @@ class MenuType extends AbstractType
                 'multiple' => true,
                 'expanded' => true,
                 'label' => 'Plats composant ce menu',
+                'required' => false,
+            ])
+            ->add('themes', EntityType::class, [
+                'class' => Theme::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'Thématiques du menu',
+                'help' => 'Utilisé par les filtres de la carte.',
+                'required' => false,
+            ])
+            ->add('diets', EntityType::class, [
+                'class' => Diet::class,
+                'choice_label' => 'name',
+                'multiple' => true,
+                'expanded' => true,
+                'label' => 'Régimes alimentaires compatibles',
+                'help' => 'Utilisé par les filtres de la carte.',
                 'required' => false,
             ])
         ;

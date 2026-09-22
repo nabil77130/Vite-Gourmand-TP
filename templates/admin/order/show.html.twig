@@ -44,6 +44,37 @@
         </form>
     </div>
 
+    {# Historique complet des statuts, avec l'auteur de chaque changement. #}
+    {% if order.statusHistories|length > 0 %}
+    <div style="background:white;border-radius:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:1.5rem;margin-bottom:1.5rem;">
+        <h3 style="margin-bottom:1rem;font-size:1rem;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em;">Historique des statuts</h3>
+        <table style="width:100%;border-collapse:collapse;font-size:0.92rem;">
+            <thead>
+                <tr style="text-align:left;color:#9ca3af;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.04em;">
+                    <th scope="col" style="padding:0.5rem 0.4rem;border-bottom:1px solid #e5e7eb;">Statut</th>
+                    <th scope="col" style="padding:0.5rem 0.4rem;border-bottom:1px solid #e5e7eb;">Date et heure</th>
+                    <th scope="col" style="padding:0.5rem 0.4rem;border-bottom:1px solid #e5e7eb;">Par</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in order.statusHistories %}
+                    <tr>
+                        <td style="padding:0.6rem 0.4rem;border-bottom:1px solid #f3f4f6;font-weight:600;">
+                            {{ statuses[entry.status] ?? entry.status }}
+                        </td>
+                        <td style="padding:0.6rem 0.4rem;border-bottom:1px solid #f3f4f6;color:#6b7280;">
+                            <time datetime="{{ entry.changedAt|date('c') }}">{{ entry.changedAt|date('d/m/Y à H:i:s') }}</time>
+                        </td>
+                        <td style="padding:0.6rem 0.4rem;border-bottom:1px solid #f3f4f6;color:#6b7280;">
+                            {{ entry.changedBy ? entry.changedBy.firstName ~ ' ' ~ entry.changedBy.lastName : '—' }}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
     {# Cancel with reason #}
     {% if order.status not in ['cancelled', 'completed'] %}
     <div style="background:white;border-radius:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:1.5rem;">

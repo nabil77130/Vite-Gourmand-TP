@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f3f4f6; padding: 2rem; margin: 0;">
+    <div style="max-width: 560px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+        <div style="background-color: #10B981; padding: 2rem; text-align: center;">
+            <h1 style="color: #ffffff; margin: 0; font-size: 1.5rem;">Commande confirmée !</h1>
+        </div>
+        <div style="padding: 2rem; color: #111827;">
+            <p>Bonjour {{ firstName }},</p>
+            <p>Nous avons bien reçu votre commande. Voici un récapitulatif :</p>
+            <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+                <tr>
+                    <td style="padding: 0.5rem 0; color: #6B7280;">Menu</td>
+                    <td style="padding: 0.5rem 0; text-align: right; font-weight: 600;">{{ menuName }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem 0; color: #6B7280;">Nombre de personnes</td>
+                    <td style="padding: 0.5rem 0; text-align: right; font-weight: 600;">{{ nombrePersonne }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem 0; color: #6B7280;">Adresse de prestation</td>
+                    <td style="padding: 0.5rem 0; text-align: right; font-weight: 600;">{{ adresse }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem 0; border-top: 1px solid #E5E7EB; color: #6B7280;">Total</td>
+                    <td style="padding: 0.5rem 0; border-top: 1px solid #E5E7EB; text-align: right; font-weight: 700; color: #10B981; font-size: 1.1rem;">{{ totalPrice }} €</td>
+                </tr>
+            </table>
+            <p>Vous pouvez suivre l'état de votre commande à tout moment depuis votre espace client.</p>
+            <p style="margin-top: 1.5rem;">
+                <a href="{{ ordersUrl }}" style="background-color: #10B981; color: #ffffff; text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 8px; display: inline-block;">Voir mes commandes</a>
+            </p>
+            <p style="margin-top: 2rem; color: #6B7280; font-size: 0.85rem;">
+                Merci de votre confiance,<br>
+                L'équipe Vite &amp; Gourmand
+            </p>
+        </div>
+    </div>
+</body>
+</html>

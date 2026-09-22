@@ -10,13 +10,10 @@
             <h1 style="text-align: center; color: var(--primary-color); margin-bottom: 0.5rem;">Contactez-nous</h1>
             <p style="text-align: center; color: #6B7280; margin-bottom: 2rem;">Une question ? Un événement à organiser ? Nous sommes là pour vous aider.</p>
 
-            {% if success %}
-                <div class="alert" style="background: rgba(16,185,129,0.15); border: 1px solid rgba(16,185,129,0.4); color: #065F46; border-radius: 0.5rem; padding: 1rem; margin-bottom: 1.5rem; text-align: center;">
-                    <i class="fa-solid fa-check"></i> Votre message a bien été envoyé ! Nous vous répondrons dans les plus brefs délais.
-                </div>
-            {% endif %}
+            {# Les messages de confirmation et d'erreur sont affiches par base.html.twig #}
 
             <form method="post" action="{{ path('app_contact') }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('contact') }}">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
                     <div class="form-group">
                         <label style="display: block; font-weight: 600; margin-bottom: 0.4rem;">Prénom *</label>

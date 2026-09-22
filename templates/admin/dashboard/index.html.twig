@@ -1,0 +1,187 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tableau de bord — Administration{% endblock %}
+
+{% block body %}
+{% set INK        = '#111827' %}
+{% set INK_SOFT   = '#6B7280' %}
+{% set GRID       = '#E5E7EB' %}
+{% set SERIE      = '#059669' %}
+
+<div class="container" style="max-width:1200px;margin:2rem auto;padding:2rem;">
+
+    <h1 style="font-size:2.2rem;font-weight:700;margin-bottom:0.5rem;">
+        <i class="fa-solid fa-chart-column"></i> Tableau de bord
+    </h1>
+    <p style="color:{{ INK_SOFT }};margin-bottom:2rem;">
+        Activité commerciale par menu. Les données proviennent de la base NoSQL MongoDB.
+    </p>
+
+    {% if unreachable %}
+        <div role="alert" style="padding:1.25rem;border-radius:0.75rem;background:rgba(245,158,11,0.12);border-left:4px solid #F59E0B;color:#92400E;margin-bottom:2rem;">
+            <strong><i class="fa-solid fa-triangle-exclamation"></i> Base NoSQL injoignable.</strong>
+            Vérifiez <code>MONGODB_URI</code> dans le fichier <code>.env</code>, et que votre adresse IP figure bien
+            dans la liste d'accès de MongoDB Atlas. Le reste de l'administration reste utilisable.
+        </div>
+    {% endif %}
+
+    {# ── FILTRES ─────────────────────────────────────────────── #}
+    <form method="get" action="{{ path('admin_dashboard') }}" role="search" aria-label="Filtrer les statistiques"
+          style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem;align-items:end;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.25);border-radius:1rem;padding:1.25rem;margin-bottom:2rem;">
+
+        <div>
+            <label for="f-menu" style="display:block;font-size:0.8rem;font-weight:600;color:#374151;margin-bottom:0.35rem;">Menu</label>
+            <select id="f-menu" name="menuId" style="width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:0.5rem;background:#fff;">
+                <option value="">Tous les menus</option>
+                {% for menu in menus %}
+                    <option value="{{ menu.id }}" {% if filters.menuId == menu.id %}selected{% endif %}>{{ menu.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div>
+            <label for="f-from" style="display:block;font-size:0.8rem;font-weight:600;color:#374151;margin-bottom:0.35rem;">Du</label>
+            <input type="date" id="f-from" name="from" value="{{ filters.from }}"
+                   style="width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:0.5rem;">
+        </div>
+
+        <div>
+            <label for="f-to" style="display:block;font-size:0.8rem;font-weight:600;color:#374151;margin-bottom:0.35rem;">Au</label>
+            <input type="date" id="f-to" name="to" value="{{ filters.to }}"
+                   style="width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:0.5rem;">
+        </div>
+
+        <div style="display:flex;gap:0.5rem;">
+            <button type="submit" class="btn btn-primary" style="flex:1;">
+                <i class="fa-solid fa-filter"></i> Appliquer
+            </button>
+            {% if filters.menuId or filters.from or filters.to %}
+                <a href="{{ path('admin_dashboard') }}" title="Réinitialiser les filtres"
+                   style="display:flex;align-items:center;justify-content:center;padding:0 0.85rem;border:1px solid #d1d5db;border-radius:0.5rem;color:{{ INK_SOFT }};text-decoration:none;">
+                    <i class="fa-solid fa-xmark"></i>
+                </a>
+            {% endif %}
+        </div>
+    </form>
+
+    {# ── INDICATEURS ─────────────────────────────────────────── #}
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin-bottom:2.5rem;">
+        {% set tiles = [
+            {'label': 'Commandes',           'value': totals.orderCount,                              'unit': ''},
+            {'label': "Chiffre d'affaires",  'value': totals.revenue|number_format(2, ',', ' '),      'unit': '€'},
+            {'label': 'Panier moyen',        'value': totals.averageBasket|number_format(2, ',', ' '), 'unit': '€'}
+        ] %}
+        {% for tile in tiles %}
+            <div style="background:#fff;border:1px solid {{ GRID }};border-radius:1rem;padding:1.5rem;">
+                <div style="font-size:0.8rem;font-weight:600;color:{{ INK_SOFT }};text-transform:uppercase;letter-spacing:0.04em;">{{ tile.label }}</div>
+                <div style="font-size:2rem;font-weight:700;color:{{ INK }};margin-top:0.35rem;line-height:1.1;">
+                    {{ tile.value }}<span style="font-size:1.1rem;font-weight:600;color:{{ INK_SOFT }};"> {{ tile.unit }}</span>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if statsByMenu is empty %}
+        <div style="text-align:center;padding:3rem 1rem;background:rgba(0,0,0,0.03);border-radius:1rem;">
+            <p style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">Aucune donnée sur cette période</p>
+            <p style="color:{{ INK_SOFT }};">
+                Si vous n'avez encore jamais synchronisé, lancez <code>php bin/console app:sync-order-stats</code>.
+            </p>
+        </div>
+    {% else %}
+
+        {# ── GRAPHIQUE : COMMANDES PAR MENU ──────────────────── #}
+        {# L'agregation MongoDB trie deja par nombre de commandes decroissant :
+           le premier element porte donc le maximum, qui sert d'echelle. #}
+        {% set maxCount = (statsByMenu|first).orderCount %}
+
+        <section style="background:#fff;border:1px solid {{ GRID }};border-radius:1rem;padding:1.75rem;margin-bottom:2rem;">
+            <h2 style="font-size:1.15rem;font-weight:700;margin:0 0 0.25rem;color:{{ INK }};">Nombre de commandes par menu</h2>
+            <p style="color:{{ INK_SOFT }};font-size:0.85rem;margin:0 0 1.75rem;">
+                Comparaison des menus sur la période sélectionnée.
+            </p>
+
+            <div role="img" aria-label="Diagramme en barres du nombre de commandes par menu">
+                {% for row in statsByMenu %}
+                    <div style="display:grid;grid-template-columns:minmax(110px,180px) 1fr auto;gap:1rem;align-items:center;margin-bottom:0.9rem;">
+                        <div style="font-size:0.9rem;color:{{ INK }};font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="{{ row.menuName }}">
+                            {{ row.menuName }}
+                        </div>
+                        <div style="background:{{ GRID }};border-radius:0 4px 4px 0;height:14px;position:relative;">
+                            <div title="{{ row.menuName }} — {{ row.orderCount }} commande{{ row.orderCount > 1 ? 's' : '' }}, {{ row.revenue|number_format(2, ',', ' ') }} €"
+                                 style="width:{{ maxCount > 0 ? (row.orderCount / maxCount * 100)|round(1) : 0 }}%;background:{{ SERIE }};height:14px;border-radius:0 4px 4px 0;min-width:2px;"></div>
+                        </div>
+                        <div style="font-size:0.95rem;font-weight:700;color:{{ INK }};min-width:2.5rem;text-align:right;">
+                            {{ row.orderCount }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
+        {# ── TABLEAU : CHIFFRE D'AFFAIRES PAR MENU ───────────── #}
+        <section style="background:#fff;border:1px solid {{ GRID }};border-radius:1rem;padding:1.75rem;margin-bottom:2rem;overflow-x:auto;">
+            <h2 style="font-size:1.15rem;font-weight:700;margin:0 0 1.5rem;color:{{ INK }};">Chiffre d'affaires par menu</h2>
+
+            <table style="width:100%;border-collapse:collapse;font-size:0.92rem;">
+                <thead>
+                    <tr style="text-align:left;color:{{ INK_SOFT }};font-size:0.78rem;text-transform:uppercase;letter-spacing:0.04em;">
+                        <th scope="col" style="padding:0.6rem 0.5rem;border-bottom:1px solid {{ GRID }};">Menu</th>
+                        <th scope="col" style="padding:0.6rem 0.5rem;border-bottom:1px solid {{ GRID }};text-align:right;">Commandes</th>
+                        <th scope="col" style="padding:0.6rem 0.5rem;border-bottom:1px solid {{ GRID }};text-align:right;">Convives</th>
+                        <th scope="col" style="padding:0.6rem 0.5rem;border-bottom:1px solid {{ GRID }};text-align:right;">Chiffre d'affaires</th>
+                        <th scope="col" style="padding:0.6rem 0.5rem;border-bottom:1px solid {{ GRID }};text-align:right;">Part</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in statsByMenu %}
+                        <tr>
+                            <td style="padding:0.7rem 0.5rem;border-bottom:1px solid {{ GRID }};color:{{ INK }};font-weight:600;">{{ row.menuName }}</td>
+                            <td style="padding:0.7rem 0.5rem;border-bottom:1px solid {{ GRID }};text-align:right;color:{{ INK }};">{{ row.orderCount }}</td>
+                            <td style="padding:0.7rem 0.5rem;border-bottom:1px solid {{ GRID }};text-align:right;color:{{ INK_SOFT }};">{{ row.peopleTotal }}</td>
+                            <td style="padding:0.7rem 0.5rem;border-bottom:1px solid {{ GRID }};text-align:right;color:{{ INK }};font-weight:700;">{{ row.revenue|number_format(2, ',', ' ') }} €</td>
+                            <td style="padding:0.7rem 0.5rem;border-bottom:1px solid {{ GRID }};text-align:right;color:{{ INK_SOFT }};">
+                                {{ totals.revenue > 0 ? (row.revenue / totals.revenue * 100)|round(1) : 0 }} %
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td style="padding:0.8rem 0.5rem;color:{{ INK }};font-weight:700;">Total</td>
+                        <td style="padding:0.8rem 0.5rem;text-align:right;color:{{ INK }};font-weight:700;">{{ totals.orderCount }}</td>
+                        <td></td>
+                        <td style="padding:0.8rem 0.5rem;text-align:right;color:{{ INK }};font-weight:700;">{{ totals.revenue|number_format(2, ',', ' ') }} €</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </section>
+
+        {# ── ÉVOLUTION SUR LA DURÉE ──────────────────────────── #}
+        {% if revenueByDay|length > 1 %}
+            {% set maxDay = max(revenueByDay|map(d => d.revenue)) %}
+
+            <section style="background:#fff;border:1px solid {{ GRID }};border-radius:1rem;padding:1.75rem;">
+                <h2 style="font-size:1.15rem;font-weight:700;margin:0 0 0.25rem;color:{{ INK }};">Chiffre d'affaires par jour</h2>
+                <p style="color:{{ INK_SOFT }};font-size:0.85rem;margin:0 0 1.75rem;">
+                    Répartition de l'activité sur la période.
+                </p>
+
+                <div role="img" aria-label="Diagramme en barres du chiffre d'affaires par jour"
+                     style="display:flex;align-items:flex-end;gap:2px;height:160px;border-bottom:1px solid {{ GRID }};padding-bottom:0;">
+                    {% for d in revenueByDay %}
+                        <div title="{{ d.day }} — {{ d.revenue|number_format(2, ',', ' ') }} € sur {{ d.orderCount }} commande{{ d.orderCount > 1 ? 's' : '' }}"
+                             style="flex:1;min-width:6px;height:{{ maxDay > 0 ? (d.revenue / maxDay * 100)|round(1) : 0 }}%;background:{{ SERIE }};border-radius:4px 4px 0 0;"></div>
+                    {% endfor %}
+                </div>
+                <div style="display:flex;justify-content:space-between;color:{{ INK_SOFT }};font-size:0.78rem;margin-top:0.5rem;">
+                    <span>{{ (revenueByDay|first).day }}</span>
+                    <span>{{ (revenueByDay|last).day }}</span>
+                </div>
+            </section>
+        {% endif %}
+
+    {% endif %}
+</div>
+{% endblock %}

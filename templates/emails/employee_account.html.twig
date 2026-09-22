@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f3f4f6; padding: 2rem; margin: 0;">
+    <div style="max-width: 560px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+        <div style="background-color: #10B981; padding: 2rem; text-align: center;">
+            <h1 style="color: #ffffff; margin: 0; font-size: 1.4rem;">Votre compte employé a été créé</h1>
+        </div>
+        <div style="padding: 2rem; color: #111827;">
+            <p>Bonjour {{ firstName }},</p>
+
+            <p>
+                Un compte employé vient d'être créé pour vous sur l'application Vite &amp; Gourmand.
+                Il vous donnera accès à la gestion des menus, des plats, des horaires, des commandes
+                et des avis clients.
+            </p>
+
+            <table style="width: 100%; border-collapse: collapse; margin: 1.5rem 0;">
+                <tr>
+                    <td style="padding: 0.5rem 0; color: #6B7280;">Votre identifiant</td>
+                    <td style="padding: 0.5rem 0; text-align: right; font-weight: 600;">{{ email }}</td>
+                </tr>
+            </table>
+
+            <div style="background: rgba(59,130,246,0.08); border-left: 4px solid #3B82F6; border-radius: 6px; padding: 1rem 1.25rem; margin: 1.5rem 0;">
+                <p style="margin: 0; color: #1E40AF; line-height: 1.7;">
+                    Pour des raisons de sécurité, <strong>votre mot de passe ne figure pas dans cet email</strong>.
+                    Rapprochez-vous de votre administrateur pour l'obtenir.
+                </p>
+            </div>
+
+            <p style="margin-top: 1.5rem;">
+                <a href="{{ loginUrl }}" style="background-color: #10B981; color: #ffffff; text-decoration: none; padding: 0.75rem 1.5rem; border-radius: 8px; display: inline-block;">Accéder à la connexion</a>
+            </p>
+
+            <p style="margin-top: 2rem; color: #6B7280; font-size: 0.85rem;">
+                Bienvenue dans l'équipe,<br>
+                L'équipe Vite &amp; Gourmand
+            </p>
+        </div>
+    </div>
+</body>
+</html>

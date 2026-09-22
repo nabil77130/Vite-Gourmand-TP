@@ -26,6 +26,10 @@
                 <a href="{{ path('app_home') }}" class="nav-link">Accueil</a>
                 <a href="{{ path('app_menu') }}" class="nav-link">La Carte</a>
                 <a href="{{ path('app_contact') }}" class="nav-link">Contact</a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('admin_dashboard') }}" class="nav-link"><i class="fa-solid fa-chart-column"></i> Tableau de bord</a>
+                    <a href="{{ path('admin_employee_index') }}" class="nav-link"><i class="fa-solid fa-users-gear"></i> Employés</a>
+                {% endif %}
                 {% if is_granted('ROLE_EMPLOYEE') %}
                     <a href="{{ path('admin_menu_index') }}" class="nav-link"><i class="fa-solid fa-gear"></i> Administration</a>
                 {% endif %}
@@ -39,6 +43,24 @@
                 {% endif %}
             </div>
         </nav>
+
+        {# Messages flash affiches sur toutes les pages : confirmations,
+           avertissements et erreurs remontes par les controleurs. #}
+        {% for type, messages in app.flashes %}
+            {% for message in messages %}
+                {% set palette = {
+                    'success': {'bg': 'rgba(16,185,129,0.12)', 'border': '#10B981', 'text': '#065F46', 'icon': 'fa-circle-check'},
+                    'error':   {'bg': 'rgba(239,68,68,0.12)',  'border': '#EF4444', 'text': '#991B1B', 'icon': 'fa-circle-exclamation'},
+                    'danger':  {'bg': 'rgba(239,68,68,0.12)',  'border': '#EF4444', 'text': '#991B1B', 'icon': 'fa-circle-exclamation'},
+                    'warning': {'bg': 'rgba(245,158,11,0.12)', 'border': '#F59E0B', 'text': '#92400E', 'icon': 'fa-triangle-exclamation'},
+                    'info':    {'bg': 'rgba(59,130,246,0.12)', 'border': '#3B82F6', 'text': '#1E40AF', 'icon': 'fa-circle-info'}
+                } %}
+                {% set style = palette[type]|default(palette.info) %}
+                <div role="alert" style="max-width:1200px;margin:1.5rem auto 0;padding:1rem 1.25rem;border-radius:0.75rem;background:{{ style.bg }};border-left:4px solid {{ style.border }};color:{{ style.text }};font-weight:500;">
+                    <i class="fa-solid {{ style.icon }}"></i> {{ message }}
+                </div>
+            {% endfor %}
+        {% endfor %}
 
         {% block body %}{% endblock %}
         
@@ -79,6 +101,8 @@
                         {% if not app.user %}
                         <li><a href="{{ path('app_register') }}" style="color: #9CA3AF; transition: color 0.2s;" onmouseover="this.style.color='#10B981'" onmouseout="this.style.color='#9CA3AF'">Créer un compte</a></li>
                         {% endif %}
+                        <li><a href="{{ path('app_mentions_legales') }}" style="color: #9CA3AF; transition: color 0.2s;" onmouseover="this.style.color='#10B981'" onmouseout="this.style.color='#9CA3AF'">Mentions légales</a></li>
+                        <li><a href="{{ path('app_cgv') }}" style="color: #9CA3AF; transition: color 0.2s;" onmouseover="this.style.color='#10B981'" onmouseout="this.style.color='#9CA3AF'">CGV</a></li>
                     </ul>
                 </div>
             </div>

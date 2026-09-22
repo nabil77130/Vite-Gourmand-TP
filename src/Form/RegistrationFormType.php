@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\User;
+use App\Validator\PasswordPolicy;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -11,9 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Regex;
 
 class RegistrationFormType extends AbstractType
 {
@@ -74,28 +73,11 @@ class RegistrationFormType extends AbstractType
                 'mapped' => false,
                 'label' => 'Mot de passe',
                 'attr' => ['autocomplete' => 'new-password', 'placeholder' => '••••••••'],
-                'constraints' => [
-                    new NotBlank(
-                        message: 'Veuillez entrer un mot de passe',
-                    ),
-                    new Length(
-                        min: 8,
-                        minMessage: 'Votre mot de passe doit contenir au moins {{ limit }} caractères',
-                        max: 4096,
-                    ),
-                    new Regex(
-                        pattern: '/[A-Z]/',
-                        message: 'Votre mot de passe doit contenir au moins une lettre majuscule',
-                    ),
-                    new Regex(
-                        pattern: '/[a-z]/',
-                        message: 'Votre mot de passe doit contenir au moins une lettre minuscule',
-                    ),
-                    new Regex(
-                        pattern: '/[0-9]/',
-                        message: 'Votre mot de passe doit contenir au moins un chiffre',
-                    ),
-                ],
+                'help' => PasswordPolicy::helpText(),
+                // Regles centralisees dans App\Validator\PasswordPolicy afin d'etre
+                // identiques a l'inscription, a la reinitialisation et a la
+                // creation d'un compte employe.
+                'constraints' => PasswordPolicy::constraints(),
             ])
         ;
     }

@@ -22,11 +22,33 @@
                 <div>{{ form_label(form.stock) }}{{ form_widget(form.stock, {attr: {class: 'form-control'}}) }}{{ form_errors(form.stock) }}</div>
             </div>
             <div>
+                {{ form_label(form.conditions) }}
+                {{ form_widget(form.conditions, {attr: {class: 'form-control'}}) }}
+                {{ form_help(form.conditions) }}
+                {{ form_errors(form.conditions) }}
+            </div>
+            <div>
                 <label style="font-weight:600;display:block;margin-bottom:0.5rem;">Plats composant ce menu</label>
                 <div style="max-height:250px;overflow-y:auto;border:1px solid #e5e7eb;border-radius:0.5rem;padding:1rem;display:grid;grid-template-columns:1fr 1fr;gap:0.5rem;">
                     {{ form_widget(form.products) }}
                 </div>
                 {{ form_errors(form.products) }}
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+                <div>
+                    <label style="font-weight:600;display:block;margin-bottom:0.5rem;">Thématiques du menu</label>
+                    <div style="border:1px solid #e5e7eb;border-radius:0.5rem;padding:1rem;display:grid;gap:0.4rem;">
+                        {{ form_widget(form.themes) }}
+                    </div>
+                    {{ form_help(form.themes) }}
+                </div>
+                <div>
+                    <label style="font-weight:600;display:block;margin-bottom:0.5rem;">Régimes alimentaires compatibles</label>
+                    <div style="border:1px solid #e5e7eb;border-radius:0.5rem;padding:1rem;display:grid;gap:0.4rem;">
+                        {{ form_widget(form.diets) }}
+                    </div>
+                    {{ form_help(form.diets) }}
+                </div>
             </div>
         </div>
         <div style="margin-top:1.5rem;display:flex;gap:1rem;">

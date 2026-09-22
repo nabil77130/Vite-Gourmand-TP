@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f3f4f6; padding: 2rem; margin: 0;">
+    <div style="max-width: 600px; margin: 0 auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+        <div style="background-color: #10B981; padding: 1.5rem 2rem;">
+            <h1 style="color: #ffffff; margin: 0; font-size: 1.25rem;">Nouvelle demande depuis le site</h1>
+            <p style="color: #D1FAE5; margin: 0.35rem 0 0; font-size: 0.9rem;">{{ data.subjectLabel }}</p>
+        </div>
+        <div style="padding: 2rem; color: #111827;">
+            <table style="width: 100%; border-collapse: collapse; margin-bottom: 1.5rem;">
+                <tr>
+                    <td style="padding: 0.5rem 0; color: #6B7280; width: 40%;">Nom</td>
+                    <td style="padding: 0.5rem 0; font-weight: 600;">{{ data.firstName }} {{ data.lastName }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 0.5rem 0; border-top: 1px solid #E5E7EB; color: #6B7280;">Email</td>
+                    <td style="padding: 0.5rem 0; border-top: 1px solid #E5E7EB; font-weight: 600;">
+                        <a href="mailto:{{ data.email }}" style="color: #059669;">{{ data.email }}</a>
+                    </td>
+                </tr>
+                {% if data.phone %}
+                    <tr>
+                        <td style="padding: 0.5rem 0; border-top: 1px solid #E5E7EB; color: #6B7280;">Téléphone</td>
+                        <td style="padding: 0.5rem 0; border-top: 1px solid #E5E7EB; font-weight: 600;">{{ data.phone }}</td>
+                    </tr>
+                {% endif %}
+                {% if data.eventDate %}
+                    <tr>
+                        <td style="padding: 0.5rem 0; border-top: 1px solid #E5E7EB; color: #6B7280;">Date de l'événement</td>
+                        <td style="padding: 0.5rem 0; border-top: 1px solid #E5E7EB; font-weight: 600;">{{ data.eventDate }}</td>
+                    </tr>
+                {% endif %}
+            </table>
+
+            <div style="background: #F9FAFB; border-left: 3px solid #10B981; border-radius: 6px; padding: 1rem 1.25rem;">
+                <div style="color: #6B7280; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 0.5rem;">Message</div>
+                <div style="white-space: pre-wrap; line-height: 1.6;">{{ data.message }}</div>
+            </div>
+
+            <p style="margin-top: 1.5rem; color: #6B7280; font-size: 0.85rem;">
+                Répondre à cet email écrira directement à {{ data.firstName }}.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

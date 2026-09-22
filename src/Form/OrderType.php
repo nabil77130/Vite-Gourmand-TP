@@ -36,9 +36,11 @@ class OrderType extends AbstractType
                 'widget' => 'single_text',
                 'required' => false,
             ])
+            // Pas d'option "data" ici : elle ecraserait la valeur existante
+            // lors de la modification d'une commande. La valeur par defaut est
+            // posee par le controleur au moment de la creation.
             ->add('nombrePersonne', IntegerType::class, [
                 'label' => 'Nombre de personnes (min. ' . $minPeople . ')',
-                'data'  => $minPeople,
                 'constraints' => [
                     new NotBlank(),
                     new GreaterThanOrEqual([

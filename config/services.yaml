@@ -22,3 +22,10 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # Acces a la base NoSQL : la chaine de connexion et le nom de la base
+    # viennent du .env, jamais du code.
+    App\Service\OrderStatsRepository:
+        arguments:
+            $mongoUri: '%env(MONGODB_URI)%'
+            $mongoDatabase: '%env(MONGODB_DB)%'

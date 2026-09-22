@@ -37,9 +37,34 @@ class Menu
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageName = null;
 
+    /**
+     * Conditions propres au menu : delai de commande, precautions de stockage,
+     * materiel prete, etc.
+     *
+     * L'enonce impose qu'elles soient mises bien en evidence avant la commande,
+     * "afin d'eviter que le client puisse se plaindre qu'il n'a pas vu
+     * l'information".
+     */
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $conditions = null;
+
+    /**
+     * Thematiques du menu (Italien, Asiatique...) : sert aux filtres de la carte.
+     */
+    #[ORM\ManyToMany(targetEntity: Theme::class, inversedBy: 'menus')]
+    private Collection $themes;
+
+    /**
+     * Regimes alimentaires du menu (Vegetarien, Sans Gluten...) : sert aux filtres de la carte.
+     */
+    #[ORM\ManyToMany(targetEntity: Diet::class, inversedBy: 'menus')]
+    private Collection $diets;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->themes = new ArrayCollection();
+        $this->diets = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -137,6 +162,65 @@ class Menu
     public function setImageName(?string $imageName): static
     {
         $this->imageName = $imageName;
+        return $this;
+    }
+
+    public function getConditions(): ?string
+    {
+        return $this->conditions;
+    }
+
+    public function setConditions(?string $conditions): static
+    {
+        $this->conditions = $conditions;
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Theme>
+     */
+    public function getThemes(): Collection
+    {
+        return $this->themes;
+    }
+
+    public function addTheme(Theme $theme): static
+    {
+        if (!$this->themes->contains($theme)) {
+            $this->themes->add($theme);
+        }
+
+        return $this;
+    }
+
+    public function removeTheme(Theme $theme): static
+    {
+        $this->themes->removeElement($theme);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Diet>
+     */
+    public function getDiets(): Collection
+    {
+        return $this->diets;
+    }
+
+    public function addDiet(Diet $diet): static
+    {
+        if (!$this->diets->contains($diet)) {
+            $this->diets->add($diet);
+        }
+
+        return $this;
+    }
+
+    public function removeDiet(Diet $diet): static
+    {
+        $this->diets->removeElement($diet);
+
         return $this;
     }
 }

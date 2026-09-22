@@ -60,9 +60,18 @@ class Order
     #[ORM\OneToOne(mappedBy: 'orderRef', cascade: ['persist', 'remove'])]
     private ?Review $review = null;
 
+    /**
+     * Historique complet des statuts, du plus ancien au plus recent.
+     * Alimente le suivi de commande cote client et cote employe.
+     */
+    #[ORM\OneToMany(mappedBy: 'orderRef', targetEntity: OrderStatusHistory::class, cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OrderBy(['changedAt' => 'ASC', 'id' => 'ASC'])]
+    private Collection $statusHistories;
+
     public function __construct()
     {
         $this->orderItems = new ArrayCollection();
+        $this->statusHistories = new ArrayCollection();
         $this->createdAt = new \DateTime();
         $this->status = 'pending';
     }
@@ -256,6 +265,36 @@ class Order
         }
 
         $this->review = $review;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrderStatusHistory>
+     */
+    public function getStatusHistories(): Collection
+    {
+        return $this->statusHistories;
+    }
+
+    /**
+     * Enregistre le passage de la commande dans un nouvel etat.
+     *
+     * Le statut courant de la commande est mis a jour en meme temps, pour que
+     * les deux informations ne puissent pas diverger.
+     */
+    public function addStatusHistory(string $status, ?User $changedBy = null, ?\DateTimeImmutable $changedAt = null): static
+    {
+        $entry = new OrderStatusHistory();
+        $entry->setOrderRef($this);
+        $entry->setStatus($status);
+        $entry->setChangedBy($changedBy);
+        if ($changedAt !== null) {
+            $entry->setChangedAt($changedAt);
+        }
+
+        $this->statusHistories->add($entry);
+        $this->status = $status;
 
         return $this;
     }

@@ -72,6 +72,21 @@
                 {% endfor %}
             </div>
 
+            {# Conditions du menu, mises bien en evidence juste avant le bouton de
+               commande : le client ne peut pas dire qu'il n'a pas vu l'information. #}
+            {% if menu.conditions %}
+                <div role="note" style="margin-top:2.5rem;background:rgba(245,158,11,0.10);border:2px solid #F59E0B;border-radius:1rem;padding:1.5rem;">
+                    <h3 style="margin:0 0 0.75rem;color:#92400E;font-size:1.1rem;display:flex;align-items:center;gap:0.6rem;">
+                        <i class="fa-solid fa-circle-exclamation"></i> Conditions de ce menu
+                    </h3>
+                    <p style="margin:0;color:#78350F;line-height:1.7;white-space:pre-line;">{{ menu.conditions }}</p>
+                    <p style="margin:1rem 0 0;color:#92400E;font-size:0.85rem;font-weight:600;">
+                        En commandant ce menu, vous acceptez ces conditions ainsi que nos
+                        <a href="{{ path('app_cgv') }}" style="color:#92400E;">conditions générales de vente</a>.
+                    </p>
+                </div>
+            {% endif %}
+
             <div style="margin-top: 3rem; text-align: center;">
                 {% if menu.stock is not null and menu.stock <= 0 %}
                     <button class="btn" style="background: #9CA3AF; color: white; cursor: not-allowed; padding: 1rem 3rem; font-size: 1.1rem;" disabled>

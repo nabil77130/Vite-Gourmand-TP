@@ -74,6 +74,25 @@ a {
     color: var(--white);
 }
 
+/* Dans un bloc sombre, les titres passent en blanc : la regle generale
+   h1-h6 { color: var(--dark-bg) } les rendait gris fonce sur gris fonce,
+   avec un contraste de 1,85:1 (le RGAA exige 4,5:1). En blanc : 7,93:1. */
+.glass-dark h1,
+.glass-dark h2,
+.glass-dark h3,
+.glass-dark h4,
+.glass-dark h5,
+.glass-dark h6 {
+    color: var(--white);
+}
+
+/* Icones d'accent en vert clair : 5,20:1 sur ce fond. */
+.glass-dark h1 i,
+.glass-dark h2 i,
+.glass-dark h3 i {
+    color: #6EE7B7;
+}
+
 /* Navbar */
 .navbar {
     position: fixed;

@@ -21,9 +21,13 @@ class Theme
     #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'themes')]
     private Collection $products;
 
+    #[ORM\ManyToMany(targetEntity: Menu::class, mappedBy: 'themes')]
+    private Collection $menus;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->menus = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -68,5 +72,40 @@ class Theme
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Menu>
+     */
+    public function getMenus(): Collection
+    {
+        return $this->menus;
+    }
+
+    public function addMenu(Menu $menu): static
+    {
+        if (!$this->menus->contains($menu)) {
+            $this->menus->add($menu);
+            $menu->addTheme($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMenu(Menu $menu): static
+    {
+        if ($this->menus->removeElement($menu)) {
+            $menu->removeTheme($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Affichage lisible dans les formulaires et les listes.
+     */
+    public function __toString(): string
+    {
+        return (string) $this->name;
     }
 }

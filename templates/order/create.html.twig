@@ -64,6 +64,20 @@
         </div>
     </div>
 
+    {# Rappel des conditions du menu juste avant la validation. #}
+    {% if menu.conditions %}
+        <div role="note" style="background:rgba(245,158,11,0.10);border:2px solid #F59E0B;border-radius:1rem;padding:1.25rem;margin-bottom:1.5rem;">
+            <h3 style="margin:0 0 0.6rem;color:#92400E;font-size:1rem;">
+                <i class="fa-solid fa-circle-exclamation"></i> Conditions de ce menu
+            </h3>
+            <p style="margin:0;color:#78350F;line-height:1.7;white-space:pre-line;">{{ menu.conditions }}</p>
+            <p style="margin:0.9rem 0 0;color:#92400E;font-size:0.85rem;font-weight:600;">
+                En confirmant, vous acceptez ces conditions ainsi que nos
+                <a href="{{ path('app_cgv') }}" target="_blank" style="color:#92400E;">conditions générales de vente</a>.
+            </p>
+        </div>
+    {% endif %}
+
     <button type="submit" form="order-form" class="btn btn-primary" style="width:100%;padding:1rem;font-size:1.1rem;">✅ Confirmer la commande</button>
 </div>
 

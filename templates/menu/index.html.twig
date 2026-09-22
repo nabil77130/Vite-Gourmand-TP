@@ -7,12 +7,89 @@
     <h1 style="font-size:2.2rem;font-weight:700;margin-bottom:0.5rem;"><i class="fa-solid fa-utensils"></i> Notre Carte</h1>
     <p style="color:#6b7280;margin-bottom:3rem;">Découvrez nos menus de traiteur et la composition de chaque plat.</p>
 
-    {# ── MENUS ── #}
-    {% if menus %}
+    {# ── MENUS + FILTRES ──
+       Le turbo-frame permet de rafraichir la liste des menus sans recharger
+       la page entiere : seul le contenu du cadre est remplace. #}
+    <turbo-frame id="menus-list" data-turbo-action="advance">
         <div class="category-section" style="margin-bottom: 4rem;">
-            <h2 style="border-bottom: 2px solid var(--primary-color); padding-bottom: 0.5rem; display: inline-block; margin-bottom: 2rem;">
+            <h2 style="border-bottom: 2px solid var(--primary-color); padding-bottom: 0.5rem; display: inline-block; margin-bottom: 1.5rem;">
                 <i class="fa-solid fa-star"></i> Nos Menus
             </h2>
+
+            {# data-turbo-frame : on cible explicitement le cadre, sans dependre
+               de la resolution automatique par l'element parent. #}
+            <form method="get" action="{{ path('app_menu') }}" data-turbo-frame="menus-list" role="search" aria-label="Filtrer les menus"
+                  style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;align-items:end;background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.25);border-radius:1rem;padding:1.25rem;margin-bottom:2rem;">
+
+                <div>
+                    <label for="filter-theme" style="display:block;font-size:0.8rem;font-weight:600;color:#374151;margin-bottom:0.35rem;">Thématique</label>
+                    <select id="filter-theme" name="theme" onchange="this.form.requestSubmit()"
+                            style="width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:0.5rem;background:#fff;">
+                        <option value="">Toutes</option>
+                        {% for theme in themes %}
+                            <option value="{{ theme.id }}" {% if filters.theme == theme.id %}selected{% endif %}>{{ theme.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="filter-diet" style="display:block;font-size:0.8rem;font-weight:600;color:#374151;margin-bottom:0.35rem;">Régime alimentaire</label>
+                    <select id="filter-diet" name="diet" onchange="this.form.requestSubmit()"
+                            style="width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:0.5rem;background:#fff;">
+                        <option value="">Tous</option>
+                        {% for diet in diets %}
+                            <option value="{{ diet.id }}" {% if filters.diet == diet.id %}selected{% endif %}>{{ diet.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div>
+                    <label for="filter-price-min" style="display:block;font-size:0.8rem;font-weight:600;color:#374151;margin-bottom:0.35rem;">Prix min (€)</label>
+                    <input type="number" id="filter-price-min" name="priceMin" min="0" step="0.5"
+                           value="{{ filters.priceMin }}" placeholder="{{ priceRange.min|number_format(0) }}"
+                           style="width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:0.5rem;">
+                </div>
+
+                <div>
+                    <label for="filter-price-max" style="display:block;font-size:0.8rem;font-weight:600;color:#374151;margin-bottom:0.35rem;">Prix max (€)</label>
+                    <input type="number" id="filter-price-max" name="priceMax" min="0" step="0.5"
+                           value="{{ filters.priceMax }}" placeholder="{{ priceRange.max|number_format(0) }}"
+                           style="width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:0.5rem;">
+                </div>
+
+                <div>
+                    <label for="filter-people" style="display:block;font-size:0.8rem;font-weight:600;color:#374151;margin-bottom:0.35rem;">Nombre de convives</label>
+                    <input type="number" id="filter-people" name="minPeople" min="1" step="1"
+                           value="{{ filters.minPeople }}" placeholder="ex. 20"
+                           style="width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:0.5rem;">
+                </div>
+
+                <div style="display:flex;gap:0.5rem;">
+                    <button type="submit" class="btn btn-primary" style="flex:1;">
+                        <i class="fa-solid fa-filter"></i> Filtrer
+                    </button>
+                    {% if hasFilters %}
+                        <a href="{{ path('app_menu') }}" title="Réinitialiser les filtres"
+                           style="display:flex;align-items:center;justify-content:center;padding:0 0.85rem;border:1px solid #d1d5db;border-radius:0.5rem;color:#6b7280;text-decoration:none;">
+                            <i class="fa-solid fa-xmark"></i>
+                        </a>
+                    {% endif %}
+                </div>
+            </form>
+
+            <p aria-live="polite" style="color:#6b7280;font-size:0.9rem;margin-bottom:1.5rem;">
+                {{ menus|length }} menu{{ menus|length > 1 ? 's' : '' }}
+                {{ hasFilters ? 'correspondant à votre recherche' : 'à la carte' }}
+            </p>
+
+            {% if menus is empty %}
+                <div style="text-align:center;padding:3rem 1rem;background:rgba(0,0,0,0.03);border-radius:1rem;">
+                    <p style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">Aucun menu ne correspond à ces critères</p>
+                    <p style="color:#6b7280;margin-bottom:1.5rem;">Essayez d'élargir votre recherche.</p>
+                    <a href="{{ path('app_menu') }}" class="btn btn-primary">Voir tous les menus</a>
+                </div>
+            {% endif %}
+
             <div class="products-grid" style="padding: 0;">
                 {% for menu in menus %}
                     <div class="product-card glass" style="border: 2px solid var(--primary-color);">
@@ -33,6 +110,16 @@
                                     <li style="padding: 0.2rem 0; color: #6B7280; font-size: 0.9rem;">• {{ product.name }}</li>
                                 {% endfor %}
                             </ul>
+                            {% if menu.themes|length > 0 or menu.diets|length > 0 %}
+                                <div style="display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:0.75rem;">
+                                    {% for theme in menu.themes %}
+                                        <span style="background:rgba(99,102,241,0.12);color:#4f46e5;padding:0.2rem 0.6rem;border-radius:999px;font-size:0.75rem;font-weight:600;"><i class="fa-solid fa-earth-europe"></i> {{ theme.name }}</span>
+                                    {% endfor %}
+                                    {% for diet in menu.diets %}
+                                        <span style="background:rgba(16,185,129,0.15);color:#059669;padding:0.2rem 0.6rem;border-radius:999px;font-size:0.75rem;font-weight:600;"><i class="fa-solid fa-leaf"></i> {{ diet.name }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
                             <div style="display: flex; gap: 1rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
                                 {% if menu.minPeople %}
                                     <span style="background: rgba(16,185,129,0.15); color: var(--primary-color); font-size: 0.8rem; padding: 0.2rem 0.6rem; border-radius: 999px; font-weight: 600;"><i class="fa-solid fa-users"></i> Min. {{ menu.minPeople }} pers.</span>
@@ -44,17 +131,23 @@
                                 {% endif %}
                             </div>
                             <div class="product-price">{{ menu.price }} €<span style="font-size:0.8rem;font-weight:400;color:#9ca3af;"> / pers.</span></div>
-                            <a href="{{ path('app_menu_show', {'id': menu.id}) }}" class="btn btn-primary" style="width: 100%; margin-top: 1rem; display: block; text-align: center;">Voir le détail &amp; Commander →</a>
+                            {# _top : le lien doit remplacer la page entiere, pas seulement le cadre des menus #}
+                            <a href="{{ path('app_menu_show', {'id': menu.id}) }}" data-turbo-frame="_top" class="btn btn-primary" style="width: 100%; margin-top: 1rem; display: block; text-align: center;">Voir le détail &amp; Commander →</a>
                         </div>
                     </div>
                 {% endfor %}
             </div>
         </div>
-    {% endif %}
+    </turbo-frame>
 
     {# ── PLATS PAR CATÉGORIE (informatif seulement) ── #}
     <div style="background:rgba(99,102,241,0.05);border:1px solid rgba(99,102,241,0.15);border-radius:1rem;padding:1.25rem;margin-bottom:2rem;">
-        <p style="margin:0;color:#6b7280;font-size:0.9rem;"><i class="fa-solid fa-circle-info"></i> Les plats ci-dessous sont présentés à titre informatif. Ils font partie de nos menus. Pour commander, sélectionnez un menu ci-dessus.</p>
+        <p style="margin:0;color:#6b7280;font-size:0.9rem;"><i class="fa-solid fa-circle-info"></i>
+            Les plats ci-dessous sont présentés à titre informatif. Ils font partie de nos menus. Pour commander, sélectionnez un menu ci-dessus.
+            {% if filters.theme or filters.diet %}
+                <strong style="color:#4f46e5;">Cette liste suit la thématique et le régime sélectionnés dans les filtres.</strong>
+            {% endif %}
+        </p>
     </div>
 
     {% for category, products in groupedProducts %}
@@ -78,6 +171,14 @@
                         <div class="product-details">
                             <h3>{{ product.name }}</h3>
                             <p>{{ product.description }}</p>
+
+                            {% if product.themes|length > 0 %}
+                            <div style="display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:0.5rem;">
+                                {% for theme in product.themes %}
+                                    <span style="background:rgba(99,102,241,0.12);color:#4f46e5;padding:0.2rem 0.5rem;border-radius:12px;font-size:0.75rem;font-weight:600;"><i class="fa-solid fa-earth-europe"></i> {{ theme.name }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
 
                             {% if product.diets|length > 0 %}
                             <div style="display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:0.5rem;">
@@ -103,7 +204,11 @@
             </div>
         </div>
     {% else %}
-        <p>Aucun plat disponible pour le moment.</p>
+        {% if filters.theme or filters.diet %}
+            <p style="color:#6b7280;">Aucun plat ne correspond à ces critères. <a href="{{ path('app_menu') }}" style="color:var(--primary-color);">Voir tous les plats</a></p>
+        {% else %}
+            <p>Aucun plat disponible pour le moment.</p>
+        {% endif %}
     {% endfor %}
 </div>
 {% endblock %}

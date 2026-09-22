@@ -21,9 +21,13 @@ class Diet
     #[ORM\ManyToMany(targetEntity: Product::class, mappedBy: 'diets')]
     private Collection $products;
 
+    #[ORM\ManyToMany(targetEntity: Menu::class, mappedBy: 'diets')]
+    private Collection $menus;
+
     public function __construct()
     {
         $this->products = new ArrayCollection();
+        $this->menus = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -68,5 +72,40 @@ class Diet
         }
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Menu>
+     */
+    public function getMenus(): Collection
+    {
+        return $this->menus;
+    }
+
+    public function addMenu(Menu $menu): static
+    {
+        if (!$this->menus->contains($menu)) {
+            $this->menus->add($menu);
+            $menu->addDiet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMenu(Menu $menu): static
+    {
+        if ($this->menus->removeElement($menu)) {
+            $menu->removeDiet($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Affichage lisible dans les formulaires et les listes.
+     */
+    public function __toString(): string
+    {
+        return (string) $this->name;
     }
 }

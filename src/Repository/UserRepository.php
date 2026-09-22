@@ -33,28 +33,25 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-    //    /**
-    //     * @return User[] Returns an array of User objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('u.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?User
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+    /**
+     * Comptes employes, actifs comme desactives.
+     *
+     * Les roles sont stockes en JSON dans une seule colonne : on filtre donc
+     * avec un LIKE, ce qui reste fiable ici car les libelles de roles ne se
+     * chevauchent pas. Les administrateurs sont exclus : ils ne se gerent pas
+     * depuis l'application.
+     *
+     * @return User[]
+     */
+    public function findEmployees(): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.roles LIKE :employee')
+            ->andWhere('u.roles NOT LIKE :admin')
+            ->setParameter('employee', '%ROLE_EMPLOYEE%')
+            ->setParameter('admin', '%ROLE_ADMIN%')
+            ->orderBy('u.lastName', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }

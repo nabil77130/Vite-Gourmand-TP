@@ -64,6 +64,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 20, nullable: true)]
     private ?string $phone = null;
 
+    /**
+     * Compte actif ou non. Un compte desactive ne peut plus se connecter :
+     * c'est ainsi que l'administrateur rend inutilisable le compte d'un employe
+     * qui quitte l'entreprise, sans supprimer son historique.
+     */
+    #[ORM\Column(options: ['default' => true])]
+    private bool $isActive = true;
+
+    /**
+     * Jeton de reinitialisation de mot de passe, a usage unique.
+     */
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $resetToken = null;
+
+    /**
+     * Date d'expiration du jeton ci-dessus (une heure apres sa generation).
+     */
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $resetTokenExpiresAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -245,5 +265,70 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         }
 
         return $this;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
+
+        return $this;
+    }
+
+    public function getResetToken(): ?string
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?string $resetToken): static
+    {
+        $this->resetToken = $resetToken;
+
+        return $this;
+    }
+
+    public function getResetTokenExpiresAt(): ?\DateTimeImmutable
+    {
+        return $this->resetTokenExpiresAt;
+    }
+
+    public function setResetTokenExpiresAt(?\DateTimeImmutable $resetTokenExpiresAt): static
+    {
+        $this->resetTokenExpiresAt = $resetTokenExpiresAt;
+
+        return $this;
+    }
+
+    /**
+     * Le jeton de reinitialisation n'est valable que s'il existe et n'a pas expire.
+     */
+    public function isResetTokenValid(): bool
+    {
+        return $this->resetToken !== null
+            && $this->resetTokenExpiresAt !== null
+            && $this->resetTokenExpiresAt > new \DateTimeImmutable();
+    }
+
+    /**
+     * Invalide le jeton apres usage : il ne doit servir qu'une seule fois.
+     */
+    public function clearResetToken(): static
+    {
+        $this->resetToken = null;
+        $this->resetTokenExpiresAt = null;
+
+        return $this;
+    }
+
+    /**
+     * Affichage lisible dans les listes d'administration.
+     */
+    public function __toString(): string
+    {
+        return trim($this->firstName . ' ' . $this->lastName) ?: (string) $this->email;
     }
 }

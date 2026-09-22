@@ -61,9 +61,37 @@
                     </div>
                 </div>
 
+                {# Suivi de la commande : tous les etats traverses, avec la date
+                   et l'heure de chaque changement. Visible des que la commande
+                   a ete acceptee, comme le prevoit l'enonce. #}
+                {% if order.statusHistories|length > 0 and order.status != 'pending' %}
+                    <details style="margin-top:1rem;border-top:1px solid #f3f4f6;padding-top:1rem;" {% if order.status not in ['completed','cancelled'] %}open{% endif %}>
+                        <summary style="cursor:pointer;font-weight:600;color:#374151;font-size:0.95rem;">
+                            <i class="fa-solid fa-timeline"></i> Suivi de la commande
+                            <span style="color:#9ca3af;font-weight:400;">({{ order.statusHistories|length }} étape{{ order.statusHistories|length > 1 ? 's' : '' }})</span>
+                        </summary>
+                        <ol style="list-style:none;padding:0;margin:1rem 0 0;">
+                            {% for entry in order.statusHistories %}
+                                {% set color = status_colors[entry.status] ?? '#6b7280' %}
+                                <li style="display:flex;gap:0.9rem;align-items:flex-start;padding-bottom:1rem;position:relative;">
+                                    <span aria-hidden="true" style="flex:none;width:12px;height:12px;border-radius:50%;background:{{ color }};margin-top:0.3rem;
+                                        {% if not loop.last %}box-shadow:0 18px 0 -5px #e5e7eb;{% endif %}"></span>
+                                    <div>
+                                        <div style="font-weight:600;color:{{ color }};">{{ status_labels[entry.status] ?? entry.status }}</div>
+                                        <div style="color:#6b7280;font-size:0.85rem;">
+                                            <time datetime="{{ entry.changedAt|date('c') }}">{{ entry.changedAt|date('d/m/Y à H:i') }}</time>
+                                        </div>
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ol>
+                    </details>
+                {% endif %}
+
                 {# Actions #}
                 <div style="margin-top:1rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
                     {% if order.status == 'pending' %}
+                        <a href="{{ path('order_edit', {id: order.id}) }}" style="background:rgba(59,130,246,0.1);color:#2563eb;border:1px solid rgba(59,130,246,0.3);padding:0.4rem 0.8rem;border-radius:0.4rem;text-decoration:none;font-size:0.85rem;"><i class="fa-solid fa-pen-to-square"></i> Modifier</a>
                         <form method="post" action="{{ path('order_cancel', {id: order.id}) }}" onsubmit="return confirm('Annuler cette commande ?')">
                             <button type="submit" style="background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.3);padding:0.4rem 0.8rem;border-radius:0.4rem;cursor:pointer;font-size:0.85rem;"><i class="fa-solid fa-ban"></i> Annuler</button>
                         </form>
