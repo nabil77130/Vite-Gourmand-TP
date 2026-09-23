@@ -4,7 +4,7 @@
 <div style="max-width:900px;margin:2rem auto;padding:0 1rem;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
         <h1 style="font-size:1.8rem;font-weight:700;">📦 Commande #{{ order.id }}</h1>
-        <a href="{{ path('admin_order_index') }}" style="color:#6b7280;text-decoration:none;">← Retour</a>
+        <a href="{{ path('admin_order_index') }}" style="color:#4b5563;text-decoration:none;">← Retour</a>
     </div>
 
     {% for flash in app.flashes('success') %}
@@ -14,16 +14,16 @@
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:1.5rem;">
         {# Client info #}
         <div style="background:white;border-radius:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:1.5rem;">
-            <h3 style="margin-bottom:1rem;font-size:1rem;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em;">Client</h3>
+            <h3 style="margin-bottom:1rem;font-size:1rem;color:#4b5563;text-transform:uppercase;letter-spacing:0.05em;">Client</h3>
             {% if order.user %}
                 <p><strong>{{ order.user.firstName }} {{ order.user.lastName }}</strong></p>
-                <p style="color:#6b7280;">{{ order.user.email }}</p>
-                <p style="color:#6b7280;">{{ order.user.phone }}</p>
+                <p style="color:#4b5563;">{{ order.user.email }}</p>
+                <p style="color:#4b5563;">{{ order.user.phone }}</p>
             {% else %}<p>—</p>{% endif %}
         </div>
         {# Order info #}
         <div style="background:white;border-radius:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:1.5rem;">
-            <h3 style="margin-bottom:1rem;font-size:1rem;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em;">Détails</h3>
+            <h3 style="margin-bottom:1rem;font-size:1rem;color:#4b5563;text-transform:uppercase;letter-spacing:0.05em;">Détails</h3>
             <p>Date : <strong>{{ order.createdAt ? order.createdAt|date('d/m/Y H:i') : '—' }}</strong></p>
             <p>Personnes : <strong>{{ order.nombrePersonne ?? '—' }}</strong></p>
             <p>Livraison : <strong>{{ order.prixLivraison ? order.prixLivraison ~ ' €' : 'Gratuite' }}</strong></p>
@@ -47,10 +47,10 @@
     {# Historique complet des statuts, avec l'auteur de chaque changement. #}
     {% if order.statusHistories|length > 0 %}
     <div style="background:white;border-radius:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:1.5rem;margin-bottom:1.5rem;">
-        <h3 style="margin-bottom:1rem;font-size:1rem;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em;">Historique des statuts</h3>
+        <h3 style="margin-bottom:1rem;font-size:1rem;color:#4b5563;text-transform:uppercase;letter-spacing:0.05em;">Historique des statuts</h3>
         <table style="width:100%;border-collapse:collapse;font-size:0.92rem;">
             <thead>
-                <tr style="text-align:left;color:#9ca3af;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.04em;">
+                <tr style="text-align:left;color:#4b5563;font-size:0.78rem;text-transform:uppercase;letter-spacing:0.04em;">
                     <th scope="col" style="padding:0.5rem 0.4rem;border-bottom:1px solid #e5e7eb;">Statut</th>
                     <th scope="col" style="padding:0.5rem 0.4rem;border-bottom:1px solid #e5e7eb;">Date et heure</th>
                     <th scope="col" style="padding:0.5rem 0.4rem;border-bottom:1px solid #e5e7eb;">Par</th>
@@ -62,10 +62,10 @@
                         <td style="padding:0.6rem 0.4rem;border-bottom:1px solid #f3f4f6;font-weight:600;">
                             {{ statuses[entry.status] ?? entry.status }}
                         </td>
-                        <td style="padding:0.6rem 0.4rem;border-bottom:1px solid #f3f4f6;color:#6b7280;">
+                        <td style="padding:0.6rem 0.4rem;border-bottom:1px solid #f3f4f6;color:#4b5563;">
                             <time datetime="{{ entry.changedAt|date('c') }}">{{ entry.changedAt|date('d/m/Y à H:i:s') }}</time>
                         </td>
-                        <td style="padding:0.6rem 0.4rem;border-bottom:1px solid #f3f4f6;color:#6b7280;">
+                        <td style="padding:0.6rem 0.4rem;border-bottom:1px solid #f3f4f6;color:#4b5563;">
                             {{ entry.changedBy ? entry.changedBy.firstName ~ ' ' ~ entry.changedBy.lastName : '—' }}
                         </td>
                     </tr>
@@ -78,22 +78,22 @@
     {# Cancel with reason #}
     {% if order.status not in ['cancelled', 'completed'] %}
     <div style="background:white;border-radius:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:1.5rem;">
-        <h3 style="margin-bottom:1rem;color:#ef4444;">Annuler la commande</h3>
+        <h3 style="margin-bottom:1rem;color:#b91c1c;">Annuler la commande</h3>
         <form method="post" action="{{ path('admin_order_cancel', {id: order.id}) }}">
             <div style="display:grid;gap:1rem;">
                 <div>
-                    <label style="font-weight:600;display:block;margin-bottom:0.3rem;">Mode de contact avec le client</label>
-                    <select name="contact_mode" class="form-control" required>
+                    <label style="font-weight:600;display:block;margin-bottom:0.3rem;" for="champ-contact-mode">Mode de contact avec le client</label>
+                    <select id="champ-contact-mode" name="contact_mode" class="form-control" required>
                         <option value="">Choisir...</option>
                         <option value="Appel GSM">Appel GSM</option>
                         <option value="Email">Email</option>
                     </select>
                 </div>
                 <div>
-                    <label style="font-weight:600;display:block;margin-bottom:0.3rem;">Motif d'annulation</label>
-                    <textarea name="motif" class="form-control" rows="3" required placeholder="Expliquer le motif d'annulation..."></textarea>
+                    <label style="font-weight:600;display:block;margin-bottom:0.3rem;" for="champ-motif">Motif d'annulation</label>
+                    <textarea id="champ-motif" name="motif" class="form-control" rows="3" required placeholder="Expliquer le motif d'annulation..."></textarea>
                 </div>
-                <button type="submit" style="background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.3);padding:0.6rem 1.2rem;border-radius:0.5rem;cursor:pointer;" onclick="return confirm('Confirmer l\'annulation ?')">🚫 Annuler la commande</button>
+                <button type="submit" style="background:rgba(239,68,68,0.1);color:#b91c1c;border:1px solid rgba(239,68,68,0.3);padding:0.6rem 1.2rem;border-radius:0.5rem;cursor:pointer;" onclick="return confirm('Confirmer l\'annulation ?')">🚫 Annuler la commande</button>
             </div>
         </form>
     </div>

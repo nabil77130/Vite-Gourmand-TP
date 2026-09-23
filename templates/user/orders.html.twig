@@ -3,18 +3,18 @@
 {% block body %}
 <div style="max-width:1000px;margin:2rem auto;padding:0 1rem;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
-        <h1 style="font-size:1.8rem;font-weight:700;"><i class="fa-solid fa-box"></i> Mes commandes</h1>
+        <h1 style="font-size:1.8rem;font-weight:700;"><i class="fa-solid fa-box" aria-hidden="true"></i> Mes commandes</h1>
         <div style="display:flex;gap:0.75rem;">
-            <a href="{{ path('user_profile') }}" style="background:rgba(99,102,241,0.1);color:#6366f1;padding:0.5rem 1rem;border-radius:0.5rem;text-decoration:none;"><i class="fa-solid fa-user"></i> Mon profil</a>
-            <a href="{{ path('app_menu') }}" class="btn btn-primary" style="padding:0.5rem 1rem;"><i class="fa-solid fa-utensils"></i> Commander</a>
+            <a href="{{ path('user_profile') }}" style="background:rgba(99,102,241,0.1);color:#6366f1;padding:0.5rem 1rem;border-radius:0.5rem;text-decoration:none;"><i class="fa-solid fa-user" aria-hidden="true"></i> Mon profil</a>
+            <a href="{{ path('app_menu') }}" class="btn btn-primary" style="padding:0.5rem 1rem;"><i class="fa-solid fa-utensils" aria-hidden="true"></i> Commander</a>
         </div>
     </div>
 
     {% for flash in app.flashes('success') %}
-        <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#065F46;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;"><i class="fa-solid fa-check"></i> {{ flash }}</div>
+        <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#065F46;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;"><i class="fa-solid fa-check" aria-hidden="true"></i> {{ flash }}</div>
     {% endfor %}
     {% for flash in app.flashes('error') %}
-        <div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#b91c1c;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;"><i class="fa-solid fa-xmark"></i> {{ flash }}</div>
+        <div style="background:rgba(239,68,68,0.1);border:1px solid rgba(239,68,68,0.3);color:#b91c1c;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;"><i class="fa-solid fa-xmark" aria-hidden="true"></i> {{ flash }}</div>
     {% endfor %}
 
     {% set status_labels = {
@@ -30,8 +30,8 @@
 
     {% if orders is empty %}
         <div style="background:white;border-radius:1rem;padding:3rem;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.06);">
-            <p style="font-size:3rem;margin-bottom:1rem;"><i class="fa-solid fa-utensils"></i></p>
-            <p style="color:#9ca3af;font-size:1.1rem;">Vous n'avez pas encore de commande.</p>
+            <p style="font-size:3rem;margin-bottom:1rem;"><i class="fa-solid fa-utensils" aria-hidden="true"></i></p>
+            <p style="color:#4b5563;font-size:1.1rem;">Vous n'avez pas encore de commande.</p>
             <a href="{{ path('app_menu') }}" class="btn btn-primary" style="margin-top:1rem;display:inline-block;">Découvrir nos menus</a>
         </div>
     {% else %}
@@ -46,18 +46,18 @@
                                 {{ status_labels[order.status] ?? order.status }}
                             </span>
                         </div>
-                        <p style="color:#6b7280;font-size:0.9rem;margin:0;">
-                            <i class="fa-regular fa-calendar"></i> {{ order.createdAt ? order.createdAt|date('d/m/Y à H:i') : '—' }}
-                            {% if order.nombrePersonne %} · <i class="fa-solid fa-users"></i> {{ order.nombrePersonne }} personnes{% endif %}
-                            {% if order.adressePrestation %} · <i class="fa-solid fa-location-dot"></i> {{ order.adressePrestation }}{% endif %}
+                        <p style="color:#4b5563;font-size:0.9rem;margin:0;">
+                            <i class="fa-regular fa-calendar" aria-hidden="true"></i> {{ order.createdAt ? order.createdAt|date('d/m/Y à H:i') : '—' }}
+                            {% if order.nombrePersonne %} · <i class="fa-solid fa-users" aria-hidden="true"></i> {{ order.nombrePersonne }} personnes{% endif %}
+                            {% if order.adressePrestation %} · <i class="fa-solid fa-location-dot" aria-hidden="true"></i> {{ order.adressePrestation }}{% endif %}
                         </p>
                         {% if order.cancellationReason %}
-                            <p style="color:#ef4444;font-size:0.85rem;margin-top:0.5rem;">Motif : {{ order.cancellationReason }}</p>
+                            <p style="color:#b91c1c;font-size:0.85rem;margin-top:0.5rem;">Motif : {{ order.cancellationReason }}</p>
                         {% endif %}
                     </div>
                     <div style="text-align:right;">
                         <div style="font-size:1.4rem;font-weight:800;color:var(--secondary-color);">{{ order.totalPrice }} €</div>
-                        {% if order.prixLivraison %}<div style="font-size:0.8rem;color:#9ca3af;">dont {{ order.prixLivraison }} € livraison</div>{% endif %}
+                        {% if order.prixLivraison %}<div style="font-size:0.8rem;color:#4b5563;">dont {{ order.prixLivraison }} € livraison</div>{% endif %}
                     </div>
                 </div>
 
@@ -67,8 +67,8 @@
                 {% if order.statusHistories|length > 0 and order.status != 'pending' %}
                     <details style="margin-top:1rem;border-top:1px solid #f3f4f6;padding-top:1rem;" {% if order.status not in ['completed','cancelled'] %}open{% endif %}>
                         <summary style="cursor:pointer;font-weight:600;color:#374151;font-size:0.95rem;">
-                            <i class="fa-solid fa-timeline"></i> Suivi de la commande
-                            <span style="color:#9ca3af;font-weight:400;">({{ order.statusHistories|length }} étape{{ order.statusHistories|length > 1 ? 's' : '' }})</span>
+                            <i class="fa-solid fa-timeline" aria-hidden="true"></i> Suivi de la commande
+                            <span style="color:#4b5563;font-weight:400;">({{ order.statusHistories|length }} étape{{ order.statusHistories|length > 1 ? 's' : '' }})</span>
                         </summary>
                         <ol style="list-style:none;padding:0;margin:1rem 0 0;">
                             {% for entry in order.statusHistories %}
@@ -78,7 +78,7 @@
                                         {% if not loop.last %}box-shadow:0 18px 0 -5px #e5e7eb;{% endif %}"></span>
                                     <div>
                                         <div style="font-weight:600;color:{{ color }};">{{ status_labels[entry.status] ?? entry.status }}</div>
-                                        <div style="color:#6b7280;font-size:0.85rem;">
+                                        <div style="color:#4b5563;font-size:0.85rem;">
                                             <time datetime="{{ entry.changedAt|date('c') }}">{{ entry.changedAt|date('d/m/Y à H:i') }}</time>
                                         </div>
                                     </div>
@@ -91,16 +91,16 @@
                 {# Actions #}
                 <div style="margin-top:1rem;display:flex;gap:0.75rem;flex-wrap:wrap;">
                     {% if order.status == 'pending' %}
-                        <a href="{{ path('order_edit', {id: order.id}) }}" style="background:rgba(59,130,246,0.1);color:#2563eb;border:1px solid rgba(59,130,246,0.3);padding:0.4rem 0.8rem;border-radius:0.4rem;text-decoration:none;font-size:0.85rem;"><i class="fa-solid fa-pen-to-square"></i> Modifier</a>
+                        <a href="{{ path('order_edit', {id: order.id}) }}" style="background:rgba(59,130,246,0.1);color:#2563eb;border:1px solid rgba(59,130,246,0.3);padding:0.4rem 0.8rem;border-radius:0.4rem;text-decoration:none;font-size:0.85rem;"><i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Modifier</a>
                         <form method="post" action="{{ path('order_cancel', {id: order.id}) }}" onsubmit="return confirm('Annuler cette commande ?')">
-                            <button type="submit" style="background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.3);padding:0.4rem 0.8rem;border-radius:0.4rem;cursor:pointer;font-size:0.85rem;"><i class="fa-solid fa-ban"></i> Annuler</button>
+                            <button type="submit" style="background:rgba(239,68,68,0.1);color:#b91c1c;border:1px solid rgba(239,68,68,0.3);padding:0.4rem 0.8rem;border-radius:0.4rem;cursor:pointer;font-size:0.85rem;"><i class="fa-solid fa-ban" aria-hidden="true"></i> Annuler</button>
                         </form>
                     {% endif %}
                     {% if order.status == 'completed' and order.review is null %}
-                        <a href="{{ path('order_review', {id: order.id}) }}" style="background:rgba(245,158,11,0.1);color:#d97706;border:1px solid rgba(245,158,11,0.3);padding:0.4rem 0.8rem;border-radius:0.4rem;text-decoration:none;font-size:0.85rem;"><i class="fa-solid fa-star"></i> Laisser un avis</a>
+                        <a href="{{ path('order_review', {id: order.id}) }}" style="background:rgba(245,158,11,0.1);color:#92400e;border:1px solid rgba(245,158,11,0.3);padding:0.4rem 0.8rem;border-radius:0.4rem;text-decoration:none;font-size:0.85rem;"><i class="fa-solid fa-star" aria-hidden="true"></i> Laisser un avis</a>
                     {% endif %}
                     {% if order.review %}
-                        <span style="color:#9ca3af;font-size:0.85rem;"><i class="fa-solid fa-star"></i> Avis déposé ({{ order.review.rating }}/5)</span>
+                        <span style="color:#4b5563;font-size:0.85rem;"><i class="fa-solid fa-star" aria-hidden="true"></i> Avis déposé ({{ order.review.rating }}/5)</span>
                     {% endif %}
                 </div>
             </div>

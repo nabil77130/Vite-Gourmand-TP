@@ -4,8 +4,8 @@
 
 {% block body %}
 <div class="container" style="max-width: 1200px; margin: 2rem auto; padding: 2rem;">
-    <h1 style="font-size:2.2rem;font-weight:700;margin-bottom:0.5rem;"><i class="fa-solid fa-utensils"></i> Notre Carte</h1>
-    <p style="color:#6b7280;margin-bottom:3rem;">Découvrez nos menus de traiteur et la composition de chaque plat.</p>
+    <h1 style="font-size:2.2rem;font-weight:700;margin-bottom:0.5rem;"><i class="fa-solid fa-utensils" aria-hidden="true"></i> Notre Carte</h1>
+    <p style="color:#4b5563;margin-bottom:3rem;">Découvrez nos menus de traiteur et la composition de chaque plat.</p>
 
     {# ── MENUS + FILTRES ──
        Le turbo-frame permet de rafraichir la liste des menus sans recharger
@@ -13,7 +13,7 @@
     <turbo-frame id="menus-list" data-turbo-action="advance">
         <div class="category-section" style="margin-bottom: 4rem;">
             <h2 style="border-bottom: 2px solid var(--primary-color); padding-bottom: 0.5rem; display: inline-block; margin-bottom: 1.5rem;">
-                <i class="fa-solid fa-star"></i> Nos Menus
+                <i class="fa-solid fa-star" aria-hidden="true"></i> Nos Menus
             </h2>
 
             {# data-turbo-frame : on cible explicitement le cadre, sans dependre
@@ -66,18 +66,18 @@
 
                 <div style="display:flex;gap:0.5rem;">
                     <button type="submit" class="btn btn-primary" style="flex:1;">
-                        <i class="fa-solid fa-filter"></i> Filtrer
+                        <i class="fa-solid fa-filter" aria-hidden="true"></i> Filtrer
                     </button>
                     {% if hasFilters %}
                         <a href="{{ path('app_menu') }}" title="Réinitialiser les filtres"
-                           style="display:flex;align-items:center;justify-content:center;padding:0 0.85rem;border:1px solid #d1d5db;border-radius:0.5rem;color:#6b7280;text-decoration:none;">
-                            <i class="fa-solid fa-xmark"></i>
+                           style="display:flex;align-items:center;justify-content:center;padding:0 0.85rem;border:1px solid #d1d5db;border-radius:0.5rem;color:#4b5563;text-decoration:none;">
+                            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
                         </a>
                     {% endif %}
                 </div>
             </form>
 
-            <p aria-live="polite" style="color:#6b7280;font-size:0.9rem;margin-bottom:1.5rem;">
+            <p aria-live="polite" style="color:#4b5563;font-size:0.9rem;margin-bottom:1.5rem;">
                 {{ menus|length }} menu{{ menus|length > 1 ? 's' : '' }}
                 {{ hasFilters ? 'correspondant à votre recherche' : 'à la carte' }}
             </p>
@@ -85,7 +85,7 @@
             {% if menus is empty %}
                 <div style="text-align:center;padding:3rem 1rem;background:rgba(0,0,0,0.03);border-radius:1rem;">
                     <p style="font-size:1.1rem;font-weight:600;margin-bottom:0.5rem;">Aucun menu ne correspond à ces critères</p>
-                    <p style="color:#6b7280;margin-bottom:1.5rem;">Essayez d'élargir votre recherche.</p>
+                    <p style="color:#4b5563;margin-bottom:1.5rem;">Essayez d'élargir votre recherche.</p>
                     <a href="{{ path('app_menu') }}" class="btn btn-primary">Voir tous les menus</a>
                 </div>
             {% endif %}
@@ -107,30 +107,30 @@
                             <p>{{ menu.description }}</p>
                             <ul style="list-style: none; padding: 0; margin: 1rem 0;">
                                 {% for product in menu.products %}
-                                    <li style="padding: 0.2rem 0; color: #6B7280; font-size: 0.9rem;">• {{ product.name }}</li>
+                                    <li style="padding: 0.2rem 0; color: #4b5563; font-size: 0.9rem;">• {{ product.name }}</li>
                                 {% endfor %}
                             </ul>
                             {% if menu.themes|length > 0 or menu.diets|length > 0 %}
                                 <div style="display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:0.75rem;">
                                     {% for theme in menu.themes %}
-                                        <span style="background:rgba(99,102,241,0.12);color:#4f46e5;padding:0.2rem 0.6rem;border-radius:999px;font-size:0.75rem;font-weight:600;"><i class="fa-solid fa-earth-europe"></i> {{ theme.name }}</span>
+                                        <span style="background:rgba(99,102,241,0.12);color:#4f46e5;padding:0.2rem 0.6rem;border-radius:999px;font-size:0.75rem;font-weight:600;"><i class="fa-solid fa-earth-europe" aria-hidden="true"></i> {{ theme.name }}</span>
                                     {% endfor %}
                                     {% for diet in menu.diets %}
-                                        <span style="background:rgba(16,185,129,0.15);color:#059669;padding:0.2rem 0.6rem;border-radius:999px;font-size:0.75rem;font-weight:600;"><i class="fa-solid fa-leaf"></i> {{ diet.name }}</span>
+                                        <span style="background:rgba(16,185,129,0.15);color:#065f46;padding:0.2rem 0.6rem;border-radius:999px;font-size:0.75rem;font-weight:600;"><i class="fa-solid fa-leaf" aria-hidden="true"></i> {{ diet.name }}</span>
                                     {% endfor %}
                                 </div>
                             {% endif %}
                             <div style="display: flex; gap: 1rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
                                 {% if menu.minPeople %}
-                                    <span style="background: rgba(16,185,129,0.15); color: var(--primary-color); font-size: 0.8rem; padding: 0.2rem 0.6rem; border-radius: 999px; font-weight: 600;"><i class="fa-solid fa-users"></i> Min. {{ menu.minPeople }} pers.</span>
+                                    <span style="background: rgba(16,185,129,0.15); color: var(--primary-color); font-size: 0.8rem; padding: 0.2rem 0.6rem; border-radius: 999px; font-weight: 600;"><i class="fa-solid fa-users" aria-hidden="true"></i> Min. {{ menu.minPeople }} pers.</span>
                                 {% endif %}
                                 {% if menu.stock is not null %}
                                     <span style="background: {% if menu.stock > 0 %}rgba(16,185,129,0.15){% else %}rgba(239,68,68,0.15){% endif %}; color: {% if menu.stock > 0 %}var(--primary-color){% else %}#EF4444{% endif %}; font-size: 0.8rem; padding: 0.2rem 0.6rem; border-radius: 999px; font-weight: 600;">
-                                        {% if menu.stock > 0 %}<i class="fa-solid fa-box"></i> {{ menu.stock }} dispo.{% else %}<i class="fa-solid fa-xmark"></i> Épuisé{% endif %}
+                                        {% if menu.stock > 0 %}<i class="fa-solid fa-box" aria-hidden="true"></i> {{ menu.stock }} dispo.{% else %}<i class="fa-solid fa-xmark" aria-hidden="true"></i> Épuisé{% endif %}
                                     </span>
                                 {% endif %}
                             </div>
-                            <div class="product-price">{{ menu.minGroupPrice|number_format(2, ',', ' ') }} €<span style="font-size:0.8rem;font-weight:400;color:#6b7280;"> pour {{ menu.minPeople ?? 1 }} pers.<br>soit {{ menu.price|number_format(2, ',', ' ') }} € / pers.</span></div>
+                            <div class="product-price">{{ menu.minGroupPrice|number_format(2, ',', ' ') }} €<span style="font-size:0.8rem;font-weight:400;color:#4b5563;"> pour {{ menu.minPeople ?? 1 }} pers.<br>soit {{ menu.price|number_format(2, ',', ' ') }} € / pers.</span></div>
                             {# _top : le lien doit remplacer la page entiere, pas seulement le cadre des menus #}
                             <a href="{{ path('app_menu_show', {'id': menu.id}) }}" data-turbo-frame="_top" class="btn btn-primary" style="width: 100%; margin-top: 1rem; display: block; text-align: center;">Voir le détail &amp; Commander →</a>
                         </div>
@@ -142,7 +142,7 @@
 
     {# ── PLATS PAR CATÉGORIE (informatif seulement) ── #}
     <div style="background:rgba(99,102,241,0.05);border:1px solid rgba(99,102,241,0.15);border-radius:1rem;padding:1.25rem;margin-bottom:2rem;">
-        <p style="margin:0;color:#6b7280;font-size:0.9rem;"><i class="fa-solid fa-circle-info"></i>
+        <p style="margin:0;color:#4b5563;font-size:0.9rem;"><i class="fa-solid fa-circle-info" aria-hidden="true"></i>
             Les plats ci-dessous sont présentés à titre informatif. Ils font partie de nos menus. Pour commander, sélectionnez un menu ci-dessus.
             {% if filters.theme or filters.diet %}
                 <strong style="color:#4f46e5;">Cette liste suit la thématique et le régime sélectionnés dans les filtres.</strong>
@@ -153,10 +153,10 @@
     {% for category, products in groupedProducts %}
         <div class="category-section" style="margin-bottom: 4rem;">
             <h2 style="border-bottom: 2px solid var(--primary-color); padding-bottom: 0.5rem; display: inline-block; margin-bottom: 2rem;">
-                {% if category == 'starter' %}<i class="fa-solid fa-carrot"></i> Entrées
-                {% elseif category == 'main' %}<i class="fa-solid fa-utensils"></i> Plats principaux
-                {% elseif category == 'dessert' %}<i class="fa-solid fa-cake-candles"></i> Desserts
-                {% elseif category == 'drink' %}<i class="fa-solid fa-glass-water"></i> Boissons
+                {% if category == 'starter' %}<i class="fa-solid fa-carrot" aria-hidden="true"></i> Entrées
+                {% elseif category == 'main' %}<i class="fa-solid fa-utensils" aria-hidden="true"></i> Plats principaux
+                {% elseif category == 'dessert' %}<i class="fa-solid fa-cake-candles" aria-hidden="true"></i> Desserts
+                {% elseif category == 'drink' %}<i class="fa-solid fa-glass-water" aria-hidden="true"></i> Boissons
                 {% else %}{{ category|capitalize }}s{% endif %}
             </h2>
 
@@ -175,7 +175,7 @@
                             {% if product.themes|length > 0 %}
                             <div style="display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:0.5rem;">
                                 {% for theme in product.themes %}
-                                    <span style="background:rgba(99,102,241,0.12);color:#4f46e5;padding:0.2rem 0.5rem;border-radius:12px;font-size:0.75rem;font-weight:600;"><i class="fa-solid fa-earth-europe"></i> {{ theme.name }}</span>
+                                    <span style="background:rgba(99,102,241,0.12);color:#4f46e5;padding:0.2rem 0.5rem;border-radius:12px;font-size:0.75rem;font-weight:600;"><i class="fa-solid fa-earth-europe" aria-hidden="true"></i> {{ theme.name }}</span>
                                 {% endfor %}
                             </div>
                             {% endif %}
@@ -183,7 +183,7 @@
                             {% if product.diets|length > 0 %}
                             <div style="display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:0.5rem;">
                                 {% for diet in product.diets %}
-                                    <span style="background:rgba(16,185,129,0.15);color:#059669;padding:0.2rem 0.5rem;border-radius:12px;font-size:0.75rem;font-weight:600;"><i class="fa-solid fa-leaf"></i> {{ diet.name }}</span>
+                                    <span style="background:rgba(16,185,129,0.15);color:#065f46;padding:0.2rem 0.5rem;border-radius:12px;font-size:0.75rem;font-weight:600;"><i class="fa-solid fa-leaf" aria-hidden="true"></i> {{ diet.name }}</span>
                                 {% endfor %}
                             </div>
                             {% endif %}
@@ -191,13 +191,13 @@
                             {% if product.allergens|length > 0 %}
                             <div style="display:flex;flex-wrap:wrap;gap:0.3rem;margin-bottom:0.5rem;">
                                 {% for allergen in product.allergens %}
-                                    <span style="background:rgba(239,68,68,0.12);color:#dc2626;padding:0.2rem 0.5rem;border-radius:12px;font-size:0.75rem;font-weight:600;"><i class="fa-solid fa-triangle-exclamation"></i> {{ allergen.name }}</span>
+                                    <span style="background:rgba(239,68,68,0.12);color:#dc2626;padding:0.2rem 0.5rem;border-radius:12px;font-size:0.75rem;font-weight:600;"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> {{ allergen.name }}</span>
                                 {% endfor %}
                             </div>
                             {% endif %}
 
                             <div class="product-price">{{ product.price }} €</div>
-                            <p style="font-size:0.8rem;color:#9ca3af;margin-top:0.75rem;font-style:italic;">Disponible dans nos menus</p>
+                            <p style="font-size:0.8rem;color:#4b5563;margin-top:0.75rem;font-style:italic;">Disponible dans nos menus</p>
                         </div>
                     </div>
                 {% endfor %}
@@ -205,7 +205,7 @@
         </div>
     {% else %}
         {% if filters.theme or filters.diet %}
-            <p style="color:#6b7280;">Aucun plat ne correspond à ces critères. <a href="{{ path('app_menu') }}" style="color:var(--primary-color);">Voir tous les plats</a></p>
+            <p style="color:#4b5563;">Aucun plat ne correspond à ces critères. <a href="{{ path('app_menu') }}" style="color:var(--primary-color);">Voir tous les plats</a></p>
         {% else %}
             <p>Aucun plat disponible pour le moment.</p>
         {% endif %}

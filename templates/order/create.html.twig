@@ -4,7 +4,7 @@
 <div style="max-width:800px;margin:2rem auto;padding:0 1rem;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
         <h1 style="font-size:1.8rem;font-weight:700;">🛒 Commander : {{ menu.name }}</h1>
-        <a href="{{ path('app_menu_show', {id: menu.id}) }}" style="color:#6b7280;text-decoration:none;">← Retour au menu</a>
+        <a href="{{ path('app_menu_show', {id: menu.id}) }}" style="color:#4b5563;text-decoration:none;">← Retour au menu</a>
     </div>
 
     {# Menu summary #}
@@ -12,18 +12,18 @@
         <div style="display:flex;justify-content:space-between;align-items:center;">
             <div>
                 <h3 style="margin:0 0 0.25rem;">{{ menu.name }}</h3>
-                <p style="color:#6b7280;margin:0;font-size:0.9rem;">{{ menu.description }}</p>
+                <p style="color:#4b5563;margin:0;font-size:0.9rem;">{{ menu.description }}</p>
             </div>
             <div style="text-align:right;">
                 <div style="font-size:1.5rem;font-weight:800;color:var(--secondary-color);">{{ menu.minGroupPrice|number_format(2, ',', ' ') }} €</div>
-                <div style="font-size:0.85rem;color:#6b7280;">pour {{ menu.minPeople ?? 1 }} pers. min. · {{ menu.price|number_format(2, ',', ' ') }} € / pers.</div>
+                <div style="font-size:0.85rem;color:#4b5563;">pour {{ menu.minPeople ?? 1 }} pers. min. · {{ menu.price|number_format(2, ',', ' ') }} € / pers.</div>
             </div>
         </div>
     </div>
 
     {# Client info (pre-filled) #}
     <div style="background:white;border-radius:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:1.5rem;margin-bottom:1.5rem;">
-        <h3 style="margin-bottom:1rem;font-size:1rem;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em;">Vos informations (pré-remplies)</h3>
+        <h3 style="margin-bottom:1rem;font-size:1rem;color:#4b5563;text-transform:uppercase;letter-spacing:0.05em;">Vos informations (pré-remplies)</h3>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;font-size:0.95rem;">
             <div><strong>Nom :</strong> {{ user.firstName }} {{ user.lastName }}</div>
             <div><strong>Email :</strong> {{ user.email }}</div>
@@ -37,7 +37,7 @@
         {{ form_start(form, {attr: {id: 'order-form'}}) }}
         <div style="display:grid;gap:1.25rem;">
             <div>{{ form_label(form.adressePrestation) }}{{ form_widget(form.adressePrestation, {attr: {class: 'form-control', id: 'adresse-input'}}) }}{{ form_errors(form.adressePrestation) }}
-                <small style="color:#9ca3af;">Livraison gratuite à Bordeaux ; ailleurs 5 € + 0,59 €/km (le montant exact s'affiche ci-dessous)</small>
+                <small style="color:#4b5563;">Livraison gratuite à Bordeaux ; ailleurs 5 € + 0,59 €/km (le montant exact s'affiche ci-dessous)</small>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
                 <div>{{ form_label(form.eventDate) }}{{ form_widget(form.eventDate, {attr: {class: 'form-control'}}) }}{{ form_errors(form.eventDate) }}</div>
@@ -57,7 +57,7 @@
         <h3 style="margin-bottom:1rem;">💰 Récapitulatif du prix</h3>
         <div style="display:grid;gap:0.5rem;font-size:0.95rem;">
             <div style="display:flex;justify-content:space-between;"><span id="prix-menu-label">Repas ({{ menu.minPeople ?? 1 }} pers. × {{ menu.price|number_format(2, ',', ' ') }} €) :</span><strong id="prix-menu">{{ menu.minGroupPrice|number_format(2, ',', ' ') }} €</strong></div>
-            <div id="remise-row" style="display:none;justify-content:space-between;"><span>Réduction 10% (≥ {{ (menu.minPeople ?? 1) + 5 }} pers.) :</span><strong id="remise-val" style="color:#10b981;">- 0 €</strong></div>
+            <div id="remise-row" style="display:none;justify-content:space-between;"><span>Réduction 10% (≥ {{ (menu.minPeople ?? 1) + 5 }} pers.) :</span><strong id="remise-val" style="color:#047857;">- 0 €</strong></div>
             <div style="display:flex;justify-content:space-between;"><span>Livraison :</span><strong id="prix-livraison">0 €</strong></div>
             <hr style="border:none;border-top:1px solid rgba(99,102,241,0.2);margin:0.5rem 0;">
             <div style="display:flex;justify-content:space-between;font-size:1.2rem;"><span><strong>Total :</strong></span><strong id="total-price" style="color:var(--secondary-color);">{{ menu.minGroupPrice|number_format(2, ',', ' ') }} €</strong></div>
@@ -68,7 +68,7 @@
     {% if menu.conditions %}
         <div role="note" style="background:rgba(245,158,11,0.10);border:2px solid #F59E0B;border-radius:1rem;padding:1.25rem;margin-bottom:1.5rem;">
             <h3 style="margin:0 0 0.6rem;color:#92400E;font-size:1rem;">
-                <i class="fa-solid fa-circle-exclamation"></i> Conditions de ce menu
+                <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i> Conditions de ce menu
             </h3>
             <p style="margin:0;color:#78350F;line-height:1.7;white-space:pre-line;">{{ menu.conditions }}</p>
             <p style="margin:0.9rem 0 0;color:#92400E;font-size:0.85rem;font-weight:600;">

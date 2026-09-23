@@ -15,35 +15,88 @@
         {% block stylesheets %}
         {% endblock %}
 
+        {# Menus repliables (menu mobile et menu deroulant "Menu") : un seul
+           ecouteur, pose sur le document, qui reste actif apres les navigations
+           Turbo. Echap ou un clic ailleurs referme le menu ouvert. #}
+        <script>
+            if (!window.vgNavInit) {
+                window.vgNavInit = true;
+                var vgClose = function (except) {
+                    document.querySelectorAll('[data-menu-toggle][aria-expanded="true"]').forEach(function (t) {
+                        if (t === except) { return; }
+                        t.setAttribute('aria-expanded', 'false');
+                        document.getElementById(t.getAttribute('aria-controls')).classList.remove('is-open');
+                    });
+                };
+                document.addEventListener('click', function (event) {
+                    var toggle = event.target.closest('[data-menu-toggle]');
+                    if (!toggle) {
+                        if (!event.target.closest('.is-open')) { vgClose(null); }
+                        return;
+                    }
+                    var menu = document.getElementById(toggle.getAttribute('aria-controls'));
+                    var open = toggle.getAttribute('aria-expanded') === 'true';
+                    if (!toggle.closest('.is-open')) { vgClose(toggle); }
+                    toggle.setAttribute('aria-expanded', open ? 'false' : 'true');
+                    menu.classList.toggle('is-open', !open);
+                });
+                document.addEventListener('keydown', function (event) {
+                    if (event.key !== 'Escape') { return; }
+                    var opened = document.querySelectorAll('[data-menu-toggle][aria-expanded="true"]');
+                    if (opened.length === 0) { return; }
+                    var last = opened[opened.length - 1];
+                    vgClose(null);
+                    last.focus();
+                });
+            }
+        </script>
+
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
     <body class="page-{{ app.request.attributes.get('_route') }}">
-        <nav class="navbar glass">
-            <a href="{{ path('app_home') }}" class="navbar-brand">Vite & Gourmand</a>
-            <div class="nav-links">
+        {# Lien d'evitement (RGAA 12.7) : premier element atteint au clavier. #}
+        <a href="#contenu" class="skip-link">Aller au contenu</a>
+
+        <header>
+        <nav class="navbar glass" aria-label="Navigation principale">
+            <a href="{{ path('app_home') }}" class="navbar-brand">Vite & Gourmand<span class="sr-only"> - accueil</span></a>
+            <button type="button" class="nav-toggle" data-menu-toggle aria-expanded="false" aria-controls="menu-principal">
+                <i class="fa-solid fa-bars" aria-hidden="true"></i> Menu
+            </button>
+            <div class="nav-links" id="menu-principal">
                 <a href="{{ path('app_home') }}" class="nav-link">Accueil</a>
                 <a href="{{ path('app_menu') }}" class="nav-link">La Carte</a>
                 <a href="{{ path('app_contact') }}" class="nav-link">Contact</a>
                 {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('admin_dashboard') }}" class="nav-link"><i class="fa-solid fa-chart-column"></i> Tableau de bord</a>
-                    <a href="{{ path('admin_employee_index') }}" class="nav-link"><i class="fa-solid fa-users-gear"></i> Employés</a>
+                    <a href="{{ path('admin_dashboard') }}" class="nav-link"><i class="fa-solid fa-chart-column" aria-hidden="true"></i> Tableau de bord</a>
+                    <a href="{{ path('admin_employee_index') }}" class="nav-link"><i class="fa-solid fa-users-gear" aria-hidden="true"></i> Employés</a>
                 {% endif %}
                 {% if is_granted('ROLE_EMPLOYEE') %}
-                    <a href="{{ path('admin_menu_index') }}" class="nav-link"><i class="fa-solid fa-gear"></i> Administration</a>
+                    <a href="{{ path('admin_menu_index') }}" class="nav-link"><i class="fa-solid fa-gear" aria-hidden="true"></i> Administration</a>
                 {% endif %}
                 {% if app.user %}
-                    <a href="{{ path('user_profile') }}" class="nav-link"><i class="fa-solid fa-user"></i> Mon compte</a>
-                    <a href="{{ path('user_orders') }}" class="nav-link"><i class="fa-solid fa-box"></i> Commandes</a>
-                    <a href="{{ path('app_logout') }}" class="nav-link btn btn-secondary">Déconnexion</a>
+                    <a href="{{ path('user_profile') }}" class="nav-link"><i class="fa-solid fa-user" aria-hidden="true"></i> Mon compte</a>
+                    <a href="{{ path('user_orders') }}" class="nav-link"><i class="fa-solid fa-box" aria-hidden="true"></i> Commandes</a>
+                    {# Menu deroulant a la place de l'ancien bouton Deconnexion. #}
+                    <div class="nav-dropdown">
+                        <button type="button" class="nav-dropdown-toggle" data-menu-toggle aria-expanded="false" aria-controls="menu-compte">
+                            Menu <i class="fa-solid fa-chevron-down" aria-hidden="true"></i>
+                        </button>
+                        <ul class="nav-dropdown-menu" id="menu-compte">
+                            <li><a href="{{ path('app_logout') }}" class="nav-link btn btn-secondary">Déconnexion</a></li>
+                        </ul>
+                    </div>
                 {% else %}
                     <a href="{{ path('app_login') }}" class="nav-link">Connexion</a>
                     <a href="{{ path('app_register') }}" class="nav-link btn btn-primary">S'inscrire</a>
                 {% endif %}
             </div>
         </nav>
+        </header>
 
+        <main id="contenu" tabindex="-1">
         {# Messages flash affiches sur toutes les pages : confirmations,
            avertissements et erreurs remontes par les controleurs. #}
         {% for type, messages in app.flashes %}
@@ -57,27 +110,28 @@
                 } %}
                 {% set style = palette[type]|default(palette.info) %}
                 <div role="alert" style="max-width:1200px;margin:1.5rem auto 0;padding:1rem 1.25rem;border-radius:0.75rem;background:{{ style.bg }};border-left:4px solid {{ style.border }};color:{{ style.text }};font-weight:500;">
-                    <i class="fa-solid {{ style.icon }}"></i> {{ message }}
+                    <i class="fa-solid {{ style.icon }}" aria-hidden="true"></i> {{ message }}
                 </div>
             {% endfor %}
         {% endfor %}
 
         {% block body %}{% endblock %}
+        </main>
         
         <footer style="background-color: var(--dark-bg); color: var(--white); padding: 3rem 2rem 1.5rem;">
             <div style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 2rem; margin-bottom: 2rem;">
                 <div>
-                    <h3 style="color: var(--primary-color); font-family: var(--font-heading); margin-bottom: 1rem;">Vite & Gourmand</h3>
-                    <p style="color: #9CA3AF; font-size: 0.9rem; line-height: 1.6;">Traiteur événementiel haut de gamme pour tous vos événements professionnels et personnels.</p>
+                    <h2 class="footer-title" style="color: #86EFAC; font-size: 1.3rem;">Vite & Gourmand</h2>
+                    <p style="color: #D1D5DB; font-size: 0.9rem; line-height: 1.6;">Traiteur événementiel haut de gamme pour tous vos événements professionnels et personnels.</p>
                 </div>
                 <div>
-                    <h4 style="margin-bottom: 1rem; font-size: 1rem;">Horaires d'ouverture</h4>
-                    <ul style="list-style: none; padding: 0; color: #9CA3AF; font-size: 0.9rem; line-height: 2;">
+                    <h2 class="footer-title">Horaires d'ouverture</h2>
+                    <ul style="list-style: none; padding: 0; color: #D1D5DB; font-size: 0.9rem; line-height: 2;">
                         {% for horaire in horaires %}
                             <li>
                                 {{ horaire.jour|capitalize }} :
                                 {% if horaire.ferme %}
-                                    <strong style="color: #EF4444;">Fermé</strong>
+                                    <strong style="color: #FCA5A5;">Fermé</strong>
                                 {% else %}
                                     <strong style="color: white;">{{ horaire.heureOuverture }} – {{ horaire.heureFermeture }}</strong>
                                 {% endif %}
@@ -86,27 +140,27 @@
                     </ul>
                 </div>
                 <div>
-                    <h4 style="margin-bottom: 1rem; font-size: 1rem;">Contact</h4>
-                    <ul style="list-style: none; padding: 0; color: #9CA3AF; font-size: 0.9rem; line-height: 2;">
-                        <li><i class="fa-solid fa-location-dot"></i> 12 Rue de la Gastronomie, 75001 Paris</li>
-                        <li><i class="fa-solid fa-phone"></i> 01 23 45 67 89</li>
-                        <li><i class="fa-solid fa-envelope"></i> contact@vite-gourmand.fr</li>
+                    <h2 class="footer-title">Contact</h2>
+                    <ul style="list-style: none; padding: 0; color: #D1D5DB; font-size: 0.9rem; line-height: 2;">
+                        <li><i class="fa-solid fa-location-dot" aria-hidden="true"></i> 12 Rue de la Gastronomie, 33000 Bordeaux</li>
+                        <li><i class="fa-solid fa-phone" aria-hidden="true"></i> 01 23 45 67 89</li>
+                        <li><i class="fa-solid fa-envelope" aria-hidden="true"></i> contact@vite-gourmand.fr</li>
                     </ul>
                 </div>
                 <div>
-                    <h4 style="margin-bottom: 1rem; font-size: 1rem;">Liens utiles</h4>
+                    <h2 class="footer-title">Liens utiles</h2>
                     <ul style="list-style: none; padding: 0; font-size: 0.9rem; line-height: 2;">
-                        <li><a href="{{ path('app_menu') }}" style="color: #9CA3AF; transition: color 0.2s;" onmouseover="this.style.color='#10B981'" onmouseout="this.style.color='#9CA3AF'">La Carte</a></li>
-                        <li><a href="{{ path('app_contact') }}" style="color: #9CA3AF; transition: color 0.2s;" onmouseover="this.style.color='#10B981'" onmouseout="this.style.color='#9CA3AF'">Nous Contacter</a></li>
+                        <li><a href="{{ path('app_menu') }}" class="footer-link">La Carte</a></li>
+                        <li><a href="{{ path('app_contact') }}" class="footer-link">Nous Contacter</a></li>
                         {% if not app.user %}
-                        <li><a href="{{ path('app_register') }}" style="color: #9CA3AF; transition: color 0.2s;" onmouseover="this.style.color='#10B981'" onmouseout="this.style.color='#9CA3AF'">Créer un compte</a></li>
+                        <li><a href="{{ path('app_register') }}" class="footer-link">Créer un compte</a></li>
                         {% endif %}
-                        <li><a href="{{ path('app_mentions_legales') }}" style="color: #9CA3AF; transition: color 0.2s;" onmouseover="this.style.color='#10B981'" onmouseout="this.style.color='#9CA3AF'">Mentions légales</a></li>
-                        <li><a href="{{ path('app_cgv') }}" style="color: #9CA3AF; transition: color 0.2s;" onmouseover="this.style.color='#10B981'" onmouseout="this.style.color='#9CA3AF'">CGV</a></li>
+                        <li><a href="{{ path('app_mentions_legales') }}" class="footer-link">Mentions légales</a></li>
+                        <li><a href="{{ path('app_cgv') }}" class="footer-link">CGV</a></li>
                     </ul>
                 </div>
             </div>
-            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; text-align: center; color: #6B7280; font-size: 0.85rem;">
+            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.5rem; text-align: center; color: #D1D5DB; font-size: 0.85rem;">
                 &copy; {{ "now"|date("Y") }} Vite & Gourmand. Tous droits réservés.
             </div>
         </footer>
