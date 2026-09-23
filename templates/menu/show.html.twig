@@ -65,6 +65,33 @@
                 </section>
             {% endif %}
 
+            {# Thematiques et regimes du menu : l'enonce demande que toutes les
+               informations du menu enregistrees en base soient visibles ici. #}
+            {% if menu.themes is not empty or menu.diets is not empty %}
+                <dl style="display: flex; flex-wrap: wrap; gap: 1.5rem; margin: 2rem 0 0;">
+                    {% if menu.themes is not empty %}
+                        <div>
+                            <dt style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: #4B5563; font-weight: 600; margin-bottom: 0.4rem;">Thème</dt>
+                            <dd style="margin: 0; display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                                {% for theme in menu.themes %}
+                                    <span style="background: rgba(99,102,241,0.12); color: #3730A3; padding: 0.3rem 0.8rem; border-radius: 999px; font-size: 0.9rem; font-weight: 600;">{{ theme.name }}</span>
+                                {% endfor %}
+                            </dd>
+                        </div>
+                    {% endif %}
+                    {% if menu.diets is not empty %}
+                        <div>
+                            <dt style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: #4B5563; font-weight: 600; margin-bottom: 0.4rem;">Régime alimentaire</dt>
+                            <dd style="margin: 0; display: flex; gap: 0.4rem; flex-wrap: wrap;">
+                                {% for diet in menu.diets %}
+                                    <span style="background: rgba(16,185,129,0.15); color: #065F46; padding: 0.3rem 0.8rem; border-radius: 999px; font-size: 0.9rem; font-weight: 600;">{{ diet.name }}</span>
+                                {% endfor %}
+                            </dd>
+                        </div>
+                    {% endif %}
+                </dl>
+            {% endif %}
+
             <div style="display: flex; gap: 2rem; margin: 2rem 0; flex-wrap: wrap;">
                 {% if menu.minPeople %}
                 <div style="background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); border-radius: 0.75rem; padding: 1rem 1.5rem; text-align: center;">
