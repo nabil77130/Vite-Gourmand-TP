@@ -52,7 +52,7 @@ class AppFixtures extends Fixture
         $admin = new User();
         $admin->setEmail('admin@vite-gourmand.com');
         $admin->setRoles(['ROLE_ADMIN']);
-        $admin->setPassword($this->userPasswordHasher->hashPassword($admin, 'password'));
+        $admin->setPassword($this->userPasswordHasher->hashPassword($admin, 'mdp123456789'));
         $admin->setFirstName('Julie');
         $admin->setLastName('Manager');
         $admin->setPhone('0600000000');
@@ -61,7 +61,7 @@ class AppFixtures extends Fixture
         $employee = new User();
         $employee->setEmail('employee@vite-gourmand.com');
         $employee->setRoles(['ROLE_EMPLOYEE']);
-        $employee->setPassword($this->userPasswordHasher->hashPassword($employee, 'password'));
+        $employee->setPassword($this->userPasswordHasher->hashPassword($employee, 'mdp123456789'));
         $employee->setFirstName('Marc');
         $employee->setLastName('Employé');
         $employee->setPhone('0611111111');
@@ -70,7 +70,7 @@ class AppFixtures extends Fixture
         $customer = new User();
         $customer->setEmail('user@vite-gourmand.com');
         $customer->setRoles(['ROLE_USER']);
-        $customer->setPassword($this->userPasswordHasher->hashPassword($customer, 'password'));
+        $customer->setPassword($this->userPasswordHasher->hashPassword($customer, 'mdp123456789'));
         $customer->setFirstName('Jean');
         $customer->setLastName('Dupont');
         $customer->setAddress('123 Rue de Paris');
