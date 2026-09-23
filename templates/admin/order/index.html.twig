@@ -4,14 +4,14 @@
 <div style="max-width:1200px;margin:2rem auto;padding:0 1rem;">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
         <h1 style="font-size:1.8rem;font-weight:700;">📦 Gestion des Commandes</h1>
-        <a href="{{ path('admin_menu_index') }}" style="color:#6b7280;text-decoration:none;">← Espace admin</a>
+        <a href="{{ path('admin_menu_index') }}" style="color:#4b5563;text-decoration:none;">← Espace admin</a>
     </div>
 
     {# Filters #}
     <form method="get" style="background:white;border-radius:1rem;padding:1.25rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);display:flex;gap:1rem;align-items:flex-end;margin-bottom:1.5rem;flex-wrap:wrap;">
         <div>
-            <label style="font-size:0.85rem;font-weight:600;display:block;margin-bottom:0.3rem;">Statut</label>
-            <select name="status" class="form-control" style="min-width:180px;">
+            <label style="font-size:0.85rem;font-weight:600;display:block;margin-bottom:0.3rem;" for="champ-status">Statut</label>
+            <select id="champ-status" name="status" class="form-control" style="min-width:180px;">
                 <option value="">Tous les statuts</option>
                 {% for key, label in statuses %}
                     <option value="{{ key }}" {% if current_status == key %}selected{% endif %}>{{ label }}</option>
@@ -19,15 +19,15 @@
             </select>
         </div>
         <div>
-            <label style="font-size:0.85rem;font-weight:600;display:block;margin-bottom:0.3rem;">Client (nom/email)</label>
-            <input type="text" name="search" value="{{ search }}" class="form-control" placeholder="Rechercher..." style="min-width:200px;">
+            <label style="font-size:0.85rem;font-weight:600;display:block;margin-bottom:0.3rem;" for="champ-search">Client (nom/email)</label>
+            <input id="champ-search" type="text" name="search" value="{{ search }}" class="form-control" placeholder="Rechercher..." style="min-width:200px;">
         </div>
         <button type="submit" class="btn btn-primary" style="padding:0.5rem 1.2rem;">🔍 Filtrer</button>
-        <a href="{{ path('admin_order_index') }}" style="padding:0.5rem 1rem;border-radius:0.5rem;border:1px solid #e5e7eb;text-decoration:none;color:#6b7280;">Réinitialiser</a>
+        <a href="{{ path('admin_order_index') }}" style="padding:0.5rem 1rem;border-radius:0.5rem;border:1px solid #e5e7eb;text-decoration:none;color:#4b5563;">Réinitialiser</a>
     </form>
 
     {% for flash in app.flashes('success') %}
-        <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#065F46;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;"><i class="fa-solid fa-check"></i> {{ flash }}</div>
+        <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#065F46;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;"><i class="fa-solid fa-check" aria-hidden="true"></i> {{ flash }}</div>
     {% endfor %}
 
     <div style="background:white;border-radius:1rem;box-shadow:0 2px 12px rgba(0,0,0,0.08);overflow:hidden;">
@@ -54,7 +54,7 @@
                     <td style="padding:1rem;">
                         {% if order.user %}
                             {{ order.user.firstName }} {{ order.user.lastName }}<br>
-                            <small style="color:#9ca3af;">{{ order.user.email }}</small>
+                            <small style="color:#4b5563;">{{ order.user.email }}</small>
                         {% else %}—{% endif %}
                     </td>
                     <td style="padding:1rem;font-size:0.9rem;">{{ order.createdAt ? order.createdAt|date('d/m/Y H:i') : '—' }}</td>
@@ -65,11 +65,11 @@
                     </td>
                     <td style="padding:1rem;font-weight:700;color:var(--secondary-color);">{{ order.totalPrice ? order.totalPrice ~ ' €' : '—' }}</td>
                     <td style="padding:1rem;text-align:center;">
-                        <a href="{{ path('admin_order_show', {id: order.id}) }}" style="background:rgba(99,102,241,0.1);color:#6366f1;padding:0.4rem 0.8rem;border-radius:0.4rem;text-decoration:none;font-size:0.85rem;"><i class="fa-solid fa-eye"></i> Voir</a>
+                        <a href="{{ path('admin_order_show', {id: order.id}) }}" style="background:rgba(99,102,241,0.1);color:#6366f1;padding:0.4rem 0.8rem;border-radius:0.4rem;text-decoration:none;font-size:0.85rem;"><i class="fa-solid fa-eye" aria-hidden="true"></i> Voir</a>
                     </td>
                 </tr>
                 {% else %}
-                <tr><td colspan="6" style="padding:2rem;text-align:center;color:#9ca3af;">Aucune commande trouvée.</td></tr>
+                <tr><td colspan="6" style="padding:2rem;text-align:center;color:#4b5563;">Aucune commande trouvée.</td></tr>
                 {% endfor %}
             </tbody>
         </table>

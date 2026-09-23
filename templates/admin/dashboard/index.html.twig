@@ -11,7 +11,7 @@
 <div class="container" style="max-width:1200px;margin:2rem auto;padding:2rem;">
 
     <h1 style="font-size:2.2rem;font-weight:700;margin-bottom:0.5rem;">
-        <i class="fa-solid fa-chart-column"></i> Tableau de bord
+        <i class="fa-solid fa-chart-column" aria-hidden="true"></i> Tableau de bord
     </h1>
     <p style="color:{{ INK_SOFT }};margin-bottom:2rem;">
         Activité commerciale par menu. Les données proviennent de la base NoSQL MongoDB.
@@ -19,7 +19,7 @@
 
     {% if unreachable %}
         <div role="alert" style="padding:1.25rem;border-radius:0.75rem;background:rgba(245,158,11,0.12);border-left:4px solid #F59E0B;color:#92400E;margin-bottom:2rem;">
-            <strong><i class="fa-solid fa-triangle-exclamation"></i> Base NoSQL injoignable.</strong>
+            <strong><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> Base NoSQL injoignable.</strong>
             Vérifiez <code>MONGODB_URI</code> dans le fichier <code>.env</code>, et que votre adresse IP figure bien
             dans la liste d'accès de MongoDB Atlas. Le reste de l'administration reste utilisable.
         </div>
@@ -53,12 +53,12 @@
 
         <div style="display:flex;gap:0.5rem;">
             <button type="submit" class="btn btn-primary" style="flex:1;">
-                <i class="fa-solid fa-filter"></i> Appliquer
+                <i class="fa-solid fa-filter" aria-hidden="true"></i> Appliquer
             </button>
             {% if filters.menuId or filters.from or filters.to %}
                 <a href="{{ path('admin_dashboard') }}" title="Réinitialiser les filtres"
                    style="display:flex;align-items:center;justify-content:center;padding:0 0.85rem;border:1px solid #d1d5db;border-radius:0.5rem;color:{{ INK_SOFT }};text-decoration:none;">
-                    <i class="fa-solid fa-xmark"></i>
+                    <i class="fa-solid fa-xmark" aria-hidden="true"></i>
                 </a>
             {% endif %}
         </div>
