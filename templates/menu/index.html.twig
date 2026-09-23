@@ -44,14 +44,14 @@
                 </div>
 
                 <div>
-                    <label for="filter-price-min" style="display:block;font-size:0.8rem;font-weight:600;color:#374151;margin-bottom:0.35rem;">Prix min (€)</label>
+                    <label for="filter-price-min" style="display:block;font-size:0.8rem;font-weight:600;color:#374151;margin-bottom:0.35rem;">Prix min (€ / pers.)</label>
                     <input type="number" id="filter-price-min" name="priceMin" min="0" step="0.5"
                            value="{{ filters.priceMin }}" placeholder="{{ priceRange.min|number_format(0) }}"
                            style="width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:0.5rem;">
                 </div>
 
                 <div>
-                    <label for="filter-price-max" style="display:block;font-size:0.8rem;font-weight:600;color:#374151;margin-bottom:0.35rem;">Prix max (€)</label>
+                    <label for="filter-price-max" style="display:block;font-size:0.8rem;font-weight:600;color:#374151;margin-bottom:0.35rem;">Prix max (€ / pers.)</label>
                     <input type="number" id="filter-price-max" name="priceMax" min="0" step="0.5"
                            value="{{ filters.priceMax }}" placeholder="{{ priceRange.max|number_format(0) }}"
                            style="width:100%;padding:0.5rem;border:1px solid #d1d5db;border-radius:0.5rem;">
@@ -130,7 +130,7 @@
                                     </span>
                                 {% endif %}
                             </div>
-                            <div class="product-price">{{ menu.price }} €<span style="font-size:0.8rem;font-weight:400;color:#9ca3af;"> / pers.</span></div>
+                            <div class="product-price">{{ menu.minGroupPrice|number_format(2, ',', ' ') }} €<span style="font-size:0.8rem;font-weight:400;color:#6b7280;"> pour {{ menu.minPeople ?? 1 }} pers.<br>soit {{ menu.price|number_format(2, ',', ' ') }} € / pers.</span></div>
                             {# _top : le lien doit remplacer la page entiere, pas seulement le cadre des menus #}
                             <a href="{{ path('app_menu_show', {'id': menu.id}) }}" data-turbo-frame="_top" class="btn btn-primary" style="width: 100%; margin-top: 1rem; display: block; text-align: center;">Voir le détail &amp; Commander →</a>
                         </div>

@@ -217,16 +217,16 @@ class AppFixtures extends Fixture
         // au tableau de bord administrateur de comparer les menus entre eux.
         //
         // Les totaux suivent la regle de calcul de l'application :
-        //   prix du menu - 10 % si le nombre de convives depasse le minimum de 5
+        //   prix par personne x convives, - 10 % si le minimum est depasse de 5
         //   + livraison hors Bordeaux : 5 EUR + 0,59 EUR par km (voir OrderPricer).
         //
         // [menu, convives, jours dans le passe, statut, adresse, livraison, total]
         $orderData = [
-            [$menu1, 16, 2,  'delivered', '24 cours de l\'Intendance, Bordeaux', 0.0,  19.80],
-            [$menu1, 12, 9,  'completed', '8 avenue de la Marne, Mérignac',      9.72, 31.72],
-            [$menu3, 10, 5,  'delivered', '15 quai des Chartrons, Bordeaux',     0.0,  24.00],
-            [$menu2, 10, 14, 'completed', '3 rue Sainte-Catherine, Bordeaux',    0.0,  16.20],
-            [$menu4, 6,  1,  'pending',   '52 avenue Roul, Talence',             7.95, 23.95],
+            [$menu1, 16, 2,  'delivered', '24 cours de l\'Intendance, Bordeaux', 0.0,  316.80],
+            [$menu1, 12, 9,  'completed', '8 avenue de la Marne, Mérignac',      9.72, 273.72],
+            [$menu3, 10, 5,  'delivered', '15 quai des Chartrons, Bordeaux',     0.0,  240.00],
+            [$menu2, 10, 14, 'completed', '3 rue Sainte-Catherine, Bordeaux',    0.0,  162.00],
+            [$menu4, 6,  1,  'pending',   '52 avenue Roul, Talence',             7.95, 103.95],
         ];
 
         $createdOrders = [];

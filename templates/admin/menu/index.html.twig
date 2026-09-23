@@ -33,7 +33,7 @@
                 {% for menu in menus %}
                 <tr style="border-bottom:1px solid #f3f4f6;">
                     <td style="padding:1rem;font-weight:600;">{{ menu.name }}</td>
-                    <td style="padding:1rem;color:var(--secondary-color);font-weight:700;">{{ menu.price }} €</td>
+                    <td style="padding:1rem;color:var(--secondary-color);font-weight:700;">{{ menu.price|number_format(2, ',', ' ') }} € / pers.<br><span style="font-weight:400;font-size:0.85rem;color:#4b5563;">{{ menu.minGroupPrice|number_format(2, ',', ' ') }} € pour {{ menu.minPeople ?? 1 }}</span></td>
                     <td style="padding:1rem;">{{ menu.minPeople ?? '—' }} pers.</td>
                     <td style="padding:1rem;">
                         {% if menu.stock is not null %}

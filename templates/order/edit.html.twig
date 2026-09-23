@@ -19,8 +19,8 @@
                 <div style="color:#6b7280;font-size:0.9rem;">{{ menu.description }}</div>
             </div>
             <div style="text-align:right;">
-                <div style="font-size:1.3rem;font-weight:800;color:var(--secondary-color);">{{ menu.price }} €</div>
-                {% if menu.minPeople %}<div style="font-size:0.8rem;color:#9ca3af;">min. {{ menu.minPeople }} personnes</div>{% endif %}
+                <div style="font-size:1.3rem;font-weight:800;color:var(--secondary-color);">{{ menu.minGroupPrice|number_format(2, ',', ' ') }} €</div>
+                <div style="font-size:0.8rem;color:#6b7280;">pour {{ menu.minPeople ?? 1 }} pers. min. · {{ menu.price|number_format(2, ',', ' ') }} € / pers.</div>
             </div>
         </div>
         <p style="margin:1rem 0 0;color:#6b7280;font-size:0.85rem;">

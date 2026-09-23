@@ -10,9 +10,11 @@ use App\Entity\Menu;
  * Regroupe ici les trois regles de gestion de l'enonce, pour qu'elles soient
  * appliquees a l'identique a la creation et a la modification d'une commande :
  *
- *   - le prix de base est celui du menu, pour son nombre minimum de convives ;
- *   - une reduction de 10 % s'applique des que la commande compte au moins
- *     5 convives de plus que ce minimum ;
+ *   - le prix enregistre sur le menu est un prix par personne : le prix du
+ *     menu "pour le nombre de personnes minimal" vaut donc prix x minimum, et
+ *     le prix des repas est mis a jour selon le nombre de convives choisi ;
+ *   - une reduction de 10 % s'applique sur le prix des repas des que la
+ *     commande compte au moins 5 convives de plus que ce minimum ;
  *   - une livraison hors de Bordeaux est facturee 5 EUR, majores de
  *     0,59 EUR par kilometre parcouru.
  */
@@ -71,13 +73,21 @@ class OrderPricer
     /**
      * Detaille le prix d'une commande.
      *
-     * @return array{basePrice: float, discount: float, deliveryPrice: float, distanceKm: int, total: float}
+     * - unitPrice : prix par personne du menu
+     * - people    : nombre de convives retenu (jamais sous le minimum du menu)
+     * - basePrice : prix des repas, soit unitPrice x people
+     * - discount  : reduction de 10 % sur le prix des repas, le cas echeant
+     *
+     * @return array{unitPrice: float, people: int, basePrice: float, discount: float, deliveryPrice: float, distanceKm: int, total: float}
      */
     public function compute(Menu $menu, ?int $people, ?string $address): array
     {
-        $basePrice = (float) ($menu->getPrice() ?? 0);
+        $unitPrice = (float) ($menu->getPrice() ?? 0);
         $minPeople = $menu->getMinPeople() ?? 1;
-        $people = $people ?? $minPeople;
+        // Le minimum de convives est obligatoire : on ne calcule jamais en dessous.
+        $people = max($people ?? $minPeople, $minPeople);
+
+        $basePrice = $unitPrice * $people;
 
         $discount = $people >= $minPeople + self::DISCOUNT_THRESHOLD
             ? $basePrice * self::DISCOUNT_RATE
@@ -86,6 +96,8 @@ class OrderPricer
         [$deliveryPrice, $distanceKm] = $this->computeDelivery($address);
 
         return [
+            'unitPrice'     => round($unitPrice, 2),
+            'people'        => $people,
             'basePrice'     => round($basePrice, 2),
             'discount'      => round($discount, 2),
             'deliveryPrice' => round($deliveryPrice, 2),

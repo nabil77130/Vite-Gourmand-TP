@@ -15,8 +15,8 @@
                 <p style="color:#6b7280;margin:0;font-size:0.9rem;">{{ menu.description }}</p>
             </div>
             <div style="text-align:right;">
-                <div style="font-size:1.5rem;font-weight:800;color:var(--secondary-color);">{{ menu.price }} €</div>
-                {% if menu.minPeople %}<div style="font-size:0.85rem;color:#9ca3af;">min. {{ menu.minPeople }} personnes</div>{% endif %}
+                <div style="font-size:1.5rem;font-weight:800;color:var(--secondary-color);">{{ menu.minGroupPrice|number_format(2, ',', ' ') }} €</div>
+                <div style="font-size:0.85rem;color:#6b7280;">pour {{ menu.minPeople ?? 1 }} pers. min. · {{ menu.price|number_format(2, ',', ' ') }} € / pers.</div>
             </div>
         </div>
     </div>
@@ -56,11 +56,11 @@
     <div id="price-summary" style="background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(16,185,129,0.08));border:1px solid rgba(99,102,241,0.2);border-radius:1rem;padding:1.5rem;margin-bottom:1.5rem;">
         <h3 style="margin-bottom:1rem;">💰 Récapitulatif du prix</h3>
         <div style="display:grid;gap:0.5rem;font-size:0.95rem;">
-            <div style="display:flex;justify-content:space-between;"><span>Prix du menu :</span><strong id="prix-menu">{{ menu.price }} €</strong></div>
+            <div style="display:flex;justify-content:space-between;"><span id="prix-menu-label">Repas ({{ menu.minPeople ?? 1 }} pers. × {{ menu.price|number_format(2, ',', ' ') }} €) :</span><strong id="prix-menu">{{ menu.minGroupPrice|number_format(2, ',', ' ') }} €</strong></div>
             <div id="remise-row" style="display:none;justify-content:space-between;"><span>Réduction 10% (≥ {{ (menu.minPeople ?? 1) + 5 }} pers.) :</span><strong id="remise-val" style="color:#10b981;">- 0 €</strong></div>
             <div style="display:flex;justify-content:space-between;"><span>Livraison :</span><strong id="prix-livraison">0 €</strong></div>
             <hr style="border:none;border-top:1px solid rgba(99,102,241,0.2);margin:0.5rem 0;">
-            <div style="display:flex;justify-content:space-between;font-size:1.2rem;"><span><strong>Total :</strong></span><strong id="total-price" style="color:var(--secondary-color);">{{ menu.price }} €</strong></div>
+            <div style="display:flex;justify-content:space-between;font-size:1.2rem;"><span><strong>Total :</strong></span><strong id="total-price" style="color:var(--secondary-color);">{{ menu.minGroupPrice|number_format(2, ',', ' ') }} €</strong></div>
         </div>
     </div>
 
@@ -92,6 +92,7 @@
     let timer = null;
 
     function render(p) {
+        document.getElementById('prix-menu-label').textContent = 'Repas (' + p.people + ' pers. × ' + euro(p.unitPrice) + ') :';
         document.getElementById('prix-menu').textContent = euro(p.basePrice);
         document.getElementById('remise-val').textContent = '- ' + euro(p.discount);
         document.getElementById('remise-row').style.display = p.discount > 0 ? 'flex' : 'none';

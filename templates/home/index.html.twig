@@ -38,7 +38,7 @@
                     {% if menu.minPeople %}
                         <span style="background:rgba(16,185,129,0.15);color:var(--primary-color);font-size:0.8rem;padding:0.2rem 0.6rem;border-radius:999px;font-weight:600;"><i class="fa-solid fa-users"></i> Min. {{ menu.minPeople }} pers.</span>
                     {% endif %}
-                    <div class="product-price" style="margin-top:0.75rem;">{{ menu.price }} €<span style="font-size:0.8rem;font-weight:400;color:#9ca3af;"> / pers.</span></div>
+                    <div class="product-price" style="margin-top:0.75rem;">{{ menu.minGroupPrice|number_format(2, ',', ' ') }} €<span style="font-size:0.8rem;font-weight:400;color:#6b7280;"> pour {{ menu.minPeople ?? 1 }} pers.<br>soit {{ menu.price|number_format(2, ',', ' ') }} € / pers.</span></div>
                     <a href="{{ path('app_menu_show', {'id': menu.id}) }}" class="btn btn-primary" style="width:100%;margin-top:1rem;display:block;text-align:center;">Commander ce menu →</a>
                 </div>
             </div>

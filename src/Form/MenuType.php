@@ -36,7 +36,11 @@ class MenuType extends AbstractType
                     'placeholder' => "Ex. : ce menu doit être commandé au moins 7 jours avant la prestation. Les plats doivent être conservés au frais jusqu'au service.",
                 ],
             ])
-            ->add('price', NumberType::class, ['label' => 'Prix (€)', 'scale' => 2])
+            ->add('price', NumberType::class, [
+                'label' => 'Prix par personne (€)',
+                'help' => 'Le prix affiché pour le menu vaut ce prix multiplié par le nombre minimum de personnes.',
+                'scale' => 2,
+            ])
             ->add('minPeople', NumberType::class, ['label' => 'Nombre de personnes minimum', 'required' => false])
             ->add('stock', NumberType::class, ['label' => 'Stock disponible', 'required' => false])
             ->add('products', EntityType::class, [

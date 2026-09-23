@@ -140,6 +140,15 @@ class Menu
         return $this;
     }
 
+    /**
+     * Prix du menu pour son nombre minimum de personnes (prix par personne x
+     * minimum), tel que l'enonce demande de l'afficher.
+     */
+    public function getMinGroupPrice(): float
+    {
+        return (float) ($this->price ?? 0) * ($this->minPeople ?? 1);
+    }
+
     public function getMinPeople(): ?int
     {
         return $this->minPeople;

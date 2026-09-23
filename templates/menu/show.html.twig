@@ -19,8 +19,9 @@
                     {% endif %}
                 </div>
                 <div style="text-align: right;">
-                    <div style="font-size: 2rem; font-weight: bold; color: var(--secondary-color);">{{ menu.price }} €</div>
-                    <div style="color: #6B7280; font-size: 0.9rem;">par personne</div>
+                    <div style="font-size: 2rem; font-weight: bold; color: var(--secondary-color);">{{ menu.minGroupPrice|number_format(2, ',', ' ') }} €</div>
+                    <div style="color: #4B5563; font-size: 0.9rem;">pour {{ menu.minPeople ?? 1 }} personnes minimum</div>
+                    <div style="color: #4B5563; font-size: 0.9rem;">soit {{ menu.price|number_format(2, ',', ' ') }} € par personne</div>
                 </div>
             </div>
 
