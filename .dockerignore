@@ -1,0 +1,14 @@
+# Jamais dans l'image : secrets locaux, dependances et fichiers generes
+.env.local
+.env.*.local
+.git
+vendor/
+var/
+public/assets/
+public/uploads/
+assets/vendor/
+node_modules/
+*.pdf
+*.png
+docs/
+tests/

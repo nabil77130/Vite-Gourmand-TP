@@ -22,3 +22,11 @@ when@test:
         test: true
         session:
             storage_factory_id: session.storage.factory.mock_file
+
+# En production, le site est derriere le proxy HTTPS de l'hebergeur (Render) :
+# on fait confiance aux en-tetes X-Forwarded-* qu'il transmet, pour que Symfony
+# sache que la page est en HTTPS (liens absolus des emails, cookies securises).
+when@prod:
+    framework:
+        trusted_proxies: '127.0.0.1,REMOTE_ADDR'
+        trusted_headers: ['x-forwarded-for', 'x-forwarded-host', 'x-forwarded-proto', 'x-forwarded-port']

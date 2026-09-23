@@ -1,0 +1,21 @@
+# Description du service pour Render (fonction "Blueprint").
+# Les valeurs secretes ne sont PAS ecrites ici : elles se saisissent dans
+# le tableau de bord de Render (sync: false).
+services:
+  - type: web
+    name: vite-gourmand
+    runtime: docker
+    plan: free
+    healthCheckPath: /
+    envVars:
+      - key: APP_ENV
+        value: prod
+      - key: APP_SECRET
+        generateValue: true
+      - key: MAILER_DSN
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      # Base MongoDB distincte de celle du poste de developpement.
+      - key: MONGODB_DB
+        value: vite_gourmand_prod
