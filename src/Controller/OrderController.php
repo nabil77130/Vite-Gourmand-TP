@@ -166,7 +166,7 @@ class OrderController extends AbstractController
         }
 
         if ($order->getStatus() !== 'pending') {
-            $this->addFlash('error', "Cette commande a déjà été acceptée : elle n'est plus modifiable. Contactez-nous au 01 23 45 67 89.");
+            $this->addFlash('error', "Cette commande a déjà été acceptée : elle n'est plus modifiable. Contactez-nous au 05 56 00 00 00.");
 
             return $this->redirectToRoute('user_orders');
         }

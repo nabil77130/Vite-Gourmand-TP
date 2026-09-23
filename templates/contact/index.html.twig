@@ -12,9 +12,13 @@
 
             {# Les messages de confirmation et d'erreur sont affiches par base.html.twig #}
 
+            <style>
+                .contact-names { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+                @media (max-width: 600px) { .contact-names { grid-template-columns: 1fr; } }
+            </style>
             <form method="post" action="{{ path('app_contact') }}">
                 <input type="hidden" name="_token" value="{{ csrf_token('contact') }}">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+                <div class="contact-names">
                     <div class="form-group">
                         <label style="display: block; font-weight: 600; margin-bottom: 0.4rem;" for="champ-firstName">Prénom *</label>
                         <input id="champ-firstName" type="text" name="firstName" class="form-control" placeholder="Votre prénom" required>
@@ -66,12 +70,12 @@
                 <div>
                     <div style="font-size: 1.5rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-location-dot" aria-hidden="true"></i></div>
                     <div style="font-weight: 600; margin-bottom: 0.25rem;">Adresse</div>
-                    <div style="color: #4b5563; font-size: 0.9rem;">12 Rue de la Gastronomie<br>75001 Paris</div>
+                    <div style="color: #4b5563; font-size: 0.9rem;">12 Rue de la Gastronomie<br>33000 Bordeaux</div>
                 </div>
                 <div>
                     <div style="font-size: 1.5rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-phone" aria-hidden="true"></i></div>
                     <div style="font-weight: 600; margin-bottom: 0.25rem;">Téléphone</div>
-                    <div style="color: #4b5563; font-size: 0.9rem;">01 23 45 67 89</div>
+                    <div style="color: #4b5563; font-size: 0.9rem;">05 56 00 00 00</div>
                 </div>
                 <div>
                     <div style="font-size: 1.5rem; margin-bottom: 0.5rem;"><i class="fa-solid fa-envelope" aria-hidden="true"></i></div>
