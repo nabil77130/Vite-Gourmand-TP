@@ -16,9 +16,9 @@ PRAGMA foreign_keys = ON;
 BEGIN TRANSACTION;
 
 -- Comptes : clients, employes et administrateur (roles en JSON).
-INSERT INTO user (id, email, roles, password, first_name, last_name, address, city, zip_code, phone, pays, is_active, reset_token, reset_token_expires_at) VALUES (53, 'admin@vite-gourmand.com', '["ROLE_ADMIN"]', '$2y$13$1G2V7fqwOGYHD0ovRDuCWORkFSwY/dLwZX3R9JUDdRGejng1.p93y', 'Julie', 'Manager', NULL, NULL, NULL, '0600000000', NULL, 1, NULL, NULL);
-INSERT INTO user (id, email, roles, password, first_name, last_name, address, city, zip_code, phone, pays, is_active, reset_token, reset_token_expires_at) VALUES (54, 'employee@vite-gourmand.com', '["ROLE_EMPLOYEE"]', '$2y$13$yl.xbKIrPeU9h1BRUqmTxuHd2ZERr8Qa36TzF3WsqDNK/zDTBYSbu', 'Marc', 'Employé', NULL, NULL, NULL, '0611111111', NULL, 1, NULL, NULL);
-INSERT INTO user (id, email, roles, password, first_name, last_name, address, city, zip_code, phone, pays, is_active, reset_token, reset_token_expires_at) VALUES (55, 'user@vite-gourmand.com', '["ROLE_USER"]', '$2y$13$/q3yqtgeSFWAYpW9yBph3exFNeWh.QMy5HyqT8O6K7uAcDYEa4cCu', 'Jean', 'Dupont', '123 Rue de Paris', 'Paris', '75001', '0612345678', NULL, 1, NULL, NULL);
+INSERT INTO user (id, email, roles, password, first_name, last_name, address, city, zip_code, phone, pays, is_active, reset_token, reset_token_expires_at) VALUES (53, 'admin@vite-gourmand.com', '["ROLE_ADMIN"]', '$2y$13$FFGX342lHdoIxYxO6MAsg.XqHAyGYLqgDd6uN4A2EtDcLjO.NIoK.', 'Julie', 'Manager', NULL, NULL, NULL, '0600000000', NULL, 1, NULL, NULL);
+INSERT INTO user (id, email, roles, password, first_name, last_name, address, city, zip_code, phone, pays, is_active, reset_token, reset_token_expires_at) VALUES (54, 'employee@vite-gourmand.com', '["ROLE_EMPLOYEE"]', '$2y$13$FFGX342lHdoIxYxO6MAsg.XqHAyGYLqgDd6uN4A2EtDcLjO.NIoK.', 'Marc', 'Employé', NULL, NULL, NULL, '0611111111', NULL, 1, NULL, NULL);
+INSERT INTO user (id, email, roles, password, first_name, last_name, address, city, zip_code, phone, pays, is_active, reset_token, reset_token_expires_at) VALUES (55, 'user@vite-gourmand.com', '["ROLE_USER"]', '$2y$13$FFGX342lHdoIxYxO6MAsg.XqHAyGYLqgDd6uN4A2EtDcLjO.NIoK.', 'Jean', 'Dupont', '123 Rue de Paris', 'Paris', '75001', '0612345678', NULL, 1, NULL, NULL);
 
 -- Allergenes (gluten, arachides...).
 INSERT INTO allergen (id, name) VALUES (65, 'Arachides');

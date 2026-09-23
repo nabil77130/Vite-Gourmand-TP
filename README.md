@@ -152,7 +152,7 @@ Projet réalisé dans le cadre de l'ECF du titre professionnel **Développeur We
 
 ## Comptes de test
 
-Mot de passe identique pour les trois comptes : `password`
+Mot de passe identique pour les trois comptes : `mdp123456789`
 
 | Rôle | Email |
 |---|---|
@@ -230,5 +230,4 @@ Dans le dossier `docs/` :
 - charte graphique (palette, polices, maquettes ordinateur et mobile) ;
 - manuel d'utilisation, avec les identifiants pour chaque parcours ;
 - documentation technique (choix techniques, environnement, modèle de données, diagrammes,
-  déploiement) ;
-- documentation de la gestion de projet.
+  déploiement).
