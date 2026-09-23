@@ -3,7 +3,7 @@
 {% block body %}
 <div style="max-width:1200px;margin:2rem auto;padding:0 1rem;">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
-        <h1 style="font-size:1.8rem;font-weight:700;">📦 Gestion des Commandes</h1>
+        <h1 style="font-size:1.8rem;font-weight:700;"><i class="fa-solid fa-box" aria-hidden="true"></i> Gestion des Commandes</h1>
         <a href="{{ path('admin_menu_index') }}" style="color:#4b5563;text-decoration:none;">← Espace admin</a>
     </div>
 
@@ -22,7 +22,7 @@
             <label style="font-size:0.85rem;font-weight:600;display:block;margin-bottom:0.3rem;" for="champ-search">Client (nom/email)</label>
             <input id="champ-search" type="text" name="search" value="{{ search }}" class="form-control" placeholder="Rechercher..." style="min-width:200px;">
         </div>
-        <button type="submit" class="btn btn-primary" style="padding:0.5rem 1.2rem;">🔍 Filtrer</button>
+        <button type="submit" class="btn btn-primary" style="padding:0.5rem 1.2rem;"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Filtrer</button>
         <a href="{{ path('admin_order_index') }}" style="padding:0.5rem 1rem;border-radius:0.5rem;border:1px solid #e5e7eb;text-decoration:none;color:#4b5563;">Réinitialiser</a>
     </form>
 

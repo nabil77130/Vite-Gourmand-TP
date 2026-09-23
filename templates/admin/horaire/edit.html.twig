@@ -3,7 +3,7 @@
 {% block body %}
 <div style="max-width:500px;margin:2rem auto;padding:0 1rem;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
-        <h1 style="font-size:1.8rem;font-weight:700;">🕐 {{ horaire.jour|capitalize }}</h1>
+        <h1 style="font-size:1.8rem;font-weight:700;"><i class="fa-regular fa-clock" aria-hidden="true"></i> {{ horaire.jour|capitalize }}</h1>
         <a href="{{ path('admin_horaire_index') }}" style="color:#4b5563;text-decoration:none;">← Retour</a>
     </div>
     <div style="background:white;border-radius:1rem;box-shadow:0 2px 12px rgba(0,0,0,0.08);padding:2rem;">
@@ -14,7 +14,7 @@
             <div style="display:flex;align-items:center;gap:0.75rem;">{{ form_widget(form.ferme) }}{{ form_label(form.ferme) }}</div>
         </div>
         <div style="margin-top:1.5rem;display:flex;gap:1rem;">
-            <button type="submit" class="btn btn-primary">💾 Enregistrer</button>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Enregistrer</button>
             <a href="{{ path('admin_horaire_index') }}" style="padding:0.6rem 1.2rem;border-radius:0.5rem;border:1px solid #e5e7eb;text-decoration:none;color:#4b5563;">Annuler</a>
         </div>
         {{ form_end(form) }}

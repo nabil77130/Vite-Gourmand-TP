@@ -3,7 +3,7 @@
 {% block body %}
 <div style="max-width:800px;margin:2rem auto;padding:0 1rem;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
-        <h1 style="font-size:1.8rem;font-weight:700;">🛒 Commander : {{ menu.name }}</h1>
+        <h1 style="font-size:1.8rem;font-weight:700;"><i class="fa-solid fa-cart-shopping" aria-hidden="true"></i> Commander : {{ menu.name }}</h1>
         <a href="{{ path('app_menu_show', {id: menu.id}) }}" style="color:#4b5563;text-decoration:none;">← Retour au menu</a>
     </div>
 
@@ -54,7 +54,7 @@
 
     {# Price summary (dynamic) #}
     <div id="price-summary" style="background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(16,185,129,0.08));border:1px solid rgba(99,102,241,0.2);border-radius:1rem;padding:1.5rem;margin-bottom:1.5rem;">
-        <h3 style="margin-bottom:1rem;">💰 Récapitulatif du prix</h3>
+        <h3 style="margin-bottom:1rem;"><i class="fa-solid fa-receipt" aria-hidden="true"></i> Récapitulatif du prix</h3>
         <div style="display:grid;gap:0.5rem;font-size:0.95rem;">
             <div style="display:flex;justify-content:space-between;"><span id="prix-menu-label">Repas ({{ menu.minPeople ?? 1 }} pers. × {{ menu.price|number_format(2, ',', ' ') }} €) :</span><strong id="prix-menu">{{ menu.minGroupPrice|number_format(2, ',', ' ') }} €</strong></div>
             <div id="remise-row" style="display:none;justify-content:space-between;"><span>Réduction 10% (≥ {{ (menu.minPeople ?? 1) + 5 }} pers.) :</span><strong id="remise-val" style="color:#047857;">- 0 €</strong></div>
@@ -78,7 +78,7 @@
         </div>
     {% endif %}
 
-    <button type="submit" form="order-form" class="btn btn-primary" style="width:100%;padding:1rem;font-size:1.1rem;">✅ Confirmer la commande</button>
+    <button type="submit" form="order-form" class="btn btn-primary" style="width:100%;padding:1rem;font-size:1.1rem;"><i class="fa-solid fa-check" aria-hidden="true"></i> Confirmer la commande</button>
 </div>
 
 <script>

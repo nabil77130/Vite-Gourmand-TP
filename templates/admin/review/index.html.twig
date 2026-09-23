@@ -46,7 +46,7 @@
         {% for review in approved_reviews %}
         <div style="background:#f9fafb;border-radius:0.75rem;padding:1rem;border:1px solid #e5e7eb;">
             <div style="display:flex;gap:0.25rem;margin-bottom:0.25rem;">
-                <span class="sr-only">Note : {{ review.rating }} sur 5</span>{% for i in 1..5 %}<span aria-hidden="true" style="color:{% if i <= review.rating %}#b45309{% else %}#9ca3af{% endif %};">★</span>{% endfor %}
+                <span class="sr-only">Note : {{ review.rating }} sur 5</span>{% for i in 1..5 %}<i class="fa-{{ i <= review.rating ? 'solid' : 'regular' }} fa-star" aria-hidden="true" style="color:{% if i <= review.rating %}#b45309{% else %}#6b7280{% endif %};"></i>{% endfor %}
             </div>
             <p style="color:#4b5563;font-size:0.9rem;">{{ review.comment }}</p>
         </div>
