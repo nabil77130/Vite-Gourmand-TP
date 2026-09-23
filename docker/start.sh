@@ -15,6 +15,9 @@ rm -f var/data.db
 sqlite3 var/data.db < sql/schema.sql
 sqlite3 var/data.db < sql/data.sql
 
+# Verifie les reglages MAILER_DSN et MONGODB_URI (identifiants masques).
+php /var/www/html/docker/diagnostic.php || true
+
 # Securite : applique une eventuelle migration plus recente que les fichiers SQL.
 php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
 
