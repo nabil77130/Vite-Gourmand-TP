@@ -5,8 +5,8 @@
 {% block body %}
 <div class="container" style="max-width: 600px; margin: 4rem auto; padding: 2rem;">
     <div style="background:white;border-radius:1rem;box-shadow:0 4px 12px rgba(0,0,0,0.1);padding:2rem;">
-        <h1 style="text-align:center;margin-bottom:1.5rem;"><i class="fa-solid fa-star"></i> Laisser un avis</h1>
-        <p style="text-align:center;color:#6b7280;margin-bottom:2rem;">
+        <h1 style="text-align:center;margin-bottom:1.5rem;"><i class="fa-solid fa-star" aria-hidden="true"></i> Laisser un avis</h1>
+        <p style="text-align:center;color:#4b5563;margin-bottom:2rem;">
             Commande #{{ order.id }} du {{ order.createdAt|date('d/m/Y') }}
         </p>
 
@@ -32,7 +32,7 @@
 
             <div style="text-align:center;">
                 <button type="submit" class="btn btn-primary" style="width:100%;padding:1rem;">Envoyer mon avis</button>
-                <a href="{{ path('user_orders') }}" style="display:block;margin-top:1rem;color:#6b7280;text-decoration:none;">Annuler</a>
+                <a href="{{ path('user_orders') }}" style="display:block;margin-top:1rem;color:#4b5563;text-decoration:none;">Annuler</a>
             </div>
         {{ form_end(form) }}
     </div>

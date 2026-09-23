@@ -6,25 +6,25 @@
 <div style="max-width:800px;margin:2rem auto;padding:0 1rem;">
 
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;">
-        <h1 style="font-size:1.8rem;font-weight:700;"><i class="fa-solid fa-pen-to-square"></i> Modifier la commande #{{ order.id }}</h1>
-        <a href="{{ path('user_orders') }}" style="color:#6b7280;text-decoration:none;">← Retour à mes commandes</a>
+        <h1 style="font-size:1.8rem;font-weight:700;"><i class="fa-solid fa-pen-to-square" aria-hidden="true"></i> Modifier la commande #{{ order.id }}</h1>
+        <a href="{{ path('user_orders') }}" style="color:#4b5563;text-decoration:none;">← Retour à mes commandes</a>
     </div>
 
     {# Le menu n'est pas modifiable : il est affiche pour information seulement. #}
     <div style="background:white;border-radius:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:1.5rem;margin-bottom:1.5rem;">
-        <h2 style="font-size:1rem;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em;margin:0 0 0.75rem;">Menu commandé</h2>
+        <h2 style="font-size:1rem;color:#4b5563;text-transform:uppercase;letter-spacing:0.05em;margin:0 0 0.75rem;">Menu commandé</h2>
         <div style="display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">
             <div>
                 <div style="font-weight:700;font-size:1.1rem;">{{ menu.name }}</div>
-                <div style="color:#6b7280;font-size:0.9rem;">{{ menu.description }}</div>
+                <div style="color:#4b5563;font-size:0.9rem;">{{ menu.description }}</div>
             </div>
             <div style="text-align:right;">
                 <div style="font-size:1.3rem;font-weight:800;color:var(--secondary-color);">{{ menu.minGroupPrice|number_format(2, ',', ' ') }} €</div>
-                <div style="font-size:0.8rem;color:#6b7280;">pour {{ menu.minPeople ?? 1 }} pers. min. · {{ menu.price|number_format(2, ',', ' ') }} € / pers.</div>
+                <div style="font-size:0.8rem;color:#4b5563;">pour {{ menu.minPeople ?? 1 }} pers. min. · {{ menu.price|number_format(2, ',', ' ') }} € / pers.</div>
             </div>
         </div>
-        <p style="margin:1rem 0 0;color:#6b7280;font-size:0.85rem;">
-            <i class="fa-solid fa-lock"></i>
+        <p style="margin:1rem 0 0;color:#4b5563;font-size:0.85rem;">
+            <i class="fa-solid fa-lock" aria-hidden="true"></i>
             Le choix du menu ne peut pas être modifié. Pour commander un autre menu, annulez cette commande et passez-en une nouvelle.
         </p>
     </div>
@@ -32,42 +32,42 @@
     {% if menu.conditions %}
         <div role="note" style="background:rgba(245,158,11,0.10);border:2px solid #F59E0B;border-radius:1rem;padding:1.25rem;margin-bottom:1.5rem;">
             <h2 style="margin:0 0 0.6rem;color:#92400E;font-size:1rem;">
-                <i class="fa-solid fa-circle-exclamation"></i> Conditions de ce menu
+                <i class="fa-solid fa-circle-exclamation" aria-hidden="true"></i> Conditions de ce menu
             </h2>
             <p style="margin:0;color:#78350F;line-height:1.7;white-space:pre-line;">{{ menu.conditions }}</p>
         </div>
     {% endif %}
 
     <div style="background:white;border-radius:1rem;box-shadow:0 2px 8px rgba(0,0,0,0.06);padding:1.5rem;">
-        <h2 style="font-size:1rem;color:#6b7280;text-transform:uppercase;letter-spacing:0.05em;margin:0 0 1.25rem;">Détails de la prestation</h2>
+        <h2 style="font-size:1rem;color:#4b5563;text-transform:uppercase;letter-spacing:0.05em;margin:0 0 1.25rem;">Détails de la prestation</h2>
 
         {{ form_start(form) }}
         <div style="display:grid;gap:1.25rem;">
             <div>{{ form_label(form.adressePrestation) }}{{ form_widget(form.adressePrestation, {attr: {class: 'form-control'}}) }}{{ form_errors(form.adressePrestation) }}
-                <small style="color:#9ca3af;">Livraison hors Bordeaux : 5 € + 0,59 €/km.</small>
+                <small style="color:#4b5563;">Livraison hors Bordeaux : 5 € + 0,59 €/km.</small>
             </div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
                 <div>{{ form_label(form.eventDate) }}{{ form_widget(form.eventDate, {attr: {class: 'form-control'}}) }}{{ form_errors(form.eventDate) }}</div>
                 <div>{{ form_label(form.deliveryTime) }}{{ form_widget(form.deliveryTime, {attr: {class: 'form-control'}}) }}{{ form_errors(form.deliveryTime) }}</div>
             </div>
             <div>{{ form_label(form.nombrePersonne) }}{{ form_widget(form.nombrePersonne, {attr: {class: 'form-control'}}) }}{{ form_errors(form.nombrePersonne) }}
-                <small style="color:#9ca3af;">Remise de 10 % à partir de {{ (menu.minPeople ?? 1) + 5 }} personnes.</small>
+                <small style="color:#4b5563;">Remise de 10 % à partir de {{ (menu.minPeople ?? 1) + 5 }} personnes.</small>
             </div>
         </div>
 
         <div style="background:#f9fafb;border-radius:0.75rem;padding:1rem;margin-top:1.5rem;">
-            <div style="display:flex;justify-content:space-between;color:#6b7280;font-size:0.9rem;">
+            <div style="display:flex;justify-content:space-between;color:#4b5563;font-size:0.9rem;">
                 <span>Montant actuel de la commande</span>
                 <strong style="color:var(--secondary-color);">{{ order.totalPrice }} €</strong>
             </div>
-            <p style="margin:0.5rem 0 0;color:#9ca3af;font-size:0.82rem;">
+            <p style="margin:0.5rem 0 0;color:#4b5563;font-size:0.82rem;">
                 Le montant sera recalculé automatiquement après enregistrement.
             </p>
         </div>
 
         <div style="margin-top:1.5rem;display:flex;gap:1rem;">
             <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
-            <a href="{{ path('user_orders') }}" style="padding:0.6rem 1.2rem;border-radius:0.5rem;border:1px solid #e5e7eb;text-decoration:none;color:#6b7280;">Annuler</a>
+            <a href="{{ path('user_orders') }}" style="padding:0.6rem 1.2rem;border-radius:0.5rem;border:1px solid #e5e7eb;text-decoration:none;color:#4b5563;">Annuler</a>
         </div>
         {{ form_end(form) }}
     </div>

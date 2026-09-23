@@ -3,17 +3,17 @@
 {% block body %}
 <div style="max-width:1000px;margin:2rem auto;padding:0 1rem;">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:1.5rem;flex-wrap:wrap;margin-bottom:1.5rem;">
-        <h1 style="font-size:1.8rem;font-weight:700;"><i class="fa-solid fa-star"></i> Gestion des Avis</h1>
-        <a href="{{ path('admin_menu_index') }}" style="color:#6b7280;text-decoration:none;">← Espace admin</a>
+        <h1 style="font-size:1.8rem;font-weight:700;"><i class="fa-solid fa-star" aria-hidden="true"></i> Gestion des Avis</h1>
+        <a href="{{ path('admin_menu_index') }}" style="color:#4b5563;text-decoration:none;">← Espace admin</a>
     </div>
 
     {% for flash in app.flashes('success') %}
-        <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#065F46;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;"><i class="fa-solid fa-check"></i> {{ flash }}</div>
+        <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#065F46;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;"><i class="fa-solid fa-check" aria-hidden="true"></i> {{ flash }}</div>
     {% endfor %}
 
-    <h2 style="font-size:1.2rem;margin-bottom:1rem;"><i class="fa-solid fa-hourglass-half"></i> En attente de validation ({{ pending_reviews|length }})</h2>
+    <h2 style="font-size:1.2rem;margin-bottom:1rem;"><i class="fa-solid fa-hourglass-half" aria-hidden="true"></i> En attente de validation ({{ pending_reviews|length }})</h2>
     {% if pending_reviews is empty %}
-        <p style="color:#9ca3af;margin-bottom:2rem;">Aucun avis en attente.</p>
+        <p style="color:#4b5563;margin-bottom:2rem;">Aucun avis en attente.</p>
     {% else %}
     <div style="display:grid;gap:1rem;margin-bottom:2rem;">
         {% for review in pending_reviews %}
@@ -21,18 +21,18 @@
             <div style="display:flex;justify-content:space-between;align-items:flex-start;">
                 <div>
                     <div style="display:flex;gap:0.25rem;margin-bottom:0.5rem;">
-                        {% for i in 1..5 %}<span style="color:{% if i <= review.rating %}#f59e0b{% else %}#e5e7eb{% endif %};"><i class="fa-solid fa-star"></i></span>{% endfor %}
+                        <span class="sr-only">Note : {{ review.rating }} sur 5</span>{% for i in 1..5 %}<span aria-hidden="true" style="color:{% if i <= review.rating %}#b45309{% else %}#9ca3af{% endif %};"><i class="fa-solid fa-star" aria-hidden="true"></i></span>{% endfor %}
                         <strong style="margin-left:0.5rem;">{{ review.rating }}/5</strong>
                     </div>
                     <p style="color:#374151;margin-bottom:0.5rem;">{{ review.comment }}</p>
-                    <small style="color:#9ca3af;">Commande #{{ review.orderRef ? review.orderRef.id : '—' }}</small>
+                    <small style="color:#4b5563;">Commande #{{ review.orderRef ? review.orderRef.id : '—' }}</small>
                 </div>
                 <div style="display:flex;gap:0.5rem;">
                     <form method="post" action="{{ path('admin_review_approve', {id: review.id}) }}">
-                        <button type="submit" style="background:rgba(16,185,129,0.1);color:#059669;border:1px solid rgba(16,185,129,0.3);padding:0.4rem 0.8rem;border-radius:0.4rem;cursor:pointer;"><i class="fa-solid fa-check"></i> Valider</button>
+                        <button type="submit" style="background:rgba(16,185,129,0.1);color:#065f46;border:1px solid rgba(16,185,129,0.3);padding:0.4rem 0.8rem;border-radius:0.4rem;cursor:pointer;"><i class="fa-solid fa-check" aria-hidden="true"></i> Valider</button>
                     </form>
                     <form method="post" action="{{ path('admin_review_reject', {id: review.id}) }}">
-                        <button type="submit" style="background:rgba(239,68,68,0.1);color:#ef4444;border:1px solid rgba(239,68,68,0.3);padding:0.4rem 0.8rem;border-radius:0.4rem;cursor:pointer;"><i class="fa-solid fa-xmark"></i> Refuser</button>
+                        <button type="submit" style="background:rgba(239,68,68,0.1);color:#b91c1c;border:1px solid rgba(239,68,68,0.3);padding:0.4rem 0.8rem;border-radius:0.4rem;cursor:pointer;"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Refuser</button>
                     </form>
                 </div>
             </div>
@@ -41,17 +41,17 @@
     </div>
     {% endif %}
 
-    <h2 style="font-size:1.2rem;margin-bottom:1rem;"><i class="fa-solid fa-check-double"></i> Avis validés ({{ approved_reviews|length }})</h2>
+    <h2 style="font-size:1.2rem;margin-bottom:1rem;"><i class="fa-solid fa-check-double" aria-hidden="true"></i> Avis validés ({{ approved_reviews|length }})</h2>
     <div style="display:grid;gap:0.75rem;">
         {% for review in approved_reviews %}
         <div style="background:#f9fafb;border-radius:0.75rem;padding:1rem;border:1px solid #e5e7eb;">
             <div style="display:flex;gap:0.25rem;margin-bottom:0.25rem;">
-                {% for i in 1..5 %}<span style="color:{% if i <= review.rating %}#f59e0b{% else %}#e5e7eb{% endif %};">★</span>{% endfor %}
+                <span class="sr-only">Note : {{ review.rating }} sur 5</span>{% for i in 1..5 %}<span aria-hidden="true" style="color:{% if i <= review.rating %}#b45309{% else %}#9ca3af{% endif %};">★</span>{% endfor %}
             </div>
-            <p style="color:#6b7280;font-size:0.9rem;">{{ review.comment }}</p>
+            <p style="color:#4b5563;font-size:0.9rem;">{{ review.comment }}</p>
         </div>
         {% else %}
-        <p style="color:#9ca3af;">Aucun avis validé.</p>
+        <p style="color:#4b5563;">Aucun avis validé.</p>
         {% endfor %}
     </div>
 </div>

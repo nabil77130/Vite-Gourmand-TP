@@ -4,11 +4,11 @@
 <div style="max-width:700px;margin:2rem auto;padding:0 1rem;">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
         <h1 style="font-size:1.8rem;font-weight:700;">{{ title }}</h1>
-        <a href="{{ path('admin_employee_index') }}" style="color:#6b7280;text-decoration:none;">← Retour aux employés</a>
+        <a href="{{ path('admin_employee_index') }}" style="color:#4b5563;text-decoration:none;">← Retour aux employés</a>
     </div>
 
     <div role="note" style="background:rgba(59,130,246,0.08);border-left:4px solid #3B82F6;border-radius:0.5rem;padding:1rem 1.25rem;margin-bottom:1.5rem;color:#1E40AF;">
-        <i class="fa-solid fa-circle-info"></i>
+        <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
         L'employé recevra un email l'informant de la création de son compte, <strong>sans le mot de passe</strong>.
         Vous devrez le lui communiquer directement.
     </div>
@@ -31,7 +31,7 @@
         </div>
         <div style="margin-top:1.5rem;display:flex;gap:1rem;">
             <button type="submit" class="btn btn-primary">Créer le compte</button>
-            <a href="{{ path('admin_employee_index') }}" style="padding:0.6rem 1.2rem;border-radius:0.5rem;border:1px solid #e5e7eb;text-decoration:none;color:#6b7280;">Annuler</a>
+            <a href="{{ path('admin_employee_index') }}" style="padding:0.6rem 1.2rem;border-radius:0.5rem;border:1px solid #e5e7eb;text-decoration:none;color:#4b5563;">Annuler</a>
         </div>
         {{ form_end(form) }}
     </div>
