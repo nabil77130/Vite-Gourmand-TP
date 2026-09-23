@@ -8,7 +8,7 @@
     </div>
 
     {% for flash in app.flashes('success') %}
-        <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#065F46;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;">✅ {{ flash }}</div>
+        <div style="background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);color:#065F46;border-radius:0.5rem;padding:1rem;margin-bottom:1rem;"><i class="fa-solid fa-circle-check" aria-hidden="true"></i> {{ flash }}</div>
     {% endfor %}
 
     <div style="background:white;border-radius:1rem;box-shadow:0 2px 12px rgba(0,0,0,0.08);padding:2rem;">
@@ -58,7 +58,7 @@
             </div>
         </div>
         <div style="margin-top:1.5rem;display:flex;gap:1rem;">
-            <button type="submit" class="btn btn-primary">💾 Enregistrer</button>
+            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Enregistrer</button>
             <a href="{{ path('admin_menu_index') }}" style="padding:0.6rem 1.2rem;border-radius:0.5rem;border:1px solid #e5e7eb;text-decoration:none;color:#4b5563;">Annuler</a>
         </div>
         {{ form_end(form) }}

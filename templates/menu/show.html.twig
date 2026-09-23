@@ -125,14 +125,14 @@
                     {% if product.diets|length > 0 %}
                     <div style="margin-top: 0.75rem; display: flex; gap: 0.25rem; flex-wrap: wrap;">
                         {% for diet in product.diets %}
-                            <span style="background: rgba(16,185,129,0.15); color: var(--primary-color); font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 999px; font-weight: 600;">🌿 {{ diet.name }}</span>
+                            <span style="background: rgba(16,185,129,0.15); color: var(--primary-color); font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 999px; font-weight: 600;"><i class="fa-solid fa-leaf" aria-hidden="true"></i> {{ diet.name }}</span>
                         {% endfor %}
                     </div>
                     {% endif %}
                     {% if product.allergens|length > 0 %}
                     <div style="margin-top: 0.5rem; display: flex; gap: 0.25rem; flex-wrap: wrap;">
                         {% for allergen in product.allergens %}
-                            <span style="background: rgba(249,115,22,0.15); color: var(--secondary-color); font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 999px; font-weight: 600;">⚠️ {{ allergen.name }}</span>
+                            <span style="background: rgba(249,115,22,0.15); color: var(--secondary-color); font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 999px; font-weight: 600;"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i> {{ allergen.name }}</span>
                         {% endfor %}
                     </div>
                     {% endif %}
@@ -162,7 +162,7 @@
                     </button>
                 {% elseif app.user %}
                     <a href="{{ path('order_create', {'menuId': menu.id}) }}" class="btn btn-primary" style="padding: 1rem 3rem; font-size: 1.1rem;">
-                        🛒 Commander ce menu
+                        <i class="fa-solid fa-cart-shopping" aria-hidden="true"></i> Commander ce menu
                     </a>
                 {% else %}
                     <p style="margin-bottom:1rem;color:#4b5563;">Vous devez être connecté pour commander.</p>
